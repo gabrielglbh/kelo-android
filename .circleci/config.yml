@@ -83,8 +83,10 @@ jobs:
       # Custom gradle command to execute all tests: unit test and instrumented ones
       # that also create a code coverage report
       - run:
-          name: Run instrumented tests for the App
+          name: Run Instrumented (Integration & UI) and Unit Tests
           command: ./gradlew runAllTests
+
+      - android/kill-emulators
 
       - *save_android_cache
 
