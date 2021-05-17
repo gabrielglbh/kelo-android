@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   android: circleci/android@1.0.3
 
+# References are chunks of instructions to be executed multiple times across jobs
 references:
   android_config: &android_config
     working_directory: ~/src
@@ -10,6 +11,9 @@ references:
     docker:
       - image: circleci/android:api-30
 
+    # Sets up the memory for Gradle and JVM to use.
+    # Usually for the emulator to run, JVM and Gradle consume a lot of memory, it is unstable.
+    # Parameters are set to not consume too much memory.
     environment:
       TERM: dumb
       JVM_OPTS: '-Xms2048m -Xmx3g'
@@ -25,6 +29,8 @@ references:
       name: Download Android Dependencies
       command: ./gradlew androidDependencies
 
+  # Creates the keystore.properties file to sign the app when building releases
+  # It is based of ENV variables set up in Circle CI
   create_keystore_properties: &create_keystore_properties
     run:
       name: Create keystore.properties
@@ -32,6 +38,9 @@ references:
         echo $RELEASE_KEYSTORE | base64 -d > $STORE_KEY_FILE
         printf 'keyAlias=%s\nkeyPassword=%s\nstoreFile=%s\nstorePassword=%s' \
             $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $STORE_KEY_FILE $RELEASE_STORE_PASSWORD > keystore.properties
+
+  # Creates the google-api-key.json file to allow fastlane to launch releases into Google Play
+  # It is based of ENV variables set up in Circle CI
   create_google_play_key: &create_google_play_key
     run:
       name: Create Google Play Key
@@ -63,11 +72,15 @@ jobs:
           install: true
           system-image: system-images;android-29;default;x86
 
+      # Skin is needed as the device by default has a very small screen
+      # Note that running UI Tests is unstable and some may fail. That is why,
+      # in the gradle:app we ignore the failures on UI Tests
       - android/start-emulator:
           avd-name: testDevice
           additional-args: '-skin 1440x3040'
           restore-gradle-cache-prefix: v1a
 
+      # Command using grep to actually only display the test information
       - run:
           name: Run instrumented tests for the App
           command: ./gradlew connectedAndroidTest --info | grep 'instrumentedTests\..* >'
@@ -106,6 +119,10 @@ jobs:
 workflows:
   version: 2.1
   workflow:
+    # Run unit tests when pushed to development or main
+    # Run instrumentation tests when pushed to development or main
+    # Deploy to ALPHA when unit and instrumentation tests have succeeded and only in main branch
+    # Deploy to PRODUCTION when unit and instrumentation tests have succeeded and only when the branch has a tag
     jobs:
       - unit_tests:
           filters:
