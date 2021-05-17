@@ -1,4 +1,6 @@
-# KELO [![gabrielglbh](https://circleci.com/gh/gabrielglbh/tfm-android.svg?style=shield)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android)
+# KELO 
+[![main](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/main?label=main)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android) [![main](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android) 
+[![development](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/development?label=development)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android) [![development](https://codecov.io/gh/gabrielglbh/tfm-android/branch/development/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android)
 
 KELO is a project for managing your house chores with your friends!
 
