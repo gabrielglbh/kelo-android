@@ -1,6 +1,4 @@
-[![gabrielglbh](https://circleci.com/gh/gabrielglbh/kelo-android.svg?style=shield)](https://app.circleci.com/pipelines/github/gabrielglbh/kelo-android)
-
-# KELO
+# KELO [![gabrielglbh](https://circleci.com/gh/gabrielglbh/tfm-android.svg?style=shield)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android)
 
 KELO is a project for managing your house chores with your friends!
 

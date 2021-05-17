@@ -9,13 +9,6 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
-static def getCustomNumber() {
-    def date = new Date()
-    def formattedDate = date.format('yyMMddHHmm')
-    def code = formattedDate.toInteger()
-    return code
-}
-
 // GRADLE MUST RUN WITH JSE 11.0.11 IN ORDER TO NOT FAIL WHEN BUILDING APP FROM CONSOLE
 android {
     compileSdkVersion 30
@@ -25,7 +18,7 @@ android {
         applicationId "com.gabr.gabc.kelo"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode getCustomNumber()
+        versionCode 5
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
