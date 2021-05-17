@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">KELO</string>
+    <string name="deepLinkJoinGroup" translatable="false">https://kelo-64c5c.web.app/group/</string>
+
+    <!-- Welcome Activity - Page 1 -->
+    <string name="welcome_to_kelo">Welcome To Kelo</string>
+    <string name="create_group_button">Create Group</string>
+    <string name="join_group_button">Join Group</string>
+    <string name="welcomeChoiceLabel">What would you like to do?</string>
+
+    <!-- Welcome Activity - Page 2 -->
+    <string name="create_new_group_label">Create a New Group</string>
+    <string name="join_group_label">Join a Group</string>
+    <string name="code_placeholder">Insert the group code here!</string>
+    <string name="group_name_placeholder">My Crib</string>
+    <string name="group_currency_placeholder" translatable="false">EUR</string>
+    <string name="currency_button" translatable="false">🤑</string>
+    <string name="continue_button">Continue</string>
+    <string name="back_button">Back</string>
+    <string name="select_a_currency">Select a Currency</string>
+
+    <!-- Welcome Activity - Page 3 -->
+    <string name="question_name">Who are you?</string>
+    <string name="placeholder_name">John Doe</string>
+
+    <!-- Main Activity -->
+    <string name="chores">Chores</string>
+    <string name="settings">Settings</string>
+    <string name="add_chore">Add Chore</string>
+    <string name="chore_detail">Details</string>
+
+    <!-- Chore Detail Activity -->
+    <string name="chore_name_label">Chore Name</string>
+    <string name="chore_expire_label">Expire Date</string>
+    <string name="chore_assignee_label">Assignee</string>
+    <string name="placeholder_user_name">John Doe</string>
+    <string name="chore_importance_label">Importance</string>
+    <string name="chore_name_placeholder">Do the Laundry</string>
+    <string name="chore_expire_date_placeholder">Select a Date</string>
+    <string name="chore_assignee_placeholder">Select a Friend</string>
+    <string name="chore_importance_low">Low</string>
+    <string name="chore_importance_medium">Medium</string>
+    <string name="chore_importance_high">High</string>
+    <string name="chore_users_select_randomly">Random</string>
+    <string name="users_you">You</string>
+    <string name="lazy_user_button">Most Lazy</string>
+
+    <!-- Share Code Bottom Sheet -->
+    <string name="group_code_label">Group Code:</string>
+    <string name="share_group_code">Share Group Code</string>
+    <string name="message_on_code_sharing">Join my Kelo group by pasting this code!</string>
+
+    <!-- Errors -->
+    <string name="err_invalid_name">Invalid name</string>
+    <string name="err_invalid_code">Invalid code</string>
+    <string name="err_group_creation">Something went wrong while creating the group</string>
+    <string name="err_join_group">You cannot join this group at the moment</string>
+    <string name="err_username_taken">Username is already taken in this group</string>
+    <string name="err_group_full">The group is already full of users</string>
+    <string name="err_group_does_not_exist">The group does not exist</string>
+    <string name="err_chore_not_completed">Make sure to complete the chore</string>
+    <string name="err_chore_creation">Something went wrong while creating the chore</string>
+    <string name="err_chore_update">Something went wrong while updating the chore</string>
+    <string name="err_loading_chores">Something went wrong while loading the chores</string>
+    <string name="err_loading_users">Something went wrong while loading the users</string>
+    <string name="err_chore_delete">Something went wrong while removing the chore</string>
+    <string name="err_chore_completion">Something went wrong while marking the chore as completed</string>
+</resources>

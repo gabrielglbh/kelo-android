@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/choreListElementParent"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height">
+
+    <ImageView
+        android:id="@+id/choreListIcon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/chore_icon_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
+        singleLine, ellipsize, marqueeRepeatLimit, scrollHorizontally
+        For making the text scrollable in the chore list
+        ATTENTION: MUST set TextView.isSelected = true in code
+    -->
+    <TextView
+        android:id="@+id/choreListName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toEndOf="@+id/choreListIcon"
+        app:layout_constraintTop_toTopOf="@+id/choreListIcon"
+        tools:text="Very very very very very very long chore name" />
+
+    <View
+        android:id="@+id/choreListAssigneeIcon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/chore_icon_placeholder"
+        app:layout_constraintBottom_toBottomOf="@+id/choreListIcon"
+        app:layout_constraintStart_toStartOf="@+id/choreListName" />
+
+    <TextView
+        android:id="@+id/choreListAssignee"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/choreListAssigneeIcon"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toEndOf="@+id/choreListAssigneeIcon"
+        app:layout_constraintTop_toTopOf="@+id/choreListAssigneeIcon"
+        tools:text="Deafult User" />
+
+    <TextView
+        android:id="@+id/choreListExpiration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/choreListIcon"
+        app:layout_constraintEnd_toStartOf="@+id/choreListImportance"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/choreListIcon"
+        tools:text="12/3/21" />
+
+    <View
+        android:id="@+id/choreListDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/secondaryText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/choreListIcon" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.72" />
+
+    <View
+        android:id="@+id/choreListImportance"
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/choreListIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/choreListIcon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

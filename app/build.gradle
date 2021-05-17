@@ -1,0 +1,133 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+// GRADLE MUST RUN WITH JSE 11.0.11 IN ORDER TO NOT FAIL WHEN BUILDING APP FROM CONSOLE
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.gabr.gabc.kelo"
+        minSdkVersion 24
+        targetSdkVersion 30
+        versionCode 4
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            // We need the canonical path in order for Circle CI to gather the key correctly
+            storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    // In order for gradle test to pick up our Cucumber Tests
+    sourceSets {
+        test {
+            assets.srcDirs = ["src/test/assets/features"]
+        }
+        main {
+            res {
+                srcDirs 'src/main/res/layouts/welcome',
+                        'src/main/res/layouts/main',
+                        'src/main/res/layouts/widgets',
+                        'src/main/res/layouts/settings',
+                        'src/main/res/layouts/choreDetails'
+            }
+        }
+    }
+}
+
+// Make it so the test appear on screen
+tasks.withType(Test) {
+    testLogging {
+        events "passed", "failed", "skipped", "standardError"
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+}
+
+// Make it so the gradle ignores connectedAndroid tests failures when building
+project.gradle.taskGraph.whenReady() {
+    connectedDebugAndroidTest {
+        ignoreFailures = true
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.32"
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+
+    // LiveData and ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+
+    // Navigation Controller - In Plugins: id 'androidx.navigation.safeargs.kotlin'
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha10"
+
+    // Co-Routines for making await calls
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
+
+    // Firebase FireStore
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // For getting the UI Device for Disabling Animations
+    implementation "androidx.test.uiautomator:uiautomator:2.2.0"
+
+    // Unit Test with Cucumber and JUnit
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "io.cucumber:cucumber-java8:6.10.2"
+    testImplementation "io.cucumber:cucumber-junit:6.10.2"
+
+    // Integration Testing
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    // UI Testing
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
+    androidTestImplementation 'androidx.test:core-ktx:1.3.0'
+}

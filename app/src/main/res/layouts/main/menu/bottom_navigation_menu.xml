@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/chores"
+        android:id="@+id/chores_menu"
+        android:icon="@drawable/chores"/>
+    <item android:title="@string/settings"
+        android:id="@+id/settings_menu"
+        android:icon="@drawable/settings"/>
+</menu>

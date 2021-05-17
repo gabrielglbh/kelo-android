@@ -1,0 +1,41 @@
+opt_out_usage
+default_platform(:android)
+setup_circle_ci
+
+platform :android do
+  desc "Deploy a new version to the Alpha Channel"
+  lane :alpha do
+    gradle(
+	    task: "clean bundleRelease"
+    )
+    supply(
+        package_name: 'com.gabr.gabc.kelo',
+        track: 'alpha',
+        release_status: 'completed',
+        aab: 'app/build/outputs/bundle/release/app-release.aab',
+        skip_upload_images: true,
+        skip_upload_metadata: true,
+        skip_upload_screenshots: true,
+        skip_upload_changelogs: true,
+        json_key: 'fastlane/google-api-key.json'
+    )
+  end
+
+  desc "Deploy a new version to Production"
+    lane :production do
+      gradle(
+  	    task: "clean bundleRelease"
+      )
+      supply(
+          package_name: 'com.gabr.gabc.kelo',
+          track: 'production',
+          release_status: 'completed',
+          aab: 'app/build/outputs/bundle/release/app-release.aab',
+          skip_upload_images: true,
+          skip_upload_metadata: true,
+          skip_upload_screenshots: true,
+          skip_upload_changelogs: true,
+          json_key: 'fastlane/google-api-key.json'
+      )
+    end
+end

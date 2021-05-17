@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#03a9f4</color>
+    <color name="secondaryColor">#007ac1</color>
+
+    <color name="labelText">#FFFFFF</color>
+    <color name="secondaryText">#AAAAAA</color>
+    <color name="contrast">#000000</color>
+
+    <color name="dividerColor">#e6e6e6</color>
+    <color name="toolbarBackground">#393939</color>
+
+    <color name="importanceLow">#4CAF50</color>
+    <color name="importanceMedium">#8A5200</color>
+    <color name="importanceHigh">#931D00</color>
+
+    <color name="errorColor">#9C0000</color>
+    <color name="swapIconColor">#888888</color>
+</resources>

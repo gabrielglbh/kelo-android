@@ -1,0 +1,2 @@
+json_key_file("google-api-key.json")
+package_name("com.gabr.gabc.kelo")

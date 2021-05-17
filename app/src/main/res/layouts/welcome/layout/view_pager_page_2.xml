@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintLayoutPage2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/createOrJoinGroupLabel"
+        style="@style/HeaderStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/create_new_group_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/groupNameInputLayout"
+        style="@style/CustomTextInputStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createOrJoinGroupLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/groupNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textCapSentences"
+            android:hint="@string/group_name_placeholder"
+            android:maxLines="1"
+            android:maxLength="32" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/joinGroupInputLayout"
+        style="@style/CustomTextInputStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createOrJoinGroupLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/joinGroupEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textCapSentences"
+            android:hint="@string/code_placeholder"
+            android:maxLines="1"
+            android:maxLength="20"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/selectCurrencyLabel"
+        style="@style/HeaderStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/select_a_currency"
+        app:layout_constraintStart_toStartOf="@+id/createOrJoinGroupLabel"
+        app:layout_constraintTop_toBottomOf="@+id/groupNameInputLayout" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/currencyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/material_button_height"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/currency_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectCurrencyLabel" />
+
+
+    <ImageView
+        android:id="@+id/selectedCurrencyFlag"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/flag_eur"
+        app:layout_constraintBottom_toBottomOf="@+id/currencyButton"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/currencyButton" />
+
+    <TextView
+        android:id="@+id/selectedCurrency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/group_currency_placeholder"
+        android:textColor="@color/secondaryText"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/selectedCurrencyFlag"
+        app:layout_constraintStart_toEndOf="@+id/selectedCurrencyFlag"
+        app:layout_constraintTop_toTopOf="@+id/selectedCurrencyFlag" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/welcomeContinueButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/material_button_height"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/continue_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currencyButton" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,139 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@1.0.3
+
+references:
+  android_config: &android_config
+    working_directory: ~/src
+
+    docker:
+      - image: circleci/android:api-30
+
+    environment:
+      TERM: dumb
+      JVM_OPTS: '-Xms2048m -Xmx3g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.max-workers=2 -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs="-Xmx3g -XX:+HeapDumpOnOutOfMemoryError"'
+
+  ruby_dependencies: &ruby_dependencies
+    run:
+      name: Download Ruby Dependencies
+      command: bundle install
+
+  android_dependencies: &android_dependencies
+    run:
+      name: Download Android Dependencies
+      command: ./gradlew androidDependencies
+
+  create_keystore_properties: &create_keystore_properties
+    run:
+      name: Create keystore.properties
+      command: |
+        echo $RELEASE_KEYSTORE | base64 -d > $STORE_KEY_FILE
+        printf 'keyAlias=%s\nkeyPassword=%s\nstoreFile=%s\nstorePassword=%s' \
+            $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $STORE_KEY_FILE $RELEASE_STORE_PASSWORD > keystore.properties
+  create_google_play_key: &create_google_play_key
+    run:
+      name: Create Google Play Key
+      command: echo $GOOGLE_PLAY_KEY | base64 -d > fastlane/google-api-key.json
+
+jobs:
+  unit_tests:
+    <<: *android_config
+
+    steps:
+      - checkout
+      - *create_keystore_properties
+      - *android_dependencies
+
+      - run:
+          name: Run unit tests for the App
+          command: ./gradlew test
+
+  instrumentation_tests:
+    executor:
+      name: android/android-machine
+      resource-class: medium
+    steps:
+      - checkout
+      - *create_keystore_properties
+
+      - android/create-avd:
+          avd-name: testDevice
+          install: true
+          system-image: system-images;android-29;default;x86
+
+      - android/start-emulator:
+          avd-name: testDevice
+          additional-args: '-skin 1440x3040'
+          restore-gradle-cache-prefix: v1a
+
+      - run:
+          name: Run instrumented tests for the App
+          command: ./gradlew connectedAndroidTest --info | grep 'instrumentedTests\..* >'
+
+      - android/save-gradle-cache:
+          cache-prefix: v1a
+
+  alpha_deploy:
+    <<: *android_config
+
+    steps:
+      - checkout
+      - *ruby_dependencies
+      - *create_keystore_properties
+      - *create_google_play_key
+      - *android_dependencies
+
+      - run:
+          name: Upload to Google Play Alpha Channel
+          command: bundle exec fastlane alpha
+
+  production_deploy:
+    <<: *android_config
+
+    steps:
+      - checkout
+      - *ruby_dependencies
+      - *create_keystore_properties
+      - *create_google_play_key
+      - *android_dependencies
+
+      - run:
+          name: Deploy to Play Store with Production track
+          command: bundle exec fastlane production
+
+workflows:
+  version: 2.1
+  workflow:
+    jobs:
+      - unit_tests:
+          filters:
+              branches:
+                  only:
+                      - development
+                      - main
+      - instrumentation_tests:
+          filters:
+              branches:
+                  only:
+                      - development
+                      - main
+      - alpha_deploy:
+              requires:
+                  - unit_tests
+                  - instrumentation_tests
+          filters:
+            branches:
+              only:
+                - main
+      - production_deploy:
+              requires:
+                  - unit_tests
+                  - instrumentation_tests
+          filters:
+            tags:
+              only:
+                - /^v[0-9].[0-9]*$/
+            branches:
+              ignore: /.*/

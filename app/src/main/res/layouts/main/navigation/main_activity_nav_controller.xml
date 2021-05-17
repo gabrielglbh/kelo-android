@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainNavController"
+    app:startDestination="@id/choreList">
+    <fragment
+        android:id="@+id/choreList"
+        android:name="com.gabr.gabc.kelo.mainActivity.choreList.ChoreList"
+        android:label="ChoreList"
+        tools:layout="@layout/chore_list">
+        <action
+            android:id="@+id/action_choreList_to_settings"
+            app:popUpTo="@+id/mainNavController"
+            app:popUpToInclusive="true"
+            app:destination="@id/settings" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.gabr.gabc.kelo.mainActivity.Settings"
+        android:label="Settings"
+        tools:layout="@layout/settings">
+        <action
+            android:id="@+id/action_settings_to_choreList"
+            app:popUpTo="@+id/mainNavController"
+            app:popUpToInclusive="true"
+            app:destination="@id/choreList" />
+    </fragment>
+
+</navigation>

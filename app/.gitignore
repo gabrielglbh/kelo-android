@@ -57,8 +57,6 @@ captures/
 # Keystore files
 *.jks
 *.keystore
-keystore.properties
-google-api-key.json
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
