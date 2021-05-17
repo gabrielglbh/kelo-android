@@ -120,17 +120,17 @@ workflows:
                       - development
                       - main
       - alpha_deploy:
-              requires:
-                  - unit_tests
-                  - instrumentation_tests
+          requires:
+              - unit_tests
+              - instrumentation_tests
           filters:
             branches:
               only:
                 - main
       - production_deploy:
-              requires:
-                  - unit_tests
-                  - instrumentation_tests
+          requires:
+              - unit_tests
+              - instrumentation_tests
           filters:
             tags:
               only:
