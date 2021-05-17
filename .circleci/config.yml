@@ -58,22 +58,7 @@ references:
       command: echo $GOOGLE_PLAY_KEY | base64 -d > fastlane/google-api-key.json
 
 jobs:
-  unit_tests:
-    <<: *android_config
-
-    steps:
-      - checkout
-      - *create_keystore_properties
-      - *android_dependencies
-      - *restore_android_cache
-
-      - run:
-          name: Run unit tests for the App
-          command: ./gradlew test
-
-      - *save_android_cache
-
-  instrumentation_tests:
+  tests:
     executor:
       name: android/android-machine
       resource-class: medium
@@ -95,14 +80,16 @@ jobs:
           additional-args: '-skin 1440x3040'
           restore-gradle-cache-prefix: v1a
 
-      # Command using grep to actually only display the test information
+      # Custom gradle command to execute all tests: unit test and instrumented ones
+      # that also create a code coverage report
       - run:
           name: Run instrumented tests for the App
-          command: ./gradlew connectedAndroidTest --info | grep 'instrumentedTests\..* >'
+          command: ./gradlew runAllTests
 
       - *save_android_cache
+
       - codecov/upload:
-          file: output/scan/report.xml
+          file: app/build/reports/coverage/debug/report.xml
           token: $CODECOV_TOKEN
 
       - android/save-gradle-cache:
@@ -145,35 +132,26 @@ jobs:
 workflows:
   version: 2.1
   workflow:
-    # Run unit tests when pushed to development or main
-    # Run instrumentation tests when pushed to development or main
+    # Run tests when pushed to development or main
     # Deploy to ALPHA when unit and instrumentation tests have succeeded and only in main branch
     # Deploy to PRODUCTION when unit and instrumentation tests have succeeded and only when the branch has a tag
     jobs:
-      - unit_tests:
+      - tests:
           filters:
-              branches:
-                  only:
-                      - development
-                      - main
-      - instrumentation_tests:
-          filters:
-              branches:
-                  only:
-                      - development
-                      - main
+            branches:
+              only:
+                - development
+                - main
       - alpha_deploy:
           requires:
-              - unit_tests
-              - instrumentation_tests
+              - tests
           filters:
             branches:
               only:
                 - main
       - production_deploy:
           requires:
-              - unit_tests
-              - instrumentation_tests
+              - tests
           filters:
             tags:
               only:

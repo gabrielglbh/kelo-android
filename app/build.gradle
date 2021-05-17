@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'jacoco'
 }
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -40,6 +41,28 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            testCoverageEnabled true
+        }
+    }
+
+    // Custom gradle command that runs the unit and instrumented tests and generates a code coverage report
+    task runAllTests(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+
+        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+        def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+        def mainSrc = "${project.projectDir}/src/main/java"
+
+        sourceDirectories.setFrom(files([mainSrc]))
+        classDirectories.setFrom(files([debugTree]))
+        executionData.setFrom(fileTree(dir: "$buildDir", includes: [
+                "jacoco/testDebugUnitTest.exec",
+                "outputs/code-coverage/connected/*coverage.ec"
+        ]))
     }
 
     compileOptions {
@@ -70,6 +93,9 @@ android {
 
 // Make it so the test appear on screen
 tasks.withType(Test) {
+    // Clears error running gradle tasks
+    jacoco.excludes = ['jdk.internal.*']
+
     testLogging {
         events "passed", "failed", "skipped", "standardError"
         showExceptions true
