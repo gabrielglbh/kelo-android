@@ -26,12 +26,14 @@ references:
       command: bundle install
 
   restore_android_cache: &restore_android_cache
-    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    restore_cache:
+      key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
   save_android_cache: &save_android_cache
-    paths:
-      - ~/.gradle
-    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    save_cache:
+      paths:
+        - ~/.gradle
+      key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
   android_dependencies: &android_dependencies
     run:
