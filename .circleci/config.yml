@@ -84,15 +84,15 @@ jobs:
       # that also create a code coverage report
       - run:
           name: Run Instrumented (Integration & UI) and Unit Tests
-          command: ./gradlew runAllTests
+          command: ./gradlew codecovReport
+
+      - codecov/upload:
+          file: app/build/reports/jacoco/codecovReport/codecovReport.xml
+          token: $CODECOV_TOKEN
 
       - android/kill-emulators
 
       - *save_android_cache
-
-      - codecov/upload:
-          file: app/build/reports/coverage/debug/report.xml
-          token: $CODECOV_TOKEN
 
       - android/save-gradle-cache:
           cache-prefix: v1a

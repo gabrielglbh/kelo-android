@@ -47,22 +47,28 @@ android {
     }
 
     // Custom gradle command that runs the unit and instrumented tests and generates a code coverage report
-    task runAllTests(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+    task codecovReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
         reports {
             xml.enabled = true
             html.enabled = true
         }
 
-        def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-        def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
-        def mainSrc = "${project.projectDir}/src/main/java"
-
-        sourceDirectories.setFrom(files([mainSrc]))
-        classDirectories.setFrom(files([debugTree]))
+        classDirectories.setFrom(fileTree(
+                dir: "$buildDir/tmp/kotlin-classes/debug",
+                excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*',
+                           '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+        ))
+        sourceDirectories.setFrom(files("src/main/kotlin"))
         executionData.setFrom(fileTree(dir: "$buildDir", includes: [
                 "jacoco/testDebugUnitTest.exec",
-                "outputs/code-coverage/connected/*coverage.ec"
+                "outputs/code_coverage/debugAndroidTest/connected/*coverage.ec"
         ]))
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 
     compileOptions {
@@ -94,6 +100,7 @@ android {
 // Make it so the test appear on screen
 tasks.withType(Test) {
     // Clears error running gradle tasks
+    jacoco.includeNoLocationClasses = true
     jacoco.excludes = ['jdk.internal.*']
 
     testLogging {
