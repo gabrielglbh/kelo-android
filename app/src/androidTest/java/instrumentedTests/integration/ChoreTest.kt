@@ -15,6 +15,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.BlockJUnit4ClassRunner
 import java.util.*
 
+/** Defines the Chore Instrumentation Tests */
 @RunWith(BlockJUnit4ClassRunner::class)
 class ChoreTest {
     private val q = ChoreQueries()
@@ -22,6 +23,7 @@ class ChoreTest {
     private val user = User("USER", "generic user", 0)
     private val chore = Chore("CHORE_C", "CHORE_C", "", "USER", Calendar.getInstance().time, 30)
 
+    /** Initializes and creates Firebase needed data for the tests */
     @Before
     fun setUp() {
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().context)
@@ -31,6 +33,8 @@ class ChoreTest {
             ChoreQueries().createChore(chore, group.id)
         }
     }
+
+    /** Cleans up Firebase */
     @After
     fun clean() {
         runBlocking {
@@ -40,12 +44,14 @@ class ChoreTest {
         }
     }
 
+    /** Tests the createChore function */
     @Test
     fun createChoreSuccessfully() = runBlocking {
         val chore = q.createChore(chore, group.id)
         assertTrue(chore != null && chore.id == chore.id)
     }
 
+    /** Tests the getChore function */
     @Test
     fun readChoreSuccessfully() = runBlocking {
         val result = q.getChore(chore.id!!, group.id)
@@ -55,6 +61,7 @@ class ChoreTest {
         )
     }
 
+    /** Tests the updateChore function */
     @Test
     fun updateChoreSuccessfully() = runBlocking {
         val modified = Chore(chore.id, "Lavar Platos", "", "Gabriel", Calendar.getInstance().time)
@@ -62,18 +69,21 @@ class ChoreTest {
         assertTrue(result)
     }
 
+    /** Tests the deleteChore function */
     @Test
     fun deleteChoreSuccessfully() = runBlocking {
         val result = q.deleteChore(chore.id!!, group.id)
         assertTrue(result)
     }
 
+    /** Tests the deleteAllChores function */
     @Test
     fun deleteAllChoresSuccessfully() = runBlocking {
         val result = q.deleteAllChores(group.id)
         assertTrue(result)
     }
 
+    /** Tests the completeChore function */
     @Test
     fun completeChoreSuccessfully() = runBlocking {
         val success = q.completeChore(chore, group.id)
@@ -81,10 +91,12 @@ class ChoreTest {
         assertTrue(success && user != null && user.points == 30)
     }
 
+    /** Tests the listener function for chores: attachListenerToChores - Addition */
     @Test
     fun setListenerOnChoresAddSuccessfully() = runBlocking {
         val chores = arrayListOf<Chore>()
-        val uploadChore = Chore("CHORE_U", "CHORE_U", "", "sadca09sd99aaa", Calendar.getInstance().time)
+        val uploadChore = Chore("CHORE_U", "Lavar los platos", "", "sadca09sd99aaa",
+            Calendar.getInstance().time)
         val result = q.attachListenerToChores(group.id, { pos, c ->
             chores.add(pos, c)
         }, { _, _ -> }, { })
@@ -94,10 +106,12 @@ class ChoreTest {
         assertTrue(chores.indexOf(uploadChore) == 1)
     }
 
+    /** Tests the listener function for chores: attachListenerToChores - Update */
     @Test
     fun setListenerOnChoresUpdateSuccessfully() = runBlocking {
         val chores = arrayListOf(chore)
-        val uploadChore = Chore(chore.id, "CHORE_U", "", "asiduhfoasdhfas998", Calendar.getInstance().time)
+        val uploadChore = Chore(chore.id, "CHORE_U", "", "asiduhfoasdhfas998",
+            Calendar.getInstance().time)
         val result = q.attachListenerToChores(group.id, { _, _ -> }, { pos, c ->
             chores[pos] = c
         }, { })
@@ -108,10 +122,12 @@ class ChoreTest {
         assertTrue(chore != uploadChore)
     }
 
+    /** Tests the listener function for chores: attachListenerToChores - Deletion */
     @Test
     fun setListenerOnChoresDeleteSuccessfully() = runBlocking {
         val chores = arrayListOf<Chore>()
-        val uploadChore = Chore("CHORE_U", "CHORE_U", "", "sadca09sd99aaa", Calendar.getInstance().time)
+        val uploadChore = Chore("CHORE_U", "Lavar los platos", "", "sadca09sd99aaa",
+            Calendar.getInstance().time)
         val result = q.attachListenerToChores(group.id, { pos, c ->
             chores.add(pos, c)
         }, { _, _ -> }, { pos ->

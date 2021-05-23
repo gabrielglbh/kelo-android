@@ -20,6 +20,7 @@ import com.gabr.gabc.kelo.welcomeActivity.viewPager.ViewPagerPage1
 import com.gabr.gabc.kelo.welcomeActivity.viewPager.ViewPagerPage2
 import com.gabr.gabc.kelo.welcomeActivity.viewPager.ViewPagerPage3
 
+/** Activity that manages the ViewPager fragments and the entire log in logic for joining or creating a group */
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var parent: ConstraintLayout
@@ -32,9 +33,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var viewModel: WelcomeViewModel
 
-    /**
-     * [FragmentStateAdapter] for the ViewPager2 to show all the Fragments
-     * */
     private inner class ScreenSlidePagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
         override fun getItemCount(): Int = 3
         override fun createFragment(position: Int): Fragment {
@@ -47,13 +45,6 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Initialize all views from the layout
-     * [parent] serves for the purpose of hiding the keyboard when touched outside of any EditText
-     * [viewPager] sets the ViewPager2 adapter with [ScreenSlidePagerAdapter]
-     *
-     * @param savedInstanceState: current bundle, if any
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
@@ -65,7 +56,7 @@ class WelcomeActivity : AppCompatActivity() {
         parent.setOnClickListener { UtilsSingleton.hideKeyboard(this, parent) }
 
         backButton = findViewById(R.id.welcomeBackButton)
-        backButton.setOnClickListener { viewModel.setPagerPage(viewModel.getCurrentPage() - 1) }
+        backButton.setOnClickListener { viewModel.setPagerPage(viewModel.viewPagerPage.value!! - 1) }
 
         fullViewLoading = findViewById(R.id.loadingFragment)
         loading = findViewById(R.id.loadingWidget)
@@ -75,29 +66,19 @@ class WelcomeActivity : AppCompatActivity() {
         handleDeepLinkIntent(intent)
     }
 
-    /**
-     * Receiver for new intents, most likely for Deep Links: handleDeepLinkIntent
-     * */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent?.let { handleDeepLinkIntent(intent) }
     }
 
-    /**
-     * Sets up the ViewPager logic
-     * */
     private fun setUpViewPager() {
         viewPager = findViewById(R.id.welcomePager)
         viewPager.adapter = ScreenSlidePagerAdapter(this)
         viewPager.isUserInputEnabled = false
     }
 
-    /**
-     * Sets up the observer for the ViewModel for changing pages when needed and for showing the
-     * loading widget when updating Firebase
-     * */
     private fun setUpObserverLiveData() {
-        viewModel.viewPagerMode.observe(this, { mode ->
+        viewModel.viewPagerPage.observe(this, { mode ->
             viewPager.setCurrentItem(mode, true)
             if (mode != 0) {
                 backButton.visibility = View.VISIBLE
@@ -116,11 +97,6 @@ class WelcomeActivity : AppCompatActivity() {
         })
     }
 
-    /**
-     * Handles the deep link interaction for the Share Code to Join group.
-     * When received, it will set the pager to page 1, mode to JOIN_GROUP and set the code to the
-     * queried one.
-     * */
     private fun handleDeepLinkIntent(intent: Intent) {
         val appLinkAction = intent.action
         val appLinkData: Uri? = intent.data
@@ -133,20 +109,11 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Sets up the callback for handling the back button of the device.
-     * The behaviour is based on the [viewModel] to return to the previous ViewPager page
-     * */
     private fun setUpOnBackCallback() {
         onBackCallback = onBackPressedDispatcher.addCallback(this) {
-            viewModel.setPagerPage(viewModel.getCurrentPage() - 1)
+            viewModel.setPagerPage(viewModel.viewPagerPage.value!! - 1)
         }
     }
 
-    /**
-     * Helper function to actually remove the callback and let the back button function as normally
-     *
-     * @param callback: actual callback to be removed
-     * */
     private fun removeOnBackCallback(callback: OnBackPressedCallback?) = callback?.remove()
 }

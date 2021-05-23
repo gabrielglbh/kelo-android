@@ -10,6 +10,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 
+/** Class that holds all the necessary Reward Queries to retrieve, read, update or delete chores from Firebase */
 class RewardQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore

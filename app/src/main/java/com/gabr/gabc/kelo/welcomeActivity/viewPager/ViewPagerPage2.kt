@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/** Fragment included in the WelcomeActivity that holds the group creation and join group views */
 class ViewPagerPage2 : Fragment() {
 
     private lateinit var continueButton: Button
@@ -46,9 +47,6 @@ class ViewPagerPage2 : Fragment() {
 
     private var mode = CREATE_GROUP
 
-    /**
-     * Method that only serves for initializing the [viewModel] in a general way for all fragments
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run { ViewModelProvider(this).get(WelcomeViewModel::class.java) }!!
@@ -58,17 +56,6 @@ class ViewPagerPage2 : Fragment() {
         return inflater.inflate(R.layout.view_pager_page_2, container, false)
     }
 
-    /**
-     * Initialize all views from the layout
-     * [parent] serves for the purpose of hiding the keyboard when touched outside of any EditText
-     * [groupNameEditText] handles the group name of the new user
-     * [groupCurrencyTextView] handles the selected currency for the group on the BottomSheet created
-     * when tapping on [groupCurrencyButton]
-     * [continueButton] handle what to show next for the next main Fragment
-     *
-     * @param view: current view
-     * @param savedInstanceState: current bundle, if any
-     * */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parent = view.findViewById(R.id.constraintLayoutPage2)
@@ -81,7 +68,7 @@ class ViewPagerPage2 : Fragment() {
             else joinGroup()
         }
 
-        currency = viewModel.getCurrency()
+        currency = viewModel.groupCurrency.value!!
         groupCurrencyLabelTextView = view.findViewById(R.id.selectCurrencyLabel)
         groupCurrencyTextView = view.findViewById(R.id.selectedCurrency)
         groupCurrencyImageView = view.findViewById(R.id.selectedCurrencyFlag)
@@ -104,9 +91,6 @@ class ViewPagerPage2 : Fragment() {
         }
     }
 
-    /**
-     * Initializes the buttons and edit texts for group creation
-     * */
     private fun initViewsForGroupCreation() {
         groupCurrencyButton.setOnClickListener {
             CurrencyBottomSheet().show(childFragmentManager, CurrencyBottomSheet.TAG)
@@ -117,9 +101,6 @@ class ViewPagerPage2 : Fragment() {
         groupNameEditText.doOnTextChanged { _, _, _, _ -> UtilsSingleton.clearErrorFromTextLayout(groupNameLayout) }
     }
 
-    /**
-     * Initializes the buttons and edit texts for joining group
-     * */
     private fun initViewsForJoiningGroup() {
         joinGroupEditText.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) UtilsSingleton.hideKeyboard(activity, v)
@@ -127,17 +108,14 @@ class ViewPagerPage2 : Fragment() {
         joinGroupEditText.doOnTextChanged { _, _, _, _ -> UtilsSingleton.clearErrorFromTextLayout(joinGroupLayout) }
     }
 
-    /**
-     * Creates group on Firebase and handles the loading screen
-     * */
     private fun createGroup() {
         viewModel.setGroupName(groupNameEditText.text.toString())
-        if (!WelcomePageFunctions.isGroupNameValid(viewModel.getGroupName())) groupNameLayout.error = getString(R.string.err_invalid_name)
+        if (!WelcomePageFunctions.isGroupNameValid(viewModel.groupName.value!!)) groupNameLayout.error = getString(R.string.err_invalid_name)
         else {
             CoroutineScope(Dispatchers.Main).launch {
                 UtilsSingleton.clearErrorFromTextLayout(groupNameLayout)
                 viewModel.setLoading(true)
-                val group = Group("", viewModel.getGroupName(), viewModel.getCurrency().getCode())
+                val group = Group("", viewModel.groupName.value!!, viewModel.groupCurrency.value!!.code)
                 val result = GroupQueries().createGroup(group)
                 if (result != null) {
                     viewModel.setGroupCode(result.id)
@@ -148,17 +126,14 @@ class ViewPagerPage2 : Fragment() {
         }
     }
 
-    /**
-     * Joins a user in a certain group on Firebase and handles the loading screen
-     * */
     private fun joinGroup() {
         viewModel.setGroupCode(joinGroupEditText.text.toString())
-        if (!WelcomePageFunctions.isGroupCodeValid(viewModel.getGroupCode())) joinGroupLayout.error = getString(R.string.err_invalid_code)
+        if (!WelcomePageFunctions.isGroupCodeValid(viewModel.groupCode.value!!)) joinGroupLayout.error = getString(R.string.err_invalid_code)
         else {
             CoroutineScope(Dispatchers.Main).launch {
                 viewModel.setLoading(true)
                 UtilsSingleton.clearErrorFromTextLayout(joinGroupLayout)
-                when (GroupQueries().checkGroupAvailability(viewModel.getGroupCode())) {
+                when (GroupQueries().checkGroupAvailability(viewModel.groupCode.value!!)) {
                     0 -> viewModel.setPagerPage(2)
                     -1 -> Toast.makeText(context, getString(R.string.err_join_group), Toast.LENGTH_SHORT).show()
                     -2 -> Toast.makeText(context, getString(R.string.err_group_full), Toast.LENGTH_SHORT).show()
@@ -169,12 +144,6 @@ class ViewPagerPage2 : Fragment() {
         }
     }
 
-    /**
-     * Sets up the observer for the [viewModel] in order to change this fragment's UI based on the Mode
-     *
-     * It will change the variable [mode] accordingly for further use in this Fragment
-     * It will also animate in all the UI once the ViewModel is changed
-     * */
     private fun setUpObserverLiveData() {
         viewModel.groupCurrency.observe(viewLifecycleOwner, { currency -> setCurrency(currency) })
 
@@ -182,7 +151,7 @@ class ViewPagerPage2 : Fragment() {
             joinGroupEditText.setText(code)
         })
 
-        viewModel.groupMode.observe(viewLifecycleOwner, { mode ->
+        viewModel.groupSelectedMode.observe(viewLifecycleOwner, { mode ->
             if (mode == CREATE_GROUP) {
                 animateObjectsInForGroupCreation()
                 this.mode = mode
@@ -209,15 +178,10 @@ class ViewPagerPage2 : Fragment() {
 
     private fun setCurrency(currency: CurrencyModel) {
         this.currency = currency
-        groupCurrencyTextView.text = this.currency.getCode()
-        groupCurrencyImageView.setImageResource(this.currency.getFlag())
+        groupCurrencyTextView.text = this.currency.code
+        groupCurrencyImageView.setImageResource(this.currency.flag)
     }
 
-    /**
-     * Creates the animations and triggers them when called when in Group Creation.
-     * It is called when changing the page from WelcomeFragment (based on the ViewModel) and when the app starts
-     * All objects are animated at once in order to appear if encountered again
-     * */
     private fun animateObjectsInForGroupCreation() {
         UtilsSingleton.createObjectAnimator(label, 500, 1000f)
         UtilsSingleton.createObjectAnimator(continueButton, 700, 1500f)
@@ -228,11 +192,6 @@ class ViewPagerPage2 : Fragment() {
         UtilsSingleton.createObjectAnimator(groupCurrencyImageView, 500, 1000f)
     }
 
-    /**
-     * Creates the animations and triggers them when called when in Join Group.
-     * It is called when changing the page from WelcomeFragment (based on the ViewModel) and when the app starts
-     * All objects are animated at once in order to appear if encountered again
-     * */
     private fun animateObjectsInForJoiningGroup() {
         UtilsSingleton.createObjectAnimator(label, 500, 1000f)
         UtilsSingleton.createObjectAnimator(continueButton, 700, 1500f)

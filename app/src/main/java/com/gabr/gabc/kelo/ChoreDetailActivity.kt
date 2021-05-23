@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
+/** Activity that manages the Edition and Detail View for a Chore */
 class ChoreDetailActivity : AppCompatActivity() {
 
     companion object {
@@ -49,11 +50,6 @@ class ChoreDetailActivity : AppCompatActivity() {
     private lateinit var assignee: MaterialButton
     private lateinit var importanceGroup: RadioGroup
 
-    /**
-     * Initializes all views for ChoreDetailActivity
-     *
-     * @param savedInstanceState: current bundle, if any
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chore_detail)
@@ -75,11 +71,6 @@ class ChoreDetailActivity : AppCompatActivity() {
         setUpAssignee()
     }
 
-    /**
-     * [onCreateOptionsMenu] and [onOptionsItemSelected] manages the creation of the Toolbar
-     * [onCreateOptionsMenu] manages the inflation of the Toolbar with the specific menu buttons
-     * [onOptionsItemSelected] manages the clicks in the menu
-     * */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         menu?.findItem(R.id.toolbar_share)?.isVisible = false
@@ -100,9 +91,6 @@ class ChoreDetailActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Sets up the toolbar, enabling the back button automatically
-     * */
     private fun setUpToolbar() {
         UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
         toolbar = findViewById(R.id.toolbar_widget)
@@ -113,11 +101,6 @@ class ChoreDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
-    /**
-     * Validates and checks all necessary fields of the Activity and updates the chore to Firebase
-     *
-     * Depending of the value of [viewDetails] it will INSERT or UPDATE a chore
-     * */
     private fun validateChore() {
         val context = this
         chore.name = nameEditText.text.toString()
@@ -146,11 +129,6 @@ class ChoreDetailActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Function that sets up the chore name
-     *
-     * If [viewDetails] is true, [nameEditText] has the chore name
-     * */
     private fun setUpChoreName() {
         nameLayout = findViewById(R.id.choreDetailNameLayout)
         nameEditText = findViewById(R.id.choreDetailNameEditText)
@@ -162,17 +140,12 @@ class ChoreDetailActivity : AppCompatActivity() {
         }
         nameEditText.doOnTextChanged { _, _, _, _ -> UtilsSingleton.clearErrorFromTextLayout(nameLayout) }
         nameEditText.setOnEditorActionListener { view, _, _ ->
-            doneEditingName()
+            clearFocusOfEditTextAndSetDrawable()
             UtilsSingleton.hideKeyboard(this, view)
             true
         }
     }
 
-    /**
-     * Creates the listener for the DatePicker
-     *
-     * If [viewDetails] is true, [date] has the chore expiration date, else the current day
-     */
     private fun setUpDatePicker() {
         date = findViewById(R.id.choreDetailExpireDateButton)
 
@@ -184,7 +157,7 @@ class ChoreDetailActivity : AppCompatActivity() {
         else date.text = UtilsSingleton.parseCalendarToString(Calendar.getInstance())
 
         date.setOnClickListener {
-            doneEditingName()
+            clearFocusOfEditTextAndSetDrawable()
             val datePicker = CustomDatePicker(selectedCalendar) { day, month, year ->
                 onDateSelected(day, month, year)
             }
@@ -192,24 +165,12 @@ class ChoreDetailActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Function that is called when a date is selected in the [CustomDatePicker]
-     *
-     * @param day: selected day
-     * @param month: selected month
-     * @param year: selected year
-     * */
     private fun onDateSelected(day: Int, month: Int, year: Int) {
         val calendar = ChoreDetailFunctions.parseAndUpdateChoreWithSelectedDate(chore, day, month, year)
         selectedCalendar = calendar
         date.text = UtilsSingleton.parseCalendarToString(calendar)
     }
 
-    /**
-     * Function that controls the chips of importance
-     *
-     * If [viewDetails] is true, [importanceGroup] checks the importance based on the chore points
-     * */
     private fun setUpImportance() {
         importanceGroup = findViewById(R.id.choreDetailImportance)
 
@@ -220,7 +181,7 @@ class ChoreDetailActivity : AppCompatActivity() {
         }
 
         importanceGroup.setOnCheckedChangeListener { _, checkedId ->
-            doneEditingName()
+            clearFocusOfEditTextAndSetDrawable()
             when (checkedId) {
                 R.id.choreDetailLow -> chore.points = 10
                 R.id.choreDetailMedium -> chore.points = 20
@@ -229,11 +190,6 @@ class ChoreDetailActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Function that sets up the assignee button
-     *
-     * If [viewDetails] is true, [assignee] is the same as the chore assignee
-     * */
     private fun setUpAssignee() {
         assignee = findViewById(R.id.choreDetailAssigneeButton)
 
@@ -253,17 +209,14 @@ class ChoreDetailActivity : AppCompatActivity() {
         }
 
         assignee.setOnClickListener {
-            doneEditingName()
+            clearFocusOfEditTextAndSetDrawable()
             UsersBottomSheet().show(supportFragmentManager, UsersBottomSheet.TAG)
         }
 
-        observeAssignee()
+        observeAssigneeUponSelection()
     }
 
-    /**
-     * Sets up the observer for the ViewModel of the [AssigneeViewModel] variable 'assignee'
-     * */
-    private fun observeAssignee() {
+    private fun observeAssigneeUponSelection() {
         viewModel.assignee.observe(this, { user ->
             if (UtilsSingleton.isUserBeingDisplayedCurrentUser(user.id)) {
                 UtilsSingleton.setTextAndIconToYou(baseContext, assignee, null)
@@ -274,10 +227,7 @@ class ChoreDetailActivity : AppCompatActivity() {
         })
     }
 
-    /**
-     * Clears the focus of the [nameEditText] and sets the new icon for the chore
-     * */
-    private fun doneEditingName() {
+    private fun clearFocusOfEditTextAndSetDrawable() {
         nameEditText.clearFocus()
         nameEditText.text?.let {
             if (it.trim().isNotEmpty()) icon.setImageDrawable(UtilsSingleton.createAvatar(it.toString()))

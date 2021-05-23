@@ -15,6 +15,11 @@ import org.hamcrest.Matcher
  * */
 class ColorViewMatcher {
     companion object {
+        /**
+         * Functions that validates if an specified layout or view has a background color or not
+         *
+         * @param expectedResourceId: layout or view to be asserted
+         * */
         fun matchesBackgroundColor(expectedResourceId: Int): Matcher<View?> {
             return object : BoundedMatcher<View?, View?>(View::class.java) {
                 var actualColor = 0

@@ -8,6 +8,7 @@ import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import java.util.*
 
+/** Defines the Chore Unit Tests */
 @Suppress("unused")
 class ChoreSteps : En {
     private lateinit var choreName: String

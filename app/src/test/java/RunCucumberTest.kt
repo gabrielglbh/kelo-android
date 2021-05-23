@@ -3,6 +3,8 @@ import io.cucumber.junit.CucumberOptions
 import org.junit.runner.RunWith
 
 /**
+ * Run all unit tests with cucumber in it
+ *
  * Available tags based on the User Stories:
  * Remove the tags from CucumberOption to run all tests
  *      - @User

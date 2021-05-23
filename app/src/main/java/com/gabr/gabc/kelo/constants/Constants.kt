@@ -3,18 +3,12 @@ package com.gabr.gabc.kelo.constants
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.welcomeActivity.viewBottomSheet.CurrencyModel
 
-/**
- * Shared Preferences Keys
- */
 // true -> user has completed the welcome form
 // false -> user must log in
 const val FIRST_LAUNCHED = "isFirstLaunched"
 const val GROUP_ID = "GroupID"
 const val USER_ID = "UserID"
 
-/**
- * Variables that manage the WelcomeFragment state
- * */
 const val CREATE_GROUP = "CREATE_GROUP"
 const val JOIN_GROUP = "JOIN_GROUP"
 
@@ -22,14 +16,12 @@ const val NAME_VALIDATOR = "^[A-Za-zñÁÉÍÓÚÜáéíóúüç ]{3,32}\$"
 const val GROUP_NAME_VALIDATOR = "^[A-Za-z0-9ñÁÉÍÓÚÜáéíóúüç ]{5,32}\$"
 const val CHORE_NAME_VALIDATOR = "^[A-Za-z0-9ñÁÉÍÓÚÜáéíóúüç ]{5,32}\$"
 
-/**
- * Variables and classes defining the Firebase fields
- * */
 const val fbUsersCollection = "users"
 const val fbGroupsCollection = "groups"
 const val fbRewardsSubCollection = "rewards"
 const val fbChoresSubCollection = "chores"
 
+/** Class that defines the Firebase field names for the Chores */
 class ChoreFields {
     companion object {
             const val name = "name"
@@ -40,6 +32,7 @@ class ChoreFields {
     }
 }
 
+/** Class that defines the Firebase field names for the Groups */
 class GroupFields {
     companion object {
             const val id = "id"
@@ -48,6 +41,7 @@ class GroupFields {
     }
 }
 
+/** Class that defines the Firebase field names for the Rewards */
 class RewardFields {
     companion object {
             const val name = "name"
@@ -56,6 +50,7 @@ class RewardFields {
     }
 }
 
+/** Class that defines the Firebase field names for the Users */
 class UserFields {
     companion object {
             const val name = "name"

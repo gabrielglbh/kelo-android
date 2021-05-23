@@ -3,6 +3,7 @@ package com.gabr.gabc.kelo.welcomeActivity
 import com.gabr.gabc.kelo.constants.GROUP_NAME_VALIDATOR
 import com.gabr.gabc.kelo.constants.NAME_VALIDATOR
 
+/** Singleton instance that holds functions relevant only for WelcomeActivity and fragments */
 object WelcomePageFunctions {
     /**
      * Validates group code to join.

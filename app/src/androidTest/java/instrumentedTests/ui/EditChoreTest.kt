@@ -31,6 +31,7 @@ import org.junit.*
 import org.junit.runner.RunWith
 import java.util.*
 
+/** Defines the Edit Chore UI Test */
 @RunWith(AndroidJUnit4::class)
 class EditChoreTest {
     private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
@@ -48,6 +49,7 @@ class EditChoreTest {
         private val user = User("UI_USER", "Gabriel", 0)
         private val chore = Chore("CHORE_C", "CHORE_C", "", "UI_USER", Calendar.getInstance().time, 20)
 
+        /** Initializes and creates Firebase needed data for the tests */
         @JvmStatic
         @BeforeClass
         fun setUpFirebase() {
@@ -73,6 +75,7 @@ class EditChoreTest {
             }
         }
 
+        /** Cleans Up Firebase */
         @JvmStatic
         @AfterClass
         fun cleanFirebase() {
@@ -84,9 +87,11 @@ class EditChoreTest {
         }
     }
 
+    /** Function called before each test to keep the screen active */
     @Before
     fun setUp() { activityScenario.scenario.onActivity { it.keepScreenActive() } }
 
+    /** Tests that the view details chore whole routine works perfectly */
     @Test
     fun verifyDataOfChoreIsCorrectlyDisplayedOnEditChore() {
         val date = Calendar.getInstance()

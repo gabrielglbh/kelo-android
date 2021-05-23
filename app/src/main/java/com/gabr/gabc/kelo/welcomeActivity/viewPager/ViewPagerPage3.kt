@@ -28,6 +28,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/** Fragment included in the WelcomeActivity that holds the user name edit text and final page before user creation */
 class ViewPagerPage3: Fragment() {
 
     private lateinit var label: TextView
@@ -38,9 +39,6 @@ class ViewPagerPage3: Fragment() {
 
     private lateinit var viewModel: WelcomeViewModel
 
-    /**
-     * Method that only serves for initializing the [viewModel] in a general way for all fragments
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run { ViewModelProvider(this).get(WelcomeViewModel::class.java) }!!
@@ -50,16 +48,6 @@ class ViewPagerPage3: Fragment() {
         return inflater.inflate(R.layout.view_pager_page_3, container, false)
     }
 
-    /**
-     * Initialize all views from the layout
-     * [parent] serves for the purpose of hiding the keyboard when touched outside of any EditText
-     * [nameEditText] handles the name of the new user
-     * [nameInputLayout] handles the errors of the edit text
-     * [finalize] handles the completion of the whole form
-     *
-     * @param view: current view
-     * @param savedInstanceState: current bundle, if any
-     * */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parent = view.findViewById(R.id.constraintLayoutPage3)
@@ -81,35 +69,25 @@ class ViewPagerPage3: Fragment() {
         animateObjectsIn()
     }
 
-    /**
-     * Creates the animations and triggers them when called. It is called when changing the page
-     * from WelcomeFragment (based on the ViewModel) and when the app starts
-     * */
     private fun animateObjectsIn() {
         UtilsSingleton.createObjectAnimator(label, 500, -1000f)
         UtilsSingleton.createObjectAnimator(nameInputLayout, 500, -1000f)
         UtilsSingleton.createObjectAnimator(finalize, 700, -1500f)
     }
 
-    /**
-     * Validates the name of the new user. It launches the MainActivity with the desired Group ID
-     * */
     private fun validate() {
         viewModel.setUserName(nameEditText.text.toString())
-        if (!WelcomePageFunctions.isUserNameValid(viewModel.getUserName())) nameInputLayout.error = getString(R.string.err_invalid_name)
+        if (!WelcomePageFunctions.isUserNameValid(viewModel.userName.value!!)) nameInputLayout.error = getString(R.string.err_invalid_name)
         else joinGroup()
     }
 
-    /**
-     * Joins to a group with the current username
-     * */
     private fun joinGroup() {
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.setLoading(true)
             UtilsSingleton.clearErrorFromTextLayout(nameInputLayout)
 
-            val groupId = viewModel.getGroupCode()
-            val user = User("", viewModel.getUserName(), 0)
+            val groupId = viewModel.groupCode.value!!
+            val user = User("", viewModel.userName.value!!, 0)
 
             when (val userId = UserQueries().joinGroup(groupId, user)) {
                 "-1" -> Toast.makeText(context, getString(R.string.err_join_group), Toast.LENGTH_SHORT).show()

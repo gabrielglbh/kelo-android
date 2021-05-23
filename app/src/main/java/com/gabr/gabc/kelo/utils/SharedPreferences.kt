@@ -5,6 +5,7 @@ import android.content.Context
 import com.gabr.gabc.kelo.constants.FIRST_LAUNCHED
 import com.gabr.gabc.kelo.constants.GROUP_ID
 
+/** Singleton instance with helper functions for Shared Preferences useful to all code */
 object SharedPreferences {
     var isFirstLaunched: Boolean = false
     var groupId: String? = null

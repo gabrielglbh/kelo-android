@@ -5,6 +5,7 @@ import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.utils.widgets.CustomDatePicker
 import java.util.*
 
+/** Singleton instance with helper functions only relevant for ChoreDetailActivity */
 object ChoreDetailFunctions {
     /**
      * Function that assures that the chore is completed and ready to be updated

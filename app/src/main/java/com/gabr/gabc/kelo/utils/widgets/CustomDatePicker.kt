@@ -9,6 +9,8 @@ import com.gabr.gabc.kelo.R
 import java.util.*
 
 /**
+ * Class that has all logic for the generic DatePicker
+ *
  * @param calendar: previous selected calendar to set this dialog to it
  * @param listener: listener to manage the selected date on the caller
  * */

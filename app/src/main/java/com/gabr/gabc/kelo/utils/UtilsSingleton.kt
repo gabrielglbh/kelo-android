@@ -18,9 +18,7 @@ import com.gabr.gabc.kelo.utils.textDrawable.TextDrawable
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
-/**
- * object declaration defines a singleton itself to avoid creating multiple instances of this class
- * */
+/** Singleton instance with helper functions useful to all code */
 object UtilsSingleton {
     /**
      * Clears the error from an specified layout
@@ -108,58 +106,32 @@ object UtilsSingleton {
     fun parseCalendarToString(calendar: Calendar): String {
         lateinit var dayOfWeek: String
         lateinit var month: String
-        when (Locale.getDefault().language) {
-            "en" -> {
-                when (calendar.get(Calendar.MONTH)) {
-                    Calendar.JANUARY -> month ="January"
-                    Calendar.FEBRUARY -> month = "February"
-                    Calendar.MARCH -> month ="March"
-                    Calendar.APRIL -> month = "April"
-                    Calendar.MAY -> month ="May"
-                    Calendar.JUNE -> month = "June"
-                    Calendar.JULY -> month ="July"
-                    Calendar.AUGUST -> month = "August"
-                    Calendar.SEPTEMBER -> month ="September"
-                    Calendar.OCTOBER -> month = "October"
-                    Calendar.NOVEMBER -> month ="November"
-                    Calendar.DECEMBER -> month = "December"
-                }
-                when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                    Calendar.MONDAY -> dayOfWeek = "Monday"
-                    Calendar.TUESDAY -> dayOfWeek = "Tuesday"
-                    Calendar.WEDNESDAY -> dayOfWeek = "Wednesday"
-                    Calendar.THURSDAY -> dayOfWeek = "Thursday"
-                    Calendar.FRIDAY -> dayOfWeek = "Friday"
-                    Calendar.SATURDAY -> dayOfWeek = "Saturday"
-                    Calendar.SUNDAY -> dayOfWeek = "Sunday"
-                }
-            }
-            "es" -> {
-                when (calendar.get(Calendar.MONTH)) {
-                    Calendar.JANUARY -> month ="Enero"
-                    Calendar.FEBRUARY -> month = "Febrero"
-                    Calendar.MARCH -> month ="Marzo"
-                    Calendar.APRIL -> month = "Abril"
-                    Calendar.MAY -> month ="Mayo"
-                    Calendar.JUNE -> month = "Junio"
-                    Calendar.JULY -> month ="Julio"
-                    Calendar.AUGUST -> month = "Agosto"
-                    Calendar.SEPTEMBER -> month ="Septiembre"
-                    Calendar.OCTOBER -> month = "Octubre"
-                    Calendar.NOVEMBER -> month ="Noviembre"
-                    Calendar.DECEMBER -> month = "Diciembre"
-                }
-                when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                    Calendar.MONDAY -> dayOfWeek = "Lunes"
-                    Calendar.TUESDAY -> dayOfWeek = "Martes"
-                    Calendar.WEDNESDAY -> dayOfWeek = "Miércoles"
-                    Calendar.THURSDAY -> dayOfWeek = "Jueves"
-                    Calendar.FRIDAY -> dayOfWeek = "Viernes"
-                    Calendar.SATURDAY -> dayOfWeek = "Sábado"
-                    Calendar.SUNDAY -> dayOfWeek = "Domingo"
-                }
-            }
+        val ln = Locale.getDefault().language
+
+        when (calendar.get(Calendar.MONTH)) {
+            Calendar.JANUARY -> month = if (ln == "en") "January" else "Enero"
+            Calendar.FEBRUARY -> month = if (ln == "en") "February" else "Febrero"
+            Calendar.MARCH -> month = if (ln == "en") "March" else "Marzo"
+            Calendar.APRIL -> month = if (ln == "en") "April" else "Abril"
+            Calendar.MAY -> month = if (ln == "en") "May" else "Mayo"
+            Calendar.JUNE -> month = if (ln == "en") "June" else "Junio"
+            Calendar.JULY -> month = if (ln == "en") "July" else "Julio"
+            Calendar.AUGUST -> month = if (ln == "en") "August" else "Agosto"
+            Calendar.SEPTEMBER -> month = if (ln == "en") "September" else "Septiembre"
+            Calendar.OCTOBER -> month = if (ln == "en") "October" else "Octubre"
+            Calendar.NOVEMBER -> month = if (ln == "en") "November" else "Noviembre"
+            Calendar.DECEMBER -> month = if (ln == "en") "December" else "Diciembre"
         }
+        when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> dayOfWeek = if (ln == "en") "Monday" else "Lunes"
+            Calendar.TUESDAY -> dayOfWeek = if (ln == "en") "Tuesday" else "Martes"
+            Calendar.WEDNESDAY -> dayOfWeek = if (ln == "en") "Wednesday" else "Miércoles"
+            Calendar.THURSDAY -> dayOfWeek = if (ln == "en") "Thursday" else "Jueves"
+            Calendar.FRIDAY -> dayOfWeek = if (ln == "en") "Friday" else "Viernes"
+            Calendar.SATURDAY -> dayOfWeek = if (ln == "en") "Saturday" else "Sábado"
+            Calendar.SUNDAY -> dayOfWeek = if (ln == "en") "Sunday" else "Domingo"
+        }
+
         return "$dayOfWeek, ${calendar.get(Calendar.DAY_OF_MONTH)} $month ${calendar.get(Calendar.YEAR)}"
     }
 

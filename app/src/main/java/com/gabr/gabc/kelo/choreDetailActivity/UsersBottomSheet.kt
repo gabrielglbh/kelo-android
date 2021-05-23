@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/** Bottom Sheet Dialog Fragment that holds the user list for the Assignee button in ChoreDetailActivity */
 class UsersBottomSheet : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "users_bottom_sheet"
@@ -38,17 +39,11 @@ class UsersBottomSheet : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.users_bottom_sheet, container, false)
     }
 
-    /**
-     * Method that only serves for initializing the [viewModel] in a general way for all fragments
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run { ViewModelProvider(this).get(AssigneeViewModel::class.java) }!!
     }
 
-    /**
-     * Initializes the content of the Bottom Sheet with the RecyclerView and its Adapter
-     * */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loading = view.findViewById(R.id.loadingWidget)
 
@@ -68,26 +63,27 @@ class UsersBottomSheet : BottomSheetDialogFragment() {
 
         userLists = view.findViewById(R.id.usersList)
         userLists.layoutManager = LinearLayoutManager(context)
-        val context = context
 
-        SharedPreferences.groupId?.let {
-            CoroutineScope(Dispatchers.Main).launch {
-                UtilsSingleton.manageLoadingView(loading, null, true)
-                val users = UserQueries().getAllUsers(it)
-                if (users != null) {
-                    userLists.adapter = UserAdapter(users)
-                    selectRandomUser.setOnClickListener {
-                        UserQueries().getRandomUser(users)?.let { rndUser ->
-                            viewModel.setAssignee(rndUser)
-                            dismiss()
-                        }
+        SharedPreferences.groupId?.let { getAllUsers(it) }
+    }
+
+    private fun getAllUsers(groupId: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            UtilsSingleton.manageLoadingView(loading, null, true)
+            val users = UserQueries().getAllUsers(groupId)
+            if (users != null) {
+                userLists.adapter = UserAdapter(users)
+                selectRandomUser.setOnClickListener {
+                    UserQueries().getRandomUser(users)?.let { rndUser ->
+                        viewModel.setAssignee(rndUser)
+                        dismiss()
                     }
-                } else {
-                    dismiss()
-                    Toast.makeText(context, R.string.err_loading_users, Toast.LENGTH_SHORT).show()
                 }
-                UtilsSingleton.manageLoadingView(loading, null, false)
+            } else {
+                dismiss()
+                Toast.makeText(context, R.string.err_loading_users, Toast.LENGTH_SHORT).show()
             }
+            UtilsSingleton.manageLoadingView(loading, null, false)
         }
     }
 
@@ -104,6 +100,11 @@ class UsersBottomSheet : BottomSheetDialogFragment() {
             private val name: TextView = itemView.findViewById(R.id.userName)
             private val avatar: ImageView = itemView.findViewById(R.id.userAvatar)
 
+            /**
+             * Initializes the view of the [UserItem] at a given position
+             *
+             * @param position: position of the list to be initialized
+             * */
             fun initializeView(position: Int) {
                 users[position]?.id?.let { uid ->
                     if (UtilsSingleton.isUserBeingDisplayedCurrentUser(uid)) {

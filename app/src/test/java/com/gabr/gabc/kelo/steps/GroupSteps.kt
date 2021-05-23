@@ -6,6 +6,7 @@ import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 
+/** Defines the Group Unit Tests */
 @Suppress("unused")
 class GroupSteps : En {
     private lateinit var groupName: String

@@ -6,8 +6,10 @@ import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.RectShape
 
 /**
- * EXTRACTED FROM https://github.com/amulyakhare/TextDrawable by amulyakhare
+ * Class that implements all interfaces from BuilderInterfaces and serves as a builder for
+ * the TextDrawable View
  *
+ * EXTRACTED FROM https://github.com/amulyakhare/TextDrawable by amulyakhare
  * Translated it to Kotlin as a result of jcenter() going out of service
  * */
 class Builder : BuilderInterfaces.IConfigBuilder, BuilderInterfaces.IShapeBuilder, BuilderInterfaces.IBuilder {

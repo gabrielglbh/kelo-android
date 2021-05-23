@@ -17,6 +17,7 @@ import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+/** Fragment that manages the list of chores from a group */
 class ChoreList : Fragment(), ChoreListAdapter.ItemClickListener {
 
     private lateinit var choreList: RecyclerView
@@ -27,12 +28,6 @@ class ChoreList : Fragment(), ChoreListAdapter.ItemClickListener {
         return inflater.inflate(R.layout.chore_list, container, false)
     }
 
-    /**
-     * Sets up the Recycler View for the Chore lists and the FAB for adding chores
-     *
-     * @param view: current view
-     * @param savedInstanceState: current bundle, if any
-     * */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -42,11 +37,6 @@ class ChoreList : Fragment(), ChoreListAdapter.ItemClickListener {
         setRecyclerView(view)
     }
 
-    /**
-     * Initializes the RecyclerView.
-     *
-     * @param view: current view
-     * */
     private fun setRecyclerView(view: View) {
         val adapter = ChoreListAdapter(this, requireContext(), loading, SharedPreferences.groupId)
         val swipeHelper = ItemTouchHelper(ChoreListSwipeController(0,
@@ -58,11 +48,6 @@ class ChoreList : Fragment(), ChoreListAdapter.ItemClickListener {
         swipeHelper.attachToRecyclerView(choreList)
     }
 
-    /**
-     * Initializes and sets the click listener to the Add Chore FAB
-     *
-     * @param view: current view
-     * */
     private fun setFAB(view: View) {
         addChore = view.findViewById(R.id.choreListFAB)
         addChore.setOnClickListener {
@@ -72,14 +57,6 @@ class ChoreList : Fragment(), ChoreListAdapter.ItemClickListener {
         }
     }
 
-    /**
-     * Overrides from [ChoreListAdapter.ItemClickListener]. Triggered whenever an item of the
-     * RecyclerView [choreList] is clicker, gathering the chore itself. It navigates to
-     * [ChoreDetailActivity] with the selected chore.
-     *
-     * @param view: current view
-     * @param chore: clicked chore
-     * */
     override fun itemClickInPosition(view: View?, chore: Chore) {
         val intent = Intent(context, ChoreDetailActivity::class.java)
         intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, true)

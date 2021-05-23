@@ -14,6 +14,7 @@ import com.gabr.gabc.kelo.constants.JOIN_GROUP
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
 
+/** Fragment included in the WelcomeActivity that holds the selection of the groupSelectedMode (create or join group) */
 class ViewPagerPage1 : Fragment() {
 
     private lateinit var createGroupButton: Button
@@ -22,9 +23,6 @@ class ViewPagerPage1 : Fragment() {
 
     private lateinit var viewModel: WelcomeViewModel
 
-    /**
-     * Method that only serves for initializing the [viewModel] in a general way for all fragments
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run { ViewModelProvider(this).get(WelcomeViewModel::class.java) }!!
@@ -34,13 +32,6 @@ class ViewPagerPage1 : Fragment() {
         return inflater.inflate(R.layout.view_pager_page_1, container, false)
     }
 
-    /**
-     * Initialize all views from the layout
-     * [createGroupButton] and [joinGroupButton] handle what to show next
-     *
-     * @param view: current view
-     * @param savedInstanceState: current bundle, if any
-     * */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         label = view.findViewById(R.id.welcomeChoiceLabel)
@@ -61,20 +52,12 @@ class ViewPagerPage1 : Fragment() {
         animateObjectsIn()
     }
 
-    /**
-     * Sets up the observer for the [viewModel] in order to animate this fragment's UI based on the
-     * change of pages in the ViewPager2
-     * */
     private fun setUpObserverLiveData() {
-        viewModel.viewPagerMode.observe(viewLifecycleOwner, { mode ->
+        viewModel.viewPagerPage.observe(viewLifecycleOwner, { mode ->
             if (mode == 0) animateObjectsIn()
         })
     }
 
-    /**
-     * Creates the animations and triggers them when called. It is called when changing the page
-     * from WelcomeFragment (based on the ViewModel) and when the app starts
-     * */
     private fun animateObjectsIn() {
         UtilsSingleton.createObjectAnimator(label, 500, -1000f)
         UtilsSingleton.createObjectAnimator(createGroupButton, 700, -1500f)

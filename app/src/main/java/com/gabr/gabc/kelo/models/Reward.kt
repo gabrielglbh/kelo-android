@@ -5,12 +5,18 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 import java.util.*
 
+/**
+ * Class that holds the Reward for managing communications with Firebase
+ * */
 class Reward(
     @DocumentId var id: String = "",
     @PropertyName("name") val name: String = "",
     @PropertyName("frequency") val frequency: Date = Calendar.getInstance().time,
     @PropertyName("icon") val icon: String = ""
 ) {
+    /**
+     * Transforms the current [Reward] into a [Map] to be uploaded to Firebase
+     * */
     fun toMap(): Map<String, Any> {
         return hashMapOf(
             RewardFields.name to name,
