@@ -15,6 +15,7 @@ import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+/** Activity that manages the settings and chore list Fragments */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var toolbar: MaterialToolbar
@@ -23,15 +24,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var navController: NavController
 
-    /**
-     * Initializes all views for MainActivity
-     * [parent] as the parent view
-     * Initializes the toolbar parameters
-     * Gets the [NavController] to navigate through fragments
-     * And sets the [bottomNavigation] bar
-     *
-     * @param savedInstanceState: current bundle, if any
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,11 +42,6 @@ class MainActivity : AppCompatActivity() {
         manageClickOnBottomNavigation()
     }
 
-    /**
-     * [onCreateOptionsMenu] and [onOptionsItemSelected] manages the creation of the Toolbar
-     * [onCreateOptionsMenu] manages the inflation of the Toolbar with the specific menu buttons
-     * [onOptionsItemSelected] manages the clicks in the menu
-     * */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         menu?.findItem(R.id.toolbar_done)?.isVisible = false
@@ -71,19 +58,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Sets up toolbar
-     * */
     private fun setUpToolbar() {
         UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
         toolbar = findViewById(R.id.toolbar_widget)
         setSupportActionBar(toolbar)
     }
 
-    /**
-     * Manages the selection of the bottom navigation items
-     * Changes the toolbar appearance and navigates to the fragment
-     * */
     private fun manageClickOnBottomNavigation() {
         bottomNavigation.setOnNavigationItemSelectedListener {
             val currentItem = bottomNavigation.menu.findItem(bottomNavigation.selectedItemId)

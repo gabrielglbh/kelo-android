@@ -4,8 +4,10 @@ import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 /**
- * EXTRACTED FROM https://github.com/amulyakhare/TextDrawable by amulyakhare
+ * Color generator. This class has a list of Material colors and user can select any at random
+ * to be populated in the TextDrawable View.
  *
+ * EXTRACTED FROM https://github.com/amulyakhare/TextDrawable by amulyakhare
  * Translated it to Kotlin as a result of jcenter() going out of service
  * */
 class ColorGenerator(private val colors: ArrayList<Long>) {
@@ -19,6 +21,17 @@ class ColorGenerator(private val colors: ArrayList<Long>) {
         )
     }
 
+    /**
+     * Function that creates an instance of [ColorGenerator] with a given color list
+     *
+     * @param colorList: color list to be initialized with
+     * */
     fun create(colorList: ArrayList<Long>): ColorGenerator { return ColorGenerator(colorList) }
+    /**
+     * Function that selects a random color from [MATERIAL] based on a key. This key is mapped
+     * in order to get the same color for the same key in every instance
+     *
+     * @param key: text of the TextDrawable
+     * */
     fun getColor(key: Any?): Long = colors[abs(key.hashCode()) % colors.size]
 }

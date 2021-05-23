@@ -15,6 +15,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.CURRENCIES
 import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
 
+/** Bottom Sheet Dialog Fragment that holds the currency list in the WelcomeActivity */
 class CurrencyBottomSheet : BottomSheetDialogFragment() {
 
     companion object {
@@ -29,21 +30,15 @@ class CurrencyBottomSheet : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.currency_bottom_sheet, container, false)
     }
 
-    /**
-     * Method that only serves for initializing the [viewModel] in a general way for all fragments
-     * */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run { ViewModelProvider(this).get(WelcomeViewModel::class.java) }!!
     }
 
-    /**
-     * Initializes the content of the Bottom Sheet with the RecyclerView and its Adapter
-     * */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         currencyList = view.findViewById(R.id.currencyList)
         currencyList.layoutManager = LinearLayoutManager(context)
-        currencyList.adapter = CurrencyAdapter(CURRENCIES.sortedBy { it.getName() })
+        currencyList.adapter = CurrencyAdapter(CURRENCIES.sortedBy { it.name })
     }
 
     /**
@@ -58,9 +53,14 @@ class CurrencyBottomSheet : BottomSheetDialogFragment() {
             private val label: TextView = itemView.findViewById(R.id.currencyLabel)
             private val flag: ImageView = itemView.findViewById(R.id.currencyFlag)
 
+            /**
+             * Initializes the view of the [CurrencyItem] at a given position
+             *
+             * @param position: position of the list to be initialized
+             * */
             fun initializeView(position: Int) {
-                label.text = currencies[position].getName()
-                flag.setImageResource(currencies[position].getFlag())
+                label.text = currencies[position].name
+                flag.setImageResource(currencies[position].flag)
                 item.setOnClickListener {
                     viewModel.setCurrency(currencies[position])
                     dismiss()

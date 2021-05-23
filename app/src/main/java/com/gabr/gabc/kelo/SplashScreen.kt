@@ -7,6 +7,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.gabr.gabc.kelo.utils.SharedPreferences
 
+/** Activity that presents the user a Splash Screen to load either MainActivity or WelcomeActivity */
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

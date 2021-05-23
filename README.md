@@ -1,19 +1,15 @@
 # KELO
 
-|  Branch  |  Builds  |  Code Coverage  |
-| --- | --- | --- |
-|  Master  |  [![master](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/main)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android?branch=main)  | [![master](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main) |
-| Development | [![development](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/development)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android?branch=development) | [![development](https://codecov.io/gh/gabrielglbh/tfm-android/branch/development/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android/branch/development) |
-
+[![master](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/main)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android?branch=main) [![master](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f65a342064ea42bd99d4661b7b94aa17)](https://www.codacy.com/gh/gabrielglbh/tfm-android/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gabrielglbh/tfm-android&amp;utm_campaign=Badge_Grade)
 
 ## Application Description
 
 KELO is a project for managing your house chores with your friends!
 
-- Add a new chores and their expire date
-- Tag yourself and others in the chores
-- Make rewards for doing a lot of chores
-- Notify your friends that they need to make a chore
+-   Add a new chores and their expire date
+-   Tag yourself and others in the chores
+-   Make rewards for doing a lot of chores
+-   Notify your friends that they need to make a chore
 
 ## Objectives of this Project
 

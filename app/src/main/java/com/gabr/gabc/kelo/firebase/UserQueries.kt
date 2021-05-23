@@ -14,6 +14,7 @@ import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import kotlin.random.Random
 
+/** Class that holds all the necessary User Queries to retrieve, read, update or delete chores from Firebase */
 class UserQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore

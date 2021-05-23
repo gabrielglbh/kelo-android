@@ -33,7 +33,18 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
                        loading: ProgressBar, groupId: String?)
     : RecyclerView.Adapter<ChoreListAdapter.ChoreHolder>() {
 
-    interface ItemClickListener { fun itemClickInPosition(view: View?, chore: Chore) }
+    /**
+     * Interface that defines a function to be called by the initializer when clicking on a certain item
+     * */
+    interface ItemClickListener {
+        /**
+         * Function that gets the selected [Chore] in the adapter to be managed by the caller
+         *
+         * @param view: current view
+         * @param chore: clicked [Chore]
+         * */
+        fun itemClickInPosition(view: View?, chore: Chore)
+    }
     var chores: ArrayList<Chore> = arrayListOf()
 
     /**
@@ -44,43 +55,26 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
         if (groupId != null) {
             UtilsSingleton.manageLoadingView(loading, null, true)
             val listener = ChoreQueries().attachListenerToChores(groupId,
-                { position, chore -> addChore(position, chore) },
-                { position, chore -> updateChore(position, chore) },
-                { position -> removeChore(position) })
+                { position, chore -> addChoreAtPosition(position, chore) },
+                { position, chore -> updateChoreAtPosition(position, chore) },
+                { position -> removeChoreAtPosition(position) })
 
             if (listener == null) Toast.makeText(context, R.string.err_loading_chores, Toast.LENGTH_SHORT).show()
             UtilsSingleton.manageLoadingView(loading, null, false)
         } else Toast.makeText(context, R.string.err_group_does_not_exist, Toast.LENGTH_SHORT).show()
     }
 
-    /**
-     * Adds a [Chore] to the list and notifies the Recycler View to update its content
-     *
-     * @param position: position in which to include the new item
-     * @param chore: chore to add
-     * */
-    private fun addChore(position: Int, chore: Chore) {
+    private fun addChoreAtPosition(position: Int, chore: Chore) {
         chores.add(position, chore)
         notifyItemInserted(position)
     }
 
-    /**
-     * Modifies a [Chore] to the list and notifies the Recycler View to update its content
-     *
-     * @param position: position in which to update the item
-     * @param chore: chore to add
-     * */
-    private fun updateChore(position: Int, chore: Chore) {
+    private fun updateChoreAtPosition(position: Int, chore: Chore) {
         chores[position] = chore
         notifyItemChanged(position)
     }
 
-    /**
-     * Removes a [Chore] to the list and notifies the Recycler View to update its content
-     *
-     * @param position: position in which to remove the item
-     * */
-    private fun removeChore(position: Int) {
+    private fun removeChoreAtPosition(position: Int) {
         chores.removeAt(position)
         notifyItemRemoved(position)
     }

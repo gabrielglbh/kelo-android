@@ -12,12 +12,14 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.BlockJUnit4ClassRunner
 
+/** Defines the User Instrumentation Tests */
 @RunWith(BlockJUnit4ClassRunner::class)
 class UserTest {
     private val q = UserQueries()
     private val group = Group("GROUP", "generic group", "EUR")
     private val user = User("CREATE_USER", "createUser", 0)
 
+    /** Initializes and creates Firebase needed data for the tests */
     @Before
     fun setUp() {
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().context)
@@ -26,6 +28,8 @@ class UserTest {
             UserQueries().createUser(user, group.id)
         }
     }
+
+    /** Cleans up Firebase */
     @After
     fun clean() {
         runBlocking {
@@ -34,12 +38,14 @@ class UserTest {
         }
     }
 
+    /** Tests the createUser function */
     @Test
     fun createUserSuccessfully() = runBlocking {
         val user = q.createUser(user, group.id)
         assertTrue(user != null && user.id == user.id)
     }
 
+    /** Tests the getUser function */
     @Test
     fun readUserSuccessfully() = runBlocking {
         val result = q.getUser(user.id, group.id)
@@ -49,6 +55,7 @@ class UserTest {
         )
     }
 
+    /** Tests the getMostLazyUser function */
     @Test
     fun readMostLazyUserSuccessfully() = runBlocking {
         val u = User("CREATE_USER_2", "createUser", 30)
@@ -61,6 +68,7 @@ class UserTest {
         )
     }
 
+    /** Tests the getRandomUser function */
     @Test
     fun readRandomUserSuccessfully() = runBlocking {
         q.createUser(User("RND_USER", "Random", 30), group.id)
@@ -69,12 +77,14 @@ class UserTest {
         assertTrue(rndUser != null)
     }
 
+    /** Tests the getAllUsers function */
     @Test
     fun readAllUsersSuccessfully() = runBlocking {
         val result = q.getAllUsers(group.id)
         assertTrue(result != null && result.size == 1)
     }
 
+    /** Tests the updateUser function */
     @Test
     fun updateUserSuccessfully() = runBlocking {
         val modified = User(user.id, "Gabriel", 56)
@@ -82,18 +92,21 @@ class UserTest {
         assertTrue(result)
     }
 
+    /** Tests the deleteUser function */
     @Test
     fun deleteUserSuccessfully() = runBlocking {
         val result = q.deleteUser(user.id, group.id)
         assertTrue(result)
     }
 
+    /** Tests the deleteAllUsers function */
     @Test
     fun deleteAllUsersSuccessfully() = runBlocking {
         val result = q.deleteAllUsers(group.id)
         assertTrue(result)
     }
 
+    /** Tests the joinGroup function */
     @Test
     fun joinGroupSuccessfully() = runBlocking {
         val join = User("JOIN_USER", "joining user", 0)
@@ -101,6 +114,7 @@ class UserTest {
         assertTrue(result == join.id)
     }
 
+    /** Tests the isUsernameAvailable function */
     @Test
     fun isUsernameAvailableSuccessfully() = runBlocking {
         val result = q.isUsernameAvailable(group.id, "nameIsFullyAvailable")

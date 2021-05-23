@@ -9,6 +9,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.google.android.material.button.MaterialButton
 
+/** Fragment that manages all settings of Kelo */
 class Settings : Fragment() {
 
     private lateinit var debugButton: MaterialButton

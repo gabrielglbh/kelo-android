@@ -12,6 +12,13 @@ import org.hamcrest.Matcher
  * */
 class RecyclerViewMatcher {
     companion object {
+        /**
+         * Functions that validates if an specified condition [Matcher] is in a given position inside
+         * a RecyclerView
+         *
+         * @param position: position in the recycler view
+         * @param itemMatcher: [Matcher] type variable to check at position
+         * */
         fun atPosition(position: Int, itemMatcher: Matcher<View>): Matcher<View> {
             return object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
                 override fun describeTo(description: Description) {

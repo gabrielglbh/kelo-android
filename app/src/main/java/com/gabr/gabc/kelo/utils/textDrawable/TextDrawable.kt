@@ -5,8 +5,9 @@ import android.graphics.drawable.ShapeDrawable
 import java.util.*
 
 /**
- * EXTRACTED FROM https://github.com/amulyakhare/TextDrawable by amulyakhare
+ * Actual class that defines the custom drawable built with the Builder functions
  *
+ * EXTRACTED FROM https://github.com/amulyakhare/TextDrawable by amulyakhare
  * Translated it to Kotlin as a result of jcenter() going out of service
  * */
 class TextDrawable(private val builder: Builder) : ShapeDrawable() {
@@ -18,6 +19,7 @@ class TextDrawable(private val builder: Builder) : ShapeDrawable() {
     private var fontSize = 0
 
     companion object {
+        /** Function that initializes the builder for TextDrawable */
         fun builder(): BuilderInterfaces.IShapeBuilder = Builder()
     }
 

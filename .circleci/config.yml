@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   android: circleci/android@1.0.3
   codecov: codecov/codecov@1.0.2
+  coverage-reporter: codacy/coverage-reporter@12.1.4
 
 # References are chunks of instructions to be executed multiple times across jobs
 references:
@@ -90,6 +91,10 @@ jobs:
           file: app/build/reports/jacoco/codecovReport/codecovReport.xml
           token: $CODECOV_TOKEN
 
+      - coverage-reporter/send_report:
+          coverage-reports: app/build/reports/jacoco/codecovReport/codecovReport.xml
+          project-token: $CODACY_PROJECT_TOKEN
+
       - android/kill-emulators
 
       - *save_android_cache
@@ -141,22 +146,16 @@ workflows:
       - tests:
           filters:
             branches:
-              only:
-                - development
-                - main
+              only: main
       - alpha_deploy:
-          requires:
-              - tests
-          filters:
-            branches:
-              only:
-                - main
-      - production_deploy:
-          requires:
-              - tests
           filters:
             tags:
-              only:
-                - /^v[0-9].[0-9]*$/
+              only: /^v.*-beta/
+            branches:
+              ignore: /.*/
+      - production_deploy:
+          filters:
+            tags:
+              only: /^((?!beta).)*$/
             branches:
               ignore: /.*/

@@ -10,6 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.BlockJUnit4ClassRunner
 
+/** Defines the Currency Instrumentation Tests */
 @RunWith(BlockJUnit4ClassRunner::class)
 class CurrencyTest {
     @Rule
@@ -18,11 +19,13 @@ class CurrencyTest {
 
     private val welcomeModel = WelcomeViewModel()
 
+    /** Tests the welcomeModel class initializer */
     @Test
     fun welcomeModelEURIsDefaultCurrency() {
         TestCase.assertTrue(welcomeModel.groupCurrency.getOrAwaitValue() == CURRENCIES[0])
     }
 
+    /** Tests the welcomeModel class */
     @Test
     fun welcomeModelUpdatesWithNewCurrency() {
         val currency = CURRENCIES[8]

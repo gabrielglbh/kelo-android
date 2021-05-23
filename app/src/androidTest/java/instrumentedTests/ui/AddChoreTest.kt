@@ -34,8 +34,8 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.*
 import org.junit.runner.RunWith
 import java.util.*
-import kotlin.reflect.jvm.jvmName
 
+/** Defines the Add Chore UI Test */
 @RunWith(AndroidJUnit4::class)
 class AddChoreTest {
     private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
@@ -55,6 +55,7 @@ class AddChoreTest {
         private val user = User("UI_USER", "Gabriel", 0)
         private val user2 = User("UI_USER_2", "Raul Olmedo", 0)
 
+        /** Initializes and creates Firebase needed data for the tests */
         @JvmStatic
         @BeforeClass
         fun setUpFirebase() {
@@ -80,6 +81,7 @@ class AddChoreTest {
             }
         }
 
+        /** Cleans up Firebase */
         @JvmStatic
         @AfterClass
         fun cleanFirebase() {
@@ -91,12 +93,14 @@ class AddChoreTest {
         }
     }
 
+    /** Function called before each test to go to the desired activity */
     @Before
     fun pressFAB() {
         activityScenario.scenario.onActivity { it.keepScreenActive() }
         onView(withId(R.id.choreListFAB)).perform(click())
     }
 
+    /** Tests that the add chore whole routine works perfectly */
     @Test
     fun verifyDataOfChoreIsCorrectlyDisplayedInListUponCreation() {
         val date = Calendar.getInstance()
@@ -107,7 +111,7 @@ class AddChoreTest {
         onView(withId(R.id.choreDetailHigh)).perform(click())
 
         onView(withId(R.id.choreDetailExpireDateButton)).perform(click())
-        onView(withClassName(equalTo(DatePicker::class.jvmName))).perform(PickerActions
+        onView(withClassName(equalTo(DatePicker::class.qualifiedName))).perform(PickerActions
             .setDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH)+1, date.get(Calendar.DAY_OF_MONTH)))
         onView(withText("OK")).perform(click())
 

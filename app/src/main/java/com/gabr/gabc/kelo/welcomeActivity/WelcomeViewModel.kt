@@ -17,46 +17,81 @@ import com.gabr.gabc.kelo.welcomeActivity.viewBottomSheet.CurrencyModel
  * */
 class WelcomeViewModel: ViewModel() {
     private val _userName: MutableLiveData<String> = MutableLiveData()
-    var userName: LiveData<String> = _userName
+    val userName: LiveData<String>
+        get() = _userName
 
     private val _groupName: MutableLiveData<String> = MutableLiveData()
-    var groupName: LiveData<String> = _groupName
+    val groupName: LiveData<String>
+        get() = _groupName
+
     private val _groupCode: MutableLiveData<String> = MutableLiveData()
-    var groupCode: LiveData<String> = _groupCode
+    val groupCode: LiveData<String>
+        get() = _groupCode
+
     private val _groupCurrency: MutableLiveData<CurrencyModel> = MutableLiveData()
-    var groupCurrency: LiveData<CurrencyModel> = _groupCurrency
+    val groupCurrency: LiveData<CurrencyModel>
+        get() = _groupCurrency
 
-    /**
-     * It serves as a controller for showing or changing the ViewPager2 State
-     */
-    private val _viewPagerMode: MutableLiveData<Int> = MutableLiveData()
-    var viewPagerMode: LiveData<Int> = _viewPagerMode
+    private val _viewPagerPage: MutableLiveData<Int> = MutableLiveData()
+    val viewPagerPage: LiveData<Int>
+        get() = _viewPagerPage
 
-    /**
-     * Ir serves as a controller for letting us know if the user is joining or creating a group
-     * */
-    private val _groupMode: MutableLiveData<String> = MutableLiveData()
-    var groupMode: LiveData<String> = _groupMode
+    private val _groupSelectedMode: MutableLiveData<String> = MutableLiveData()
+    val groupSelectedMode: LiveData<String>
+        get() = _groupSelectedMode
 
-    /**
-     * Variable for showing the loading view
-     * */
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
-    var isLoading: LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
 
     init { _groupCurrency.postValue(CURRENCIES[0]) }
 
-    fun setUserName(name: String) { _userName.postValue(name) }
-    fun setGroupName(name: String) { _groupName.postValue(name) }
-    fun setGroupCode(code: String) { _groupCode.postValue(code) }
-    fun setCurrency(currency: CurrencyModel) { _groupCurrency.postValue(currency) }
-    fun setPagerPage(page: Int) { _viewPagerMode.postValue(page) }
-    fun setGroupMode(mode: String) { _groupMode.postValue(mode) }
-    fun setLoading(isLoading: Boolean) { _isLoading.postValue(isLoading) }
+    /**
+     * Sets the user name in the desired view model [MutableLiveData] variable
+     *
+     * @param name: value to be set
+     */
+    fun setUserName(name: String) { _userName.value = name }
 
-    fun getUserName(): String = userName.value!!
-    fun getGroupName(): String = groupName.value!!
-    fun getGroupCode(): String = groupCode.value!!
-    fun getCurrency(): CurrencyModel = groupCurrency.value!!
-    fun getCurrentPage(): Int = viewPagerMode.value!!
+    /**
+     * Sets the group name in the desired view model [MutableLiveData] variable
+     *
+     * @param name: value to be set
+     */
+    fun setGroupName(name: String) { _groupName.value = name }
+
+    /**
+     * Sets the group code in the desired view model [MutableLiveData] variable
+     *
+     * @param code: value to be set
+     */
+    fun setGroupCode(code: String) { _groupCode.value = code }
+
+    /**
+     * Sets the group currency in the desired view model [MutableLiveData] variable
+     *
+     * @param currency: value to be set
+     */
+    fun setCurrency(currency: CurrencyModel) { _groupCurrency.postValue(currency) }
+
+    /**
+     * Sets the view pager page in the desired view model [MutableLiveData] variable
+     *
+     * @param page: value to be set
+     */
+    fun setPagerPage(page: Int) { _viewPagerPage.value = page }
+
+    /**
+     * Sets the mode the user selected (create or join) in the desired view model [MutableLiveData] variable
+     *
+     * @param mode: value to be set
+     */
+    fun setGroupMode(mode: String) { _groupSelectedMode.value = mode }
+
+    /**
+     * Sets the loading state in the desired view model [MutableLiveData] variable
+     *
+     * @param isLoading: value to be set
+     */
+    fun setLoading(isLoading: Boolean) { _isLoading.value = isLoading }
 }

@@ -26,17 +26,11 @@ class ChoreListSwipeController(
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
                         target: RecyclerView.ViewHolder): Boolean = false
 
-    /**
-     * Removes the element of the [adapter]
-     * */
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         if (direction == ItemTouchHelper.LEFT) adapter.removeChoreOnSwap(viewHolder.layoutPosition)
         else adapter.completeChoreOnSwap(viewHolder.layoutPosition)
     }
 
-    /**
-     * Draws the background of the element in the list when being swiped.
-     * */
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
         dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

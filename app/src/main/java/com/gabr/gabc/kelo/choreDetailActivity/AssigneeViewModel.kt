@@ -11,8 +11,13 @@ import com.gabr.gabc.kelo.models.User
  * */
 class AssigneeViewModel : ViewModel() {
     private val _assignee: MutableLiveData<User> = MutableLiveData()
-    var assignee: LiveData<User> = _assignee
+    val assignee: LiveData<User>
+        get() = _assignee
 
+    /**
+     * Sets the user in the desired view model [MutableLiveData] variable
+     *
+     * @param user: value to be set
+     */
     fun setAssignee(user: User) { _assignee.postValue(user) }
-    fun getAssignee(): User = assignee.value!!
 }

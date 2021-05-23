@@ -5,6 +5,7 @@ import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 
+/** Defines the User Unit Tests */
 @Suppress("unused")
 class UserSteps : En {
     private lateinit var username: String

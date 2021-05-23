@@ -10,6 +10,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 
+/** Class that holds all the necessary Group Queries to retrieve, read, update or delete groups from Firebase */
 class GroupQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore

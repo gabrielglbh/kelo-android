@@ -17,6 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.BlockJUnit4ClassRunner
 
+/** Defines the Chore Details Instrumentation Tests */
 @RunWith(BlockJUnit4ClassRunner::class)
 class ChoreDetailTest {
     @Rule
@@ -29,6 +30,7 @@ class ChoreDetailTest {
         private lateinit var context: Context
         private const val userId = "verygenericuidfromfb"
 
+        /** Sets up the shared preferences for the tests to work */
         @JvmStatic
         @BeforeClass
         fun setUpSharedPreferences() {
@@ -43,6 +45,7 @@ class ChoreDetailTest {
         }
     }
 
+    /** Tests the assigneeModel class */
     @Test
     fun assigneeModelUpdatesWithNewUser() {
         val user = User("", "Gabriel Garcia", 45)
@@ -50,12 +53,14 @@ class ChoreDetailTest {
         assertTrue(assigneeModel.assignee.getOrAwaitValue() == user)
     }
 
+    /** Tests the isUserBeingDisplayedCurrentUser function */
     @Test
     fun assigneeIsCurrentUser() {
         val isCurrentUser = UtilsSingleton.isUserBeingDisplayedCurrentUser(userId)
         assertTrue(isCurrentUser)
     }
 
+    /** Tests the isUserBeingDisplayedCurrentUser function */
     @Test
     fun assigneeIsOtherUserInGroup() {
         val isCurrentUser = UtilsSingleton.isUserBeingDisplayedCurrentUser("otheruserbeingdisplayed")

@@ -10,11 +10,13 @@ import org.junit.Assert.assertTrue
 import org.junit.runner.RunWith
 import org.junit.runners.BlockJUnit4ClassRunner
 
+/** Defines the Group Instrumentation Tests */
 @RunWith(BlockJUnit4ClassRunner::class)
 class GroupTest {
     private val q = GroupQueries()
     private val group = Group("GROUP", "generic group", "EUR")
 
+    /** Initializes and creates Firebase needed data for the tests */
     @Before
     fun setUp() {
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().context)
@@ -22,6 +24,8 @@ class GroupTest {
             GroupQueries().createGroup(group)
         }
     }
+
+    /** Cleans up Firebase */
     @After
     fun clean() {
         runBlocking {
@@ -29,12 +33,14 @@ class GroupTest {
         }
     }
 
+    /** Tests the createGroup function */
     @Test
     fun createGroupSuccessfully() = runBlocking {
         val result = q.createGroup(group)
         assertTrue(result != null && result.id == group.id)
     }
 
+    /** Tests the getGroup function */
     @Test
     fun readGroupSuccessfully() = runBlocking {
         val result = q.getGroup(group.id)
@@ -45,6 +51,7 @@ class GroupTest {
         )
     }
 
+    /** Tests the updateGroup function */
     @Test
     fun updateGroupSuccessfully() = runBlocking {
         val modified = Group(group.id, "updated", "JPY")
@@ -52,12 +59,14 @@ class GroupTest {
         assertTrue(result)
     }
 
+    /** Tests the deleteGroup function */
     @Test
     fun deleteGroupSuccessfully() = runBlocking {
         val result = q.deleteGroup(group.id)
         assertTrue(result)
     }
 
+    /** Tests the checkGroupAvailability function */
     @Test
     fun checkGroupAvailabilitySuccessfully() = runBlocking {
         val result = q.checkGroupAvailability(group.id)

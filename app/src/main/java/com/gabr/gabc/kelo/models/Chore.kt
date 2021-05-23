@@ -8,6 +8,8 @@ import com.google.firebase.firestore.PropertyName
 import java.util.*
 
 /**
+ * Class that holds the Chore for managing communications with Firebase
+ *
  * [Chore] extends from [Parcelable] in order to be able to pass it through intents
  * It makes a map in the simple scheme of things
  * */
@@ -28,6 +30,9 @@ class Chore(
         parcel.readInt()
     )
 
+    /**
+     * Transforms the current [Chore] into a [Map] to be uploaded to Firebase
+     * */
     fun toMap(): Map<String, Any?> {
         return hashMapOf(
             ChoreFields.name to name,
@@ -49,9 +54,6 @@ class Chore(
 
     override fun describeContents(): Int { return 0 }
 
-    /**
-     * Override of equals in order for methods like indexOf to work with [Chore]
-     * */
     override fun equals(other: Any?): Boolean {
         val chore = other as Chore
         return id == chore.id && name == chore.name &&
@@ -59,9 +61,6 @@ class Chore(
                 expiration == chore.expiration && points == chore.points
     }
 
-    /**
-     * Override of hashCode in order for methods like indexOf to work with [Chore]
-     * */
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
         result = 31 * result + (name?.hashCode() ?: 0)
@@ -72,6 +71,7 @@ class Chore(
         return result
     }
 
+    /** Parcelable companion object for defining helper functions */
     companion object CREATOR : Parcelable.Creator<Chore> {
         private fun Parcel.writeDate(date: Date?) { writeLong(date?.time ?: -1) }
         private fun Parcel.readDate(): Date? {
