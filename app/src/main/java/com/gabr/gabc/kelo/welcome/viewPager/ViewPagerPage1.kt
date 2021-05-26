@@ -9,8 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.CREATE_GROUP
-import com.gabr.gabc.kelo.constants.JOIN_GROUP
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 
@@ -39,13 +38,13 @@ class ViewPagerPage1 : Fragment() {
         createGroupButton = view.findViewById(R.id.createGroupButton)
         createGroupButton.setOnClickListener {
             viewModel.setPagerPage(1)
-            viewModel.setGroupMode(CREATE_GROUP)
+            viewModel.setGroupMode(Constants.CREATE_GROUP)
         }
 
         joinGroupButton = view.findViewById(R.id.joinGroupButton)
         joinGroupButton.setOnClickListener {
             viewModel.setPagerPage(1)
-            viewModel.setGroupMode(JOIN_GROUP)
+            viewModel.setGroupMode(Constants.JOIN_GROUP)
         }
 
         setUpObserverLiveData()

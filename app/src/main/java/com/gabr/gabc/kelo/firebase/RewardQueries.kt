@@ -1,7 +1,6 @@
 package com.gabr.gabc.kelo.firebase
 
-import com.gabr.gabc.kelo.constants.fbGroupsCollection
-import com.gabr.gabc.kelo.constants.fbRewardsSubCollection
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.Reward
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,6 +13,8 @@ import java.lang.Exception
 class RewardQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore
+    private val fbGroupsCollection = Constants.fbGroupsCollection
+    private val fbRewardsSubCollection = Constants.fbRewardsSubCollection
 
     /**
      * Function that creates a [Reward] in an existing Group

@@ -1,7 +1,7 @@
 package instrumentedTests.integration
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.gabr.gabc.kelo.constants.CURRENCIES
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 import instrumentedTests.integration.utils.getOrAwaitValue
 import junit.framework.TestCase
@@ -22,13 +22,13 @@ class CurrencyTest {
     /** Tests the welcomeModel class initializer */
     @Test
     fun welcomeModelEURIsDefaultCurrency() {
-        TestCase.assertTrue(welcomeModel.groupCurrency.getOrAwaitValue() == CURRENCIES[0])
+        TestCase.assertTrue(welcomeModel.groupCurrency.getOrAwaitValue() == Constants.CURRENCIES[0])
     }
 
     /** Tests the welcomeModel class */
     @Test
     fun welcomeModelUpdatesWithNewCurrency() {
-        val currency = CURRENCIES[8]
+        val currency = Constants.CURRENCIES[8]
         welcomeModel.setCurrency(currency)
         TestCase.assertTrue(welcomeModel.groupCurrency.getOrAwaitValue() == currency)
     }

@@ -1,9 +1,8 @@
 package com.gabr.gabc.kelo.firebase
 
 import android.util.Log
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.constants.UserFields
-import com.gabr.gabc.kelo.constants.fbGroupsCollection
-import com.gabr.gabc.kelo.constants.fbUsersCollection
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
 import com.google.firebase.firestore.DocumentChange
@@ -21,6 +20,8 @@ import kotlin.random.Random
 class UserQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore
+    private val fbGroupsCollection = Constants.fbGroupsCollection
+    private val fbUsersCollection = Constants.fbUsersCollection
 
     /**
      * Function that makes a [User] join an existing [Group], validating if the name that the user

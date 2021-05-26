@@ -1,7 +1,6 @@
 package com.gabr.gabc.kelo.firebase
 
-import com.gabr.gabc.kelo.constants.fbChoresSubCollection
-import com.gabr.gabc.kelo.constants.fbGroupsCollection
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.Chore
 import com.google.firebase.firestore.DocumentChange.Type.ADDED
 import com.google.firebase.firestore.DocumentChange.Type.MODIFIED
@@ -18,6 +17,8 @@ import java.lang.Exception
 class ChoreQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore
+    private val fbGroupsCollection = Constants.fbGroupsCollection
+    private val fbChoresSubCollection = Constants.fbChoresSubCollection
 
     /**
      * Function that creates a [Chore] in an existing Group

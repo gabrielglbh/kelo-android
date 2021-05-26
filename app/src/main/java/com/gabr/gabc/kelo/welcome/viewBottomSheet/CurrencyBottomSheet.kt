@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.CURRENCIES
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 
 /** Bottom Sheet Dialog Fragment that holds the currency list in the WelcomeActivity */
@@ -38,7 +38,7 @@ class CurrencyBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         currencyList = view.findViewById(R.id.currencyList)
         currencyList.layoutManager = LinearLayoutManager(context)
-        currencyList.adapter = CurrencyAdapter(CURRENCIES.sortedBy { it.name })
+        currencyList.adapter = CurrencyAdapter(Constants.CURRENCIES.sortedBy { it.name })
     }
 
     /**

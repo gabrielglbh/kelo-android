@@ -5,12 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.utils.textDrawable.ColorGenerator

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gabr.gabc.kelo.choreDetail.AssigneeViewModel
-import com.gabr.gabc.kelo.constants.USER_ID
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import instrumentedTests.integration.utils.getOrAwaitValue
@@ -35,12 +35,12 @@ class ChoreDetailTest {
         fun setUpSharedPreferences() {
             context = InstrumentationRegistry.getInstrumentation().targetContext
 
-            val us = context.getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
+            val us = context.getSharedPreferences(Constants.USER_ID, Context.MODE_PRIVATE)
             with (us.edit()) {
-                putString(USER_ID, userId)
+                putString(Constants.USER_ID, userId)
                 commit()
             }
-            us.getString(USER_ID, "")?.let { SharedPreferences.userId = it }
+            us.getString(Constants.USER_ID, "")?.let { SharedPreferences.userId = it }
         }
     }
 

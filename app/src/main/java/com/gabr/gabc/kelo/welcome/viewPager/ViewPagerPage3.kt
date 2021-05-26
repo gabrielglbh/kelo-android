@@ -12,8 +12,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.GROUP_ID
-import com.gabr.gabc.kelo.constants.USER_ID
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.models.User
@@ -96,8 +95,8 @@ class ViewPagerPage3: Fragment() {
                 else -> {
                     val intent = Intent(requireActivity(), MainActivity::class.java)
                     SharedPreferences.putIsFirstLaunched(requireActivity(), true)
-                    SharedPreferences.putStringCode(requireActivity(), GROUP_ID, groupId)
-                    SharedPreferences.putStringCode(requireActivity(), USER_ID, userId)
+                    SharedPreferences.putStringCode(requireActivity(), Constants.GROUP_ID, groupId)
+                    SharedPreferences.putStringCode(requireActivity(), Constants.USER_ID, userId)
                     startActivity(intent)
                 }
             }

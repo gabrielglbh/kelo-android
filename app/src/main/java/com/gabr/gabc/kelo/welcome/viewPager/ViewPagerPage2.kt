@@ -45,7 +45,7 @@ class ViewPagerPage2 : Fragment() {
     private lateinit var currency: CurrencyModel
     private lateinit var viewModel: WelcomeViewModel
 
-    private var mode = CREATE_GROUP
+    private var mode = Constants.CREATE_GROUP
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,7 @@ class ViewPagerPage2 : Fragment() {
 
         continueButton = view.findViewById(R.id.welcomeContinueButton)
         continueButton.setOnClickListener {
-            if (mode == CREATE_GROUP) createGroup()
+            if (mode == Constants.CREATE_GROUP) createGroup()
             else joinGroup()
         }
 
@@ -82,7 +82,7 @@ class ViewPagerPage2 : Fragment() {
         joinGroupEditText = view.findViewById(R.id.joinGroupEditText)
 
         setUpObserverLiveData()
-        if (mode == CREATE_GROUP) {
+        if (mode == Constants.CREATE_GROUP) {
             initViewsForGroupCreation()
             animateObjectsInForGroupCreation()
         } else {
@@ -152,7 +152,7 @@ class ViewPagerPage2 : Fragment() {
         })
 
         viewModel.groupSelectedMode.observe(viewLifecycleOwner, { mode ->
-            if (mode == CREATE_GROUP) {
+            if (mode == Constants.CREATE_GROUP) {
                 animateObjectsInForGroupCreation()
                 this.mode = mode
                 label.text = getString(R.string.create_new_group_label)
@@ -162,7 +162,7 @@ class ViewPagerPage2 : Fragment() {
                 groupCurrencyLabelTextView.visibility = View.VISIBLE
                 groupCurrencyTextView.visibility = View.VISIBLE
                 groupCurrencyImageView.visibility = View.VISIBLE
-            } else if (mode == JOIN_GROUP) {
+            } else if (mode == Constants.JOIN_GROUP) {
                 animateObjectsInForJoiningGroup()
                 this.mode = mode
                 label.text = getString(R.string.join_group_label)

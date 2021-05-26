@@ -1,6 +1,6 @@
 package com.gabr.gabc.kelo.choreDetail
 
-import com.gabr.gabc.kelo.constants.CHORE_NAME_VALIDATOR
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.utils.common.CustomDatePicker
 import java.util.*
@@ -21,7 +21,7 @@ object ChoreDetailFunctions {
      * @param name: name to be validated
      * @return true if the validation is good
      * */
-    fun isChoreNameValid(name: String): Boolean = name.matches(Regex(CHORE_NAME_VALIDATOR)) && name.trim().isNotEmpty()
+    fun isChoreNameValid(name: String): Boolean = name.matches(Regex(Constants.CHORE_NAME_VALIDATOR)) && name.trim().isNotEmpty()
 
     /**
      * Function that is called when a date is selected in the [CustomDatePicker]

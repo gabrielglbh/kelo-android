@@ -13,8 +13,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.GROUP_ID
-import com.gabr.gabc.kelo.constants.USER_ID
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
@@ -62,15 +61,15 @@ class EditChoreTest {
             }
 
             // Sets shared preferences for activities to use
-            val gr = context.getSharedPreferences(GROUP_ID, Context.MODE_PRIVATE)
+            val gr = context.getSharedPreferences(Constants.GROUP_ID, Context.MODE_PRIVATE)
             with (gr.edit()) {
-                putString(GROUP_ID, group.id)
+                putString(Constants.GROUP_ID, group.id)
                 commit()
             }
 
-            val us = context.getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
+            val us = context.getSharedPreferences(Constants.USER_ID, Context.MODE_PRIVATE)
             with (us.edit()) {
-                putString(USER_ID, user.id)
+                putString(Constants.USER_ID, user.id)
                 commit()
             }
         }

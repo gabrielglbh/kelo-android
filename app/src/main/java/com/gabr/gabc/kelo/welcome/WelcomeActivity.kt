@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.JOIN_GROUP
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage1
@@ -101,7 +101,7 @@ class WelcomeActivity : AppCompatActivity() {
         if (Intent.ACTION_VIEW == appLinkAction) {
             appLinkData?.lastPathSegment?.also { groupId ->
                 viewModel.setPagerPage(1)
-                viewModel.setGroupMode(JOIN_GROUP)
+                viewModel.setGroupMode(Constants.JOIN_GROUP)
                 viewModel.setGroupCode(groupId)
             }
         }

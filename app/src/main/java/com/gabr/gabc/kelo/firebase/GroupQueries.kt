@@ -1,7 +1,6 @@
 package com.gabr.gabc.kelo.firebase
 
-import com.gabr.gabc.kelo.constants.fbGroupsCollection
-import com.gabr.gabc.kelo.constants.fbUsersCollection
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.Group
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -14,6 +13,8 @@ import java.lang.Exception
 class GroupQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore
+    private val fbGroupsCollection = Constants.fbGroupsCollection
+    private val fbUsersCollection = Constants.fbUsersCollection
 
     /**
      * Function that creates a [Group]

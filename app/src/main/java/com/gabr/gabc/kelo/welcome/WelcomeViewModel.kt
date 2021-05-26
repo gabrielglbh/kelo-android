@@ -3,7 +3,7 @@ package com.gabr.gabc.kelo.welcome
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.gabr.gabc.kelo.constants.CURRENCIES
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyModel
 
 /**
@@ -44,7 +44,7 @@ class WelcomeViewModel: ViewModel() {
     val isLoading: LiveData<Boolean>
         get() = _isLoading
 
-    init { _groupCurrency.postValue(CURRENCIES[0]) }
+    init { _groupCurrency.postValue(Constants.CURRENCIES[0]) }
 
     /**
      * Sets the user name in the desired view model [MutableLiveData] variable

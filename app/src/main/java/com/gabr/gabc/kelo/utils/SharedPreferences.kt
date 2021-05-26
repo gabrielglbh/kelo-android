@@ -2,8 +2,7 @@ package com.gabr.gabc.kelo.utils
 
 import android.app.Activity
 import android.content.Context
-import com.gabr.gabc.kelo.constants.FIRST_LAUNCHED
-import com.gabr.gabc.kelo.constants.GROUP_ID
+import com.gabr.gabc.kelo.constants.Constants
 
 /** Singleton instance with helper functions for Shared Preferences useful to all code */
 object SharedPreferences {
@@ -36,8 +35,8 @@ object SharedPreferences {
      * @param activity: current activity
      * */
     fun getIfFirstLaunched(activity: Activity) {
-        val sharedPref = activity.getSharedPreferences(FIRST_LAUNCHED, Context.MODE_PRIVATE)
-        isFirstLaunched = sharedPref.getBoolean(FIRST_LAUNCHED, false)
+        val sharedPref = activity.getSharedPreferences(Constants.FIRST_LAUNCHED, Context.MODE_PRIVATE)
+        isFirstLaunched = sharedPref.getBoolean(Constants.FIRST_LAUNCHED, false)
     }
 
     /**
@@ -51,7 +50,7 @@ object SharedPreferences {
      * */
     fun getStringCode(activity: Activity, key: String) {
         val sharedPref = activity.getSharedPreferences(key, Context.MODE_PRIVATE)
-        sharedPref.getString(key, "")?.let { if (key == GROUP_ID) groupId = it else userId = it }
+        sharedPref.getString(key, "")?.let { if (key == Constants.GROUP_ID) groupId = it else userId = it }
     }
 
     /**
@@ -61,9 +60,9 @@ object SharedPreferences {
      * @param isFirstLaunched: boolean to see if the user has created or joined a group
      * */
     fun putIsFirstLaunched(activity: Activity, isFirstLaunched: Boolean) {
-        val sharedPref = activity.getSharedPreferences(FIRST_LAUNCHED, Context.MODE_PRIVATE) ?: return
+        val sharedPref = activity.getSharedPreferences(Constants.FIRST_LAUNCHED, Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
-            putBoolean(FIRST_LAUNCHED, isFirstLaunched)
+            putBoolean(Constants.FIRST_LAUNCHED, isFirstLaunched)
             commit()
         }
     }
