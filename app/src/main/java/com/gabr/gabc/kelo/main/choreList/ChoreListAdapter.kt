@@ -152,10 +152,9 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
                 } else {
                     SharedPreferences.groupId?.let { id ->
                         CoroutineScope(Dispatchers.Main).launch {
-                            val user = chores[position].assignee?.let {
-                                UserQueries().getUser(it, id)
-                            }
-                            choreAssignee.text = user?.name
+                            val user = chores[position].assignee?.let { UserQueries().getUser(it, id) }
+                            if (user != null) choreAssignee.text = user.name
+                            else choreAssignee.text = context.getString(R.string.chore_not_assigned)
                         }
                     }
                 }

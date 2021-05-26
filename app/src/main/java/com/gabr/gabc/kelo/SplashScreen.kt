@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.gabr.gabc.kelo.constants.GROUP_ID
+import com.gabr.gabc.kelo.constants.USER_ID
 import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.welcome.WelcomeActivity
@@ -16,6 +18,8 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.splash_screen)
         Handler(Looper.getMainLooper()).postDelayed({
             SharedPreferences.getIfFirstLaunched(this)
+            SharedPreferences.getStringCode(this, GROUP_ID)
+            SharedPreferences.getStringCode(this, USER_ID)
             if (SharedPreferences.isFirstLaunched && SharedPreferences.userId != null &&
                 SharedPreferences.groupId != null)
                 startActivity(Intent(this, MainActivity::class.java))

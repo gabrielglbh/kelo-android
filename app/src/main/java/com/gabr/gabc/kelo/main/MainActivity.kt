@@ -10,10 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.GROUP_ID
-import com.gabr.gabc.kelo.constants.USER_ID
 import com.gabr.gabc.kelo.utils.LoadingSingleton
-import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -37,8 +34,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = run { ViewModelProvider(this).get(LoadViewModel::class.java) }
-        SharedPreferences.getStringCode(this, GROUP_ID)
-        SharedPreferences.getStringCode(this, USER_ID)
 
         parent = findViewById(R.id.mainActivityRoot)
 

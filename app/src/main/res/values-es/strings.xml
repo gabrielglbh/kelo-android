@@ -42,6 +42,7 @@
     <string name="chore_users_select_randomly">Aleatorio</string>
     <string name="users_you">Tú</string>
     <string name="lazy_user_button">Más Vago</string>
+    <string name="chore_not_assigned">Sin Asignado</string>
 
     <!-- Share Code Bottom Sheet -->
     <string name="group_code_label">Código del Grupo:</string>

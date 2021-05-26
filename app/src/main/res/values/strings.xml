@@ -44,6 +44,7 @@
     <string name="chore_users_select_randomly">Random</string>
     <string name="users_you">You</string>
     <string name="lazy_user_button">Most Lazy</string>
+    <string name="chore_not_assigned">Not Assigned</string>
 
     <!-- Share Code Bottom Sheet -->
     <string name="group_code_label">Group Code:</string>

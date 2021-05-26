@@ -44,7 +44,8 @@ class Settings : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             if (SharedPreferences.userId != null && SharedPreferences.groupId != null) {
                 val user = UserQueries().getUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
-                points.text = user?.points.toString()
+                if (user != null) points.text = user.points.toString()
+                else points.text = "0"
             }
         }
 

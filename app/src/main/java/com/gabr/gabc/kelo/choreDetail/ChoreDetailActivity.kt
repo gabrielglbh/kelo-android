@@ -198,8 +198,8 @@ class ChoreDetailActivity : AppCompatActivity() {
                 } else {
                     SharedPreferences.groupId?.let { id ->
                         CoroutineScope(Dispatchers.Main).launch {
-                            val username = UserQueries().getUser(it, id)?.name
-                            assignee.text = username
+                            val user = UserQueries().getUser(it, id)
+                            if (user != null) assignee.text = user.name
                         }
                     }
                 }
