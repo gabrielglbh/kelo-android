@@ -1,8 +1,8 @@
 package com.gabr.gabc.kelo.steps
 
-import com.gabr.gabc.kelo.choreDetailActivity.ChoreDetailFunctions
+import com.gabr.gabc.kelo.choreDetail.ChoreDetailFunctions
 import com.gabr.gabc.kelo.models.Chore
-import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.utils.DatesSingleton
 import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -41,8 +41,8 @@ class ChoreSteps : En {
             val c = Calendar.getInstance()
             chore.expiration?.let {
                 c.time = it
-                val choreDate = UtilsSingleton.parseCalendarToStringOnList(c)
-                val today = UtilsSingleton.parseCalendarToStringOnList(Calendar.getInstance())
+                val choreDate = DatesSingleton.parseCalendarToStringOnList(c)
+                val today = DatesSingleton.parseCalendarToStringOnList(Calendar.getInstance())
                 assertTrue(choreDate == today)
             }
         }

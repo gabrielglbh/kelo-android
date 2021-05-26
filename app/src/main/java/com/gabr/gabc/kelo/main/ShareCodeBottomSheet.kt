@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.mainActivity
+package com.gabr.gabc.kelo.main
 
 import android.content.Intent
 import android.os.Bundle

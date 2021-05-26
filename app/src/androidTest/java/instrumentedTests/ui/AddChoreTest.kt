@@ -14,16 +14,16 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.gabr.gabc.kelo.MainActivity
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.GROUP_ID
 import com.gabr.gabc.kelo.constants.USER_ID
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
+import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
-import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.ColorViewMatcher.Companion.matchesBackgroundColor
 import instrumentedTests.ui.utils.DisableAnimationsRule
@@ -104,7 +104,7 @@ class AddChoreTest {
     @Test
     fun verifyDataOfChoreIsCorrectlyDisplayedInListUponCreation() {
         val date = Calendar.getInstance()
-        val expectedDate = UtilsSingleton.parseCalendarToStringOnList(date)
+        val expectedDate = DatesSingleton.parseCalendarToStringOnList(date)
 
         onView(withId(R.id.choreDetailNameEditText)).perform(typeText(expectedChoreName))
         closeSoftKeyboard()

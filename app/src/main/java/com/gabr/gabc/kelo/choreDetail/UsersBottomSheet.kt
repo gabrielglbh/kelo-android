@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.choreDetailActivity
+package com.gabr.gabc.kelo.choreDetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -69,7 +70,7 @@ class UsersBottomSheet : BottomSheetDialogFragment() {
 
     private fun getAllUsers(groupId: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            UtilsSingleton.manageLoadingView(loading, null, true)
+            LoadingSingleton.manageLoadingView(loading, null, true)
             val users = UserQueries().getAllUsers(groupId)
             if (users != null) {
                 userLists.adapter = UserAdapter(users)
@@ -83,7 +84,7 @@ class UsersBottomSheet : BottomSheetDialogFragment() {
                 dismiss()
                 Toast.makeText(context, R.string.err_loading_users, Toast.LENGTH_SHORT).show()
             }
-            UtilsSingleton.manageLoadingView(loading, null, false)
+            LoadingSingleton.manageLoadingView(loading, null, false)
         }
     }
 
@@ -107,7 +108,7 @@ class UsersBottomSheet : BottomSheetDialogFragment() {
              * */
             fun initializeView(position: Int) {
                 users[position]?.id?.let { uid ->
-                    if (UtilsSingleton.isUserBeingDisplayedCurrentUser(uid)) {
+                    if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
                         context?.let { UtilsSingleton.setTextAndIconToYou(it, name, avatar) }
                     } else {
                         avatar.setImageDrawable(UtilsSingleton.createAvatar(users[position]?.name))

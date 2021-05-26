@@ -3,11 +3,10 @@ package instrumentedTests.integration
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.platform.app.InstrumentationRegistry
-import com.gabr.gabc.kelo.choreDetailActivity.AssigneeViewModel
+import com.gabr.gabc.kelo.choreDetail.AssigneeViewModel
 import com.gabr.gabc.kelo.constants.USER_ID
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.SharedPreferences
-import com.gabr.gabc.kelo.utils.UtilsSingleton
 import instrumentedTests.integration.utils.getOrAwaitValue
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -56,14 +55,14 @@ class ChoreDetailTest {
     /** Tests the isUserBeingDisplayedCurrentUser function */
     @Test
     fun assigneeIsCurrentUser() {
-        val isCurrentUser = UtilsSingleton.isUserBeingDisplayedCurrentUser(userId)
+        val isCurrentUser = SharedPreferences.isUserBeingDisplayedCurrentUser(userId)
         assertTrue(isCurrentUser)
     }
 
     /** Tests the isUserBeingDisplayedCurrentUser function */
     @Test
     fun assigneeIsOtherUserInGroup() {
-        val isCurrentUser = UtilsSingleton.isUserBeingDisplayedCurrentUser("otheruserbeingdisplayed")
+        val isCurrentUser = SharedPreferences.isUserBeingDisplayedCurrentUser("otheruserbeingdisplayed")
         assertFalse(isCurrentUser)
     }
 }

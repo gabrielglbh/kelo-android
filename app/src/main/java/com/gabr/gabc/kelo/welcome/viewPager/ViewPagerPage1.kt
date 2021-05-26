@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.welcomeActivity.viewPager
+package com.gabr.gabc.kelo.welcome.viewPager
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.CREATE_GROUP
 import com.gabr.gabc.kelo.constants.JOIN_GROUP
 import com.gabr.gabc.kelo.utils.UtilsSingleton
-import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
+import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 
 /** Fragment included in the WelcomeActivity that holds the selection of the groupSelectedMode (create or join group) */
 class ViewPagerPage1 : Fragment() {

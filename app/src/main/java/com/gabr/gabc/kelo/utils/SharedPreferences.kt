@@ -12,6 +12,22 @@ object SharedPreferences {
     var userId: String? = null
 
     /**
+     * Function that resets the SharedPreferences of the user when leaving the group, removing the group...
+     * */
+    fun resetPreferences() {
+        userId = null
+        groupId = null
+    }
+
+    /**
+     * Function that verifies if the current user is currently being displayed in screen
+     *
+     * @param userId: current user id
+     * @return true if the userId matches the saved one in shared preferences
+     * */
+    fun isUserBeingDisplayedCurrentUser(userId: String): Boolean = userId == SharedPreferences.userId
+
+    /**
      * Function that sets the pair of value-key by an specified key to the desired single instance
      * variable, in this case isFirstLaunched
      *

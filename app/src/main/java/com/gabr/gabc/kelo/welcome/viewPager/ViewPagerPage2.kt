@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.welcomeActivity.viewPager
+package com.gabr.gabc.kelo.welcome.viewPager
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +17,10 @@ import com.gabr.gabc.kelo.constants.*
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.utils.UtilsSingleton
-import com.gabr.gabc.kelo.welcomeActivity.viewBottomSheet.CurrencyBottomSheet
-import com.gabr.gabc.kelo.welcomeActivity.viewBottomSheet.CurrencyModel
-import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
-import com.gabr.gabc.kelo.welcomeActivity.WelcomePageFunctions
+import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyBottomSheet
+import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyModel
+import com.gabr.gabc.kelo.welcome.WelcomeViewModel
+import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope

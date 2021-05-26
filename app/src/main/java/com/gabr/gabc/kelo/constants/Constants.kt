@@ -1,7 +1,7 @@
 package com.gabr.gabc.kelo.constants
 
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.welcomeActivity.viewBottomSheet.CurrencyModel
+import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyModel
 
 // true -> user has completed the welcome form
 // false -> user must log in

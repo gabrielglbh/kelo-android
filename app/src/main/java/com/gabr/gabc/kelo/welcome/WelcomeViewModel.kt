@@ -1,10 +1,10 @@
-package com.gabr.gabc.kelo.welcomeActivity
+package com.gabr.gabc.kelo.welcome
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gabr.gabc.kelo.constants.CURRENCIES
-import com.gabr.gabc.kelo.welcomeActivity.viewBottomSheet.CurrencyModel
+import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyModel
 
 /**
  * ViewModel that handles the login form

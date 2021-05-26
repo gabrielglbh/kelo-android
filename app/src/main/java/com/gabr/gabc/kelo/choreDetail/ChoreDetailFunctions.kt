@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.choreDetailActivity
+package com.gabr.gabc.kelo.choreDetail
 
 import com.gabr.gabc.kelo.constants.CHORE_NAME_VALIDATOR
 import com.gabr.gabc.kelo.models.Chore

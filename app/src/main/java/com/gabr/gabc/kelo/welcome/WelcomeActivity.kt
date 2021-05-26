@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo
+package com.gabr.gabc.kelo.welcome
 
 import android.content.Intent
 import android.net.Uri
@@ -13,12 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.JOIN_GROUP
+import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.UtilsSingleton
-import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
-import com.gabr.gabc.kelo.welcomeActivity.viewPager.ViewPagerPage1
-import com.gabr.gabc.kelo.welcomeActivity.viewPager.ViewPagerPage2
-import com.gabr.gabc.kelo.welcomeActivity.viewPager.ViewPagerPage3
+import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage1
+import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage2
+import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage3
 
 /** Activity that manages the ViewPager fragments and the entire log in logic for joining or creating a group */
 class WelcomeActivity : AppCompatActivity() {
@@ -90,10 +91,7 @@ class WelcomeActivity : AppCompatActivity() {
             }
         })
         viewModel.isLoading.observe(this, { loading ->
-            UtilsSingleton.setUserInteractionWhileLoading(this, parent, loading)
-            UtilsSingleton.manageLoadingView(this.loading, fullViewLoading, loading)
-            if (loading) UtilsSingleton.changeStatusBarColor(this, this, R.color.secondaryColor)
-            else UtilsSingleton.changeStatusBarColor(this, this, R.color.contrast)
+            LoadingSingleton.showFullLoadingScreen(this, parent, this.loading, fullViewLoading, loading)
         })
     }
 

@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo
+package com.gabr.gabc.kelo.choreDetail
 
 import android.os.Bundle
 import android.view.Menu
@@ -9,14 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
-import com.gabr.gabc.kelo.choreDetailActivity.ChoreDetailFunctions
+import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.choreDetailActivity.AssigneeViewModel
 import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.utils.*
 import com.gabr.gabc.kelo.utils.widgets.CustomDatePicker
-import com.gabr.gabc.kelo.choreDetailActivity.UsersBottomSheet
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -152,9 +150,9 @@ class ChoreDetailActivity : AppCompatActivity() {
         if (viewDetails) {
             val c = Calendar.getInstance()
             chore.expiration?.let { c.time = it }
-            date.text = UtilsSingleton.parseCalendarToString(c)
+            date.text = DatesSingleton.parseCalendarToString(c)
         }
-        else date.text = UtilsSingleton.parseCalendarToString(Calendar.getInstance())
+        else date.text = DatesSingleton.parseCalendarToString(Calendar.getInstance())
 
         date.setOnClickListener {
             clearFocusOfEditTextAndSetDrawable()
@@ -168,7 +166,7 @@ class ChoreDetailActivity : AppCompatActivity() {
     private fun onDateSelected(day: Int, month: Int, year: Int) {
         val calendar = ChoreDetailFunctions.parseAndUpdateChoreWithSelectedDate(chore, day, month, year)
         selectedCalendar = calendar
-        date.text = UtilsSingleton.parseCalendarToString(calendar)
+        date.text = DatesSingleton.parseCalendarToString(calendar)
     }
 
     private fun setUpImportance() {
@@ -195,7 +193,7 @@ class ChoreDetailActivity : AppCompatActivity() {
 
         if (viewDetails) {
             chore.assignee?.let {
-                if (UtilsSingleton.isUserBeingDisplayedCurrentUser(it)) {
+                if (SharedPreferences.isUserBeingDisplayedCurrentUser(it)) {
                     UtilsSingleton.setTextAndIconToYou(baseContext, assignee, null)
                 } else {
                     SharedPreferences.groupId?.let { id ->
@@ -218,7 +216,7 @@ class ChoreDetailActivity : AppCompatActivity() {
 
     private fun observeAssigneeUponSelection() {
         viewModel.assignee.observe(this, { user ->
-            if (UtilsSingleton.isUserBeingDisplayedCurrentUser(user.id)) {
+            if (SharedPreferences.isUserBeingDisplayedCurrentUser(user.id)) {
                 UtilsSingleton.setTextAndIconToYou(baseContext, assignee, null)
             } else {
                 assignee.text = user.name

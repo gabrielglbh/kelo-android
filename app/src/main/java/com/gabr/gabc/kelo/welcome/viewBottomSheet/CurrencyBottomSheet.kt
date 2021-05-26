@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.welcomeActivity.viewBottomSheet
+package com.gabr.gabc.kelo.welcome.viewBottomSheet
 
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.CURRENCIES
-import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
+import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 
 /** Bottom Sheet Dialog Fragment that holds the currency list in the WelcomeActivity */
 class CurrencyBottomSheet : BottomSheetDialogFragment() {

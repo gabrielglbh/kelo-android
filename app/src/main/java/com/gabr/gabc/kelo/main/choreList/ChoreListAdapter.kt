@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.mainActivity.choreList
+package com.gabr.gabc.kelo.main.choreList
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -14,6 +14,8 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.utils.DatesSingleton
+import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import kotlinx.coroutines.CoroutineScope
@@ -53,14 +55,14 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
      * */
     init {
         if (groupId != null) {
-            UtilsSingleton.manageLoadingView(loading, null, true)
+            LoadingSingleton.manageLoadingView(loading, null, true)
             val listener = ChoreQueries().attachListenerToChores(groupId,
                 { position, chore -> addChoreAtPosition(position, chore) },
                 { position, chore -> updateChoreAtPosition(position, chore) },
                 { position -> removeChoreAtPosition(position) })
 
             if (listener == null) Toast.makeText(context, R.string.err_loading_chores, Toast.LENGTH_SHORT).show()
-            UtilsSingleton.manageLoadingView(loading, null, false)
+            LoadingSingleton.manageLoadingView(loading, null, false)
         } else Toast.makeText(context, R.string.err_group_does_not_exist, Toast.LENGTH_SHORT).show()
     }
 
@@ -145,7 +147,7 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
                 30 -> choreImportance.setBackgroundColor(context.getColor(R.color.importanceHigh))
             }
             chores[position].assignee?.let { uid ->
-                if (UtilsSingleton.isUserBeingDisplayedCurrentUser(uid)) {
+                if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
                     UtilsSingleton.setTextAndIconToYou(context, choreAssignee, null)
                 } else {
                     SharedPreferences.groupId?.let { id ->
@@ -160,7 +162,7 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
             }
             val calendar = Calendar.getInstance()
             chores[position].expiration?.let { calendar.time = it }
-            choreExpiration.text = UtilsSingleton.parseCalendarToStringOnList(calendar)
+            choreExpiration.text = DatesSingleton.parseCalendarToStringOnList(calendar)
         }
     }
 

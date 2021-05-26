@@ -1,6 +1,6 @@
 package com.gabr.gabc.kelo.steps
 
-import com.gabr.gabc.kelo.welcomeActivity.WelcomePageFunctions
+import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
 import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue

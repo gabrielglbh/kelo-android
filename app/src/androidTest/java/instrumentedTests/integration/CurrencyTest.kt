@@ -2,7 +2,7 @@ package instrumentedTests.integration
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.gabr.gabc.kelo.constants.CURRENCIES
-import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
+import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 import instrumentedTests.integration.utils.getOrAwaitValue
 import junit.framework.TestCase
 import org.junit.Rule

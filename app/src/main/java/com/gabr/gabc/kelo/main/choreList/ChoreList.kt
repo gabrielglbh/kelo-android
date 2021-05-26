@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.mainActivity.choreList
+package com.gabr.gabc.kelo.main.choreList
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gabr.gabc.kelo.ChoreDetailActivity
 import com.gabr.gabc.kelo.R
+import com.gabr.gabc.kelo.choreDetail.ChoreDetailActivity
 import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.google.android.material.floatingactionbutton.FloatingActionButton

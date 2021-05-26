@@ -6,7 +6,7 @@
     app:startDestination="@id/choreList">
     <fragment
         android:id="@+id/choreList"
-        android:name="com.gabr.gabc.kelo.mainActivity.choreList.ChoreList"
+        android:name="com.gabr.gabc.kelo.main.choreList.ChoreList"
         android:label="ChoreList"
         tools:layout="@layout/chore_list">
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/settings"
-        android:name="com.gabr.gabc.kelo.mainActivity.Settings"
+        android:name="com.gabr.gabc.kelo.main.Settings"
         android:label="Settings"
         tools:layout="@layout/settings">
         <action

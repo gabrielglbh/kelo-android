@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.mainActivity.choreList
+package com.gabr.gabc.kelo.main.choreList
 
 import android.content.Context
 import android.graphics.*

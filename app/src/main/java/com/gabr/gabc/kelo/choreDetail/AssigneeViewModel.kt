@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.choreDetailActivity
+package com.gabr.gabc.kelo.choreDetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

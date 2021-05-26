@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.welcomeActivity.viewPager
+package com.gabr.gabc.kelo.welcome.viewPager
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,16 +11,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.gabr.gabc.kelo.MainActivity
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.GROUP_ID
 import com.gabr.gabc.kelo.constants.USER_ID
 import com.gabr.gabc.kelo.firebase.UserQueries
+import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
-import com.gabr.gabc.kelo.welcomeActivity.WelcomeViewModel
-import com.gabr.gabc.kelo.welcomeActivity.WelcomePageFunctions
+import com.gabr.gabc.kelo.welcome.WelcomeViewModel
+import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout

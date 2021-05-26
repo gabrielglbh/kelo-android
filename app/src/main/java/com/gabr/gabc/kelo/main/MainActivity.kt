@@ -1,15 +1,18 @@
-package com.gabr.gabc.kelo
+package com.gabr.gabc.kelo.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.GROUP_ID
 import com.gabr.gabc.kelo.constants.USER_ID
-import com.gabr.gabc.kelo.mainActivity.ShareCodeBottomSheet
+import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.google.android.material.appbar.MaterialToolbar
@@ -24,14 +27,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var navController: NavController
 
+    private lateinit var fullViewLoading: ConstraintLayout
+    private lateinit var loading: ProgressBar
+
+    private lateinit var viewModel: LoadViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        viewModel = run { ViewModelProvider(this).get(LoadViewModel::class.java) }
         SharedPreferences.getStringCode(this, GROUP_ID)
         SharedPreferences.getStringCode(this, USER_ID)
 
         parent = findViewById(R.id.mainActivityRoot)
+
+        fullViewLoading = findViewById(R.id.loadingFragment)
+        loading = findViewById(R.id.loadingWidget)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -39,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.mainBottomNavigationView)
 
         setUpToolbar()
+        setUpObserverForShowingLoadingScreen()
         manageClickOnBottomNavigation()
     }
 
@@ -62,6 +75,12 @@ class MainActivity : AppCompatActivity() {
         UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
         toolbar = findViewById(R.id.toolbar_widget)
         setSupportActionBar(toolbar)
+    }
+
+    private fun setUpObserverForShowingLoadingScreen() {
+        viewModel.isLoading.observe(this, { loading ->
+            LoadingSingleton.showFullLoadingScreen(this, parent, this.loading, fullViewLoading, loading)
+        })
     }
 
     private fun manageClickOnBottomNavigation() {

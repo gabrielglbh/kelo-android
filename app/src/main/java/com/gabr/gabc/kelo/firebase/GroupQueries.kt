@@ -83,8 +83,9 @@ class GroupQueries {
             instance.collection(fbGroupsCollection)
                 .document(groupId).delete()
                 .await()
-            UserQueries().deleteAllUsers(groupId)
-            true
+            val users = UserQueries().deleteAllUsers(groupId)
+            val chores = ChoreQueries().deleteAllChores(groupId)
+            users && chores
         } catch (e: Exception) {
             false
         }

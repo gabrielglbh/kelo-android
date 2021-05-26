@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.welcomeActivity
+package com.gabr.gabc.kelo.welcome
 
 import com.gabr.gabc.kelo.constants.GROUP_NAME_VALIDATOR
 import com.gabr.gabc.kelo.constants.NAME_VALIDATOR
