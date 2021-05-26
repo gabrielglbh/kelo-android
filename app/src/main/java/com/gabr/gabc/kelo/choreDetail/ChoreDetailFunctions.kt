@@ -2,7 +2,7 @@ package com.gabr.gabc.kelo.choreDetail
 
 import com.gabr.gabc.kelo.constants.CHORE_NAME_VALIDATOR
 import com.gabr.gabc.kelo.models.Chore
-import com.gabr.gabc.kelo.utils.widgets.CustomDatePicker
+import com.gabr.gabc.kelo.utils.common.CustomDatePicker
 import java.util.*
 
 /** Singleton instance with helper functions only relevant for ChoreDetailActivity */

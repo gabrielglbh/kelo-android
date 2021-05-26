@@ -1,11 +1,14 @@
 package com.gabr.gabc.kelo.firebase
 
+import android.util.Log
 import com.gabr.gabc.kelo.constants.UserFields
 import com.gabr.gabc.kelo.constants.fbGroupsCollection
 import com.gabr.gabc.kelo.constants.fbUsersCollection
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -89,6 +92,38 @@ class UserQueries {
             ref.toObject<User>()
         } catch (e: Exception) {
             null
+        }
+    }
+
+    /**
+     * Function that defines a listener to the chores of a certain group to display them in the User List
+     * Depending on the type of the change, the list of users will update
+     *
+     * @param groupId: group id in which the chores are
+     * @param notifyAdded: function that notifies the recyclerview to update its content
+     * @param notifyDeleted: function that notifies the recyclerview to update its content
+     * @return [ListenerRegistration] of the collection listener
+     * */
+    fun attachListenerToUsers(groupId: String,
+                               notifyAdded: (pos: Int, user: User) -> Unit,
+                               notifyDeleted: (pos: Int) -> Unit) : ListenerRegistration? {
+        try {
+            val ref = instance.collection(fbGroupsCollection).document(groupId)
+                .collection(fbUsersCollection)
+            return ref.addSnapshotListener { value, e ->
+                if (e != null) return@addSnapshotListener
+                for (doc in value!!.documentChanges) {
+                    val user = doc.document.toObject<User>()
+                    when (doc.type) {
+                        DocumentChange.Type.ADDED -> notifyAdded(doc.newIndex, user)
+                        DocumentChange.Type.MODIFIED -> Log.e("MODIFIED", user.id)
+                        DocumentChange.Type.REMOVED -> notifyDeleted(doc.oldIndex)
+                    }
+                }
+            }
+        }
+        catch (e : Exception) {
+            return null
         }
     }
 
@@ -188,12 +223,12 @@ class UserQueries {
     }
 
     /**
-     * Gets a random user from an array
+     * Gets a random user from teh users of the group
      *
-     * @param users: array of users from [getAllUsers]
      * @return randomly selected [User]
      * */
-    fun getRandomUser(users: ArrayList<User?>?): User? {
+    suspend fun getRandomUser(groupId: String): User? {
+        val users = getAllUsers(groupId)
         return if (users != null) users[Random.nextInt(0, users.size)] else null
     }
 

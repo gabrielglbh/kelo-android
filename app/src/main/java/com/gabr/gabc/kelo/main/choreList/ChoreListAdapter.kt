@@ -82,7 +82,8 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
     }
 
     /**
-     * Removes a certain [Chore] of the list
+     * Removes a certain [Chore] of the list. If it fails somehow, [notifyItemChanged] is called
+     * to make the view return to its initial position
      *
      * @param position: position in which to remove the item
      * */
@@ -97,10 +98,12 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
                 }
             }
         }
+        notifyItemChanged(position)
     }
 
     /**
-     * Marks as completed the selected chore
+     * Marks as completed the selected chore. If it fails somehow, [notifyItemChanged] is called
+     * to make the view return to its initial position
      *
      * @param position: position in which the completed chore is
      * */
@@ -111,6 +114,7 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
                 if (!success) Toast.makeText(context, R.string.err_chore_completion, Toast.LENGTH_SHORT).show()
             }
         }
+        notifyItemChanged(position)
     }
 
     /**

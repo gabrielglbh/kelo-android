@@ -14,7 +14,7 @@ import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.utils.*
-import com.gabr.gabc.kelo.utils.widgets.CustomDatePicker
+import com.gabr.gabc.kelo.utils.common.CustomDatePicker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText

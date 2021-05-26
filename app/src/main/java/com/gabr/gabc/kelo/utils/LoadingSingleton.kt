@@ -32,7 +32,7 @@ object LoadingSingleton {
     /**
      * Manages the show/hide of the loading_widget
      *
-     * @param view: loading widget to hide or show
+     * @param view: loading widget to hide or show. ID: loadingWidget
      * @param fullView: Nullable view representing the full_view_loading_widget in order to
      * @param show: Boolean to whether show or hider the [view]
      * show or hide that instead of solely the [view]

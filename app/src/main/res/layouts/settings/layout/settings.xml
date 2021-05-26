@@ -11,18 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/settingsDebugButton"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/material_button_height"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="RESET FIRST_LAUNCHED BOOL"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/pointsLabel"
             style="@style/HeaderStyle"
@@ -32,7 +20,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/settings_points_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settingsDebugButton" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/userPoints"
@@ -46,6 +34,46 @@
             tools:text="45" />
 
         <TextView
+            android:id="@+id/settingsUserLabel"
+            style="@style/HeaderStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/settings_users_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userPoints" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsUserListContainer"
+            android:layout_width="0dp"
+            android:layout_height="280dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/settingsUserLabel"
+            app:layout_constraintTop_toBottomOf="@+id/settingsUserLabel">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/settingsUserList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/users_list_item" />
+
+            <include
+                layout="@layout/loading_widget"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
             android:id="@+id/dangerZoneLabel"
             style="@style/HeaderStyle"
             android:layout_width="wrap_content"
@@ -54,7 +82,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/settings_danger_zone_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userPoints" />
+            app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settingsRemoveGroupButton"
@@ -74,24 +102,22 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/material_button_height"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
             android:text="@string/settings_leave_group_button"
             app:backgroundTint="@color/errorColor"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
             app:layout_constraintStart_toStartOf="@+id/guideline13"
             app:layout_constraintTop_toTopOf="@+id/settingsRemoveGroupButton" />
 
-        <com.google.android.material.button.MaterialButton
+        <!--<com.google.android.material.button.MaterialButton
             android:id="@+id/settingsRemoveUserButton"
             android:layout_width="0dp"
             android:layout_height="@dimen/material_button_height"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:text="@string/settings_delete_user_button"
             app:backgroundTint="@color/errorColor"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/settingsExitGroupButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settingsExitGroupButton" />
+            app:layout_constraintTop_toBottomOf="@+id/settingsExitGroupButton" />-->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline13"

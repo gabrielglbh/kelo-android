@@ -17,7 +17,7 @@ import org.junit.runners.BlockJUnit4ClassRunner
 class UserTest {
     private val q = UserQueries()
     private val group = Group("GROUP", "generic group", "EUR")
-    private val user = User("CREATE_USER", "createUser", 0)
+    private val user = User("USER_A", "createUser", 0)
 
     /** Initializes and creates Firebase needed data for the tests */
     @Before
@@ -72,8 +72,7 @@ class UserTest {
     @Test
     fun readRandomUserSuccessfully() = runBlocking {
         q.createUser(User("RND_USER", "Random", 30), group.id)
-        val users = q.getAllUsers(group.id)
-        val rndUser = q.getRandomUser(users)
+        val rndUser = q.getRandomUser(group.id)
         assertTrue(rndUser != null)
     }
 
@@ -119,5 +118,35 @@ class UserTest {
     fun isUsernameAvailableSuccessfully() = runBlocking {
         val result = q.isUsernameAvailable(group.id, "nameIsFullyAvailable")
         assertTrue(result)
+    }
+
+    /** Tests the listener function for chores: attachListenerToUsers - Addition */
+    @Test
+    fun setListenerOnUsersAddSuccessfully() = runBlocking {
+        val users = arrayListOf<User>()
+        val uploadUser = User("USER_U", "Gabriel", 0)
+        val result = q.attachListenerToUsers(group.id, { pos, u ->
+            users.add(pos, u)
+        }, { })
+        q.createUser(uploadUser, group.id)
+        assertTrue(result != null)
+        assertTrue(users.size == 2)
+        assertTrue(users.indexOf(uploadUser) == 1)
+    }
+
+    /** Tests the listener function for chores: attachListenerToUsers - Deletion */
+    @Test
+    fun setListenerOnUsersDeleteSuccessfully() = runBlocking {
+        val users = arrayListOf<User>()
+        val uploadUser = User("USER_U", "Gabriel", 0)
+        val result = q.attachListenerToUsers(group.id, { pos, u ->
+            users.add(pos, u)
+        }, { pos ->
+            users.removeAt(pos)
+        })
+        q.createUser(uploadUser, group.id)
+        q.deleteUser(uploadUser.id, group.id)
+        assertTrue(result != null)
+        assertTrue(users.size == 1)
     }
 }

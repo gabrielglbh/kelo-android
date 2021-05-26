@@ -55,6 +55,7 @@
     <string name="settings_delete_group_button">Eliminar Grupo</string>
     <string name="settings_leave_group_button">Salir del Grupo</string>
     <string name="settings_delete_user_button">Eliminar Usuario</string>
+    <string name="settings_users_label">Usuarios</string>
     <string name="settings_dialog_msg_delete_group">¿Estás seguro de que quieres eliminar este grupo? Esta acción no se puede deshacer</string>
     <string name="settings_dialog_msg_leave_group">¿Estás seguro de que quieres irte de este grupo? Esta acción no se puede deshacer</string>
     <string name="settings_dialog_btn_delete_positive">Eliminar</string>
@@ -78,4 +79,5 @@
     <string name="err_chore_completion">Algo ha ocurrido mientras se marcaba la tarea como completada</string>
     <string name="err_group_delete">Algo ha ocurrido mientras se eliminaba el grupo</string>
     <string name="err_group_leave">Algo ha ocurrido mientras se estaba dejando el grupo</string>
+    <string name="err_user_delete">Algo ha ocurrido mientras se eliminaba al usuario del grupo</string>
 </resources>

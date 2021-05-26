@@ -21,4 +21,16 @@ class User(
             UserFields.points to points
         )
     }
+
+    override fun equals(other: Any?): Boolean {
+        val chore = other as User
+        return id == chore.id && name == chore.name && points == chore.points
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + points
+        return result
+    }
 }

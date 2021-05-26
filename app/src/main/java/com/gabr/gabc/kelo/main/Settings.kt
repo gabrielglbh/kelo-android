@@ -5,15 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
+import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.DialogSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
+import com.gabr.gabc.kelo.utils.common.UserListSwipeController
+import com.gabr.gabc.kelo.utils.common.UsersAdapter
 import com.gabr.gabc.kelo.welcome.WelcomeActivity
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -21,14 +28,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** Fragment that manages all settings of Kelo */
-class Settings : Fragment() {
-
+class Settings : Fragment(), UsersAdapter.UserClickListener {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
-    private lateinit var deleteUserButton: MaterialButton
-
-    private lateinit var debugButton: MaterialButton
+    //private lateinit var deleteUserButton: MaterialButton
+    private lateinit var userList: RecyclerView
+    private lateinit var loading: ProgressBar
 
     private lateinit var viewModel: LoadViewModel
 
@@ -49,10 +55,7 @@ class Settings : Fragment() {
             }
         }
 
-        debugButton = view.findViewById(R.id.settingsDebugButton)
-        debugButton.setOnClickListener {
-            SharedPreferences.putIsFirstLaunched(requireActivity(), false)
-        }
+        setUpUserList(view)
 
         deleteGroupButton = view.findViewById(R.id.settingsRemoveGroupButton)
         deleteGroupButton.setOnClickListener {
@@ -74,7 +77,26 @@ class Settings : Fragment() {
             ) { leaveGroup() }
         }
 
-        deleteUserButton = view.findViewById(R.id.settingsRemoveUserButton)
+        //deleteUserButton = view.findViewById(R.id.settingsRemoveUserButton)
+    }
+
+    override fun onUserClicked(user: User?) {
+        Toast.makeText(requireContext(), "USER CLICKED", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setUpUserList(view: View) {
+        loading = view.findViewById(R.id.loadingWidget)
+        userList = view.findViewById(R.id.settingsUserList)
+        userList.layoutManager = LinearLayoutManager(requireContext())
+
+        SharedPreferences.groupId?.let {
+            val adapter = UsersAdapter(this, requireContext(), loading, it)
+            val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
+            )
+            userList.adapter = adapter
+            swipeHelper.attachToRecyclerView(userList)
+        }
     }
 
     private fun deleteGroup() {

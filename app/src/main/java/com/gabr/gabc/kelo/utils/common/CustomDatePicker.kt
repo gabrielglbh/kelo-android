@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.utils.widgets
+package com.gabr.gabc.kelo.utils.common
 
 import android.app.DatePickerDialog
 import android.app.Dialog

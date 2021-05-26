@@ -57,6 +57,7 @@
     <string name="settings_delete_group_button">Delete Group</string>
     <string name="settings_leave_group_button">Leave Group</string>
     <string name="settings_delete_user_button">Delete User</string>
+    <string name="settings_users_label">Users</string>
     <string name="settings_dialog_msg_delete_group">Are you sure you want to delete this group? This action cannot be undone</string>
     <string name="settings_dialog_msg_leave_group">Are you sure you want to leave this group? This action cannot be undone</string>
     <string name="settings_dialog_btn_delete_positive">Delete</string>
@@ -79,5 +80,6 @@
     <string name="err_chore_delete">Something went wrong while removing the chore</string>
     <string name="err_chore_completion">Something went wrong while marking the chore as completed</string>
     <string name="err_group_delete">Something went wrong while removing the group</string>
-    <string name="err_group_leave">Somthing went wrong while leaving the group</string>
+    <string name="err_group_leave">Something went wrong while leaving the group</string>
+    <string name="err_user_delete">Something went wrong while removing the user from the group</string>
 </resources>
