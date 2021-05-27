@@ -102,6 +102,7 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
         inflater.inflate(R.layout.users_list_item, parent, false)), View.OnClickListener {
         private val parent: ConstraintLayout = itemView.findViewById(R.id.usersTab)
         private val name: TextView = itemView.findViewById(R.id.userName)
+        private val points: TextView = itemView.findViewById(R.id.userPoints)
         private val avatar: ImageView = itemView.findViewById(R.id.userAvatar)
 
         override fun onClick(v: View?) { listener.onUserClicked(users[layoutPosition]) }
@@ -112,12 +113,17 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
          * @param position: position of the list to be initialized
          * */
         fun initializeView(position: Int) {
+            name.isSelected = true
             users[position].id.let { uid ->
                 avatar.setImageDrawable(UtilsSingleton.createAvatar(users[position].name))
                 if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
                     name.text = UtilsSingleton.setTextForCurrentUser(context, users[position].name)
                 }
                 else name.text = users[position].name
+            }
+            users[position].points.let { pts ->
+                val p = "Pts: $pts"
+                points.text = p
             }
             parent.setOnClickListener(this)
         }
