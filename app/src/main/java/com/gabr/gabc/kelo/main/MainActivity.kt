@@ -10,10 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.gabr.gabc.kelo.R
+import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.utils.LoadingSingleton
+import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /** Activity that manages the settings and chore list Fragments */
 class MainActivity : AppCompatActivity() {
@@ -70,6 +75,12 @@ class MainActivity : AppCompatActivity() {
         UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
         toolbar = findViewById(R.id.toolbar_widget)
         setSupportActionBar(toolbar)
+        CoroutineScope(Dispatchers.Main).launch {
+            SharedPreferences.groupId?.let { gid ->
+                val group = GroupQueries().getGroup(gid)
+                group?.let { gr -> supportActionBar?.subtitle = gr.name }
+            }
+        }
     }
 
     private fun setUpObserverForShowingLoadingScreen() {

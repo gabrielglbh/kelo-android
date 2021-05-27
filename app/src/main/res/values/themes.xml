@@ -34,6 +34,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Material Toolbar Subtitle Style -->
+    <style name="SubtitleStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/labelText</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
     <!-- TextInputLayout Style -->
     <style name="CustomTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="counterEnabled">false</item>
