@@ -152,7 +152,7 @@ class ChoreQueries {
             val q = UserQueries()
             val user = q.getUser(chore.assignee!!, groupId)
             if (user != null) {
-                user.points = chore.points
+                user.points += chore.points
                 val success = q.updateUser(user, groupId)
                 if (success) { return deleteChore(chore.id!!, groupId) }
                 else false

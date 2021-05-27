@@ -32,7 +32,6 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
-    //private lateinit var deleteUserButton: MaterialButton
     private lateinit var userList: RecyclerView
     private lateinit var loading: ProgressBar
 
@@ -76,8 +75,6 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                 getString(R.string.settings_dialog_btn_leave_positive),
             ) { leaveGroup() }
         }
-
-        //deleteUserButton = view.findViewById(R.id.settingsRemoveUserButton)
     }
 
     override fun onUserClicked(user: User?) {

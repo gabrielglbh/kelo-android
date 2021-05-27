@@ -20,7 +20,7 @@ import java.util.*
 class ChoreTest {
     private val q = ChoreQueries()
     private val group = Group("GROUP", "generic group", "EUR")
-    private val user = User("USER", "generic user", 0)
+    private val user = User("USER", "generic user", 20)
     private val chore = Chore("CHORE_C", "CHORE_C", "", "USER", Calendar.getInstance().time, 30)
 
     /** Initializes and creates Firebase needed data for the tests */
@@ -88,7 +88,7 @@ class ChoreTest {
     fun completeChoreSuccessfully() = runBlocking {
         val success = q.completeChore(chore, group.id)
         val user = UserQueries().getUser(user.id, group.id)
-        assertTrue(success && user != null && user.points == 30)
+        assertTrue(success && user != null && user.points == 50)
     }
 
     /** Tests the listener function for chores: attachListenerToChores - Addition */

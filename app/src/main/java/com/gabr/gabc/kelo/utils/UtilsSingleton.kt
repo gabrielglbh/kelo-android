@@ -75,14 +75,14 @@ object UtilsSingleton {
 
     /**
      * Function that given a text view and an image view, sets those views to a personal refer.
-     * textview -> 'You' and the icon (if any) -> R.drawable.person
+     * textview -> 'You'
      *
      * @param context: application context
-     * @param textView: text view to override
-     * @param imageView: image view to override
+     * @param name: user name
+     * @return parsed name: name (you)
      * */
-    fun setTextAndIconToYou(context: Context, textView: TextView, imageView: ImageView?) {
-        textView.text = context.getString(R.string.users_you)
-        imageView?.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.person))
+    fun setTextForCurrentUser(context: Context, name: String): String {
+        val you = context.getString(R.string.users_you)
+        return "$name ($you)"
     }
 }

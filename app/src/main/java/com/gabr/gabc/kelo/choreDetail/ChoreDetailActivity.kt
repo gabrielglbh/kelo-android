@@ -189,16 +189,17 @@ class ChoreDetailActivity : AppCompatActivity() {
     }
 
     private fun setUpAssignee() {
+        val tThis = this
         assignee = findViewById(R.id.choreDetailAssigneeButton)
 
         if (viewDetails) {
             chore.assignee?.let {
-                if (SharedPreferences.isUserBeingDisplayedCurrentUser(it)) {
-                    UtilsSingleton.setTextAndIconToYou(baseContext, assignee, null)
-                } else {
-                    SharedPreferences.groupId?.let { id ->
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val user = UserQueries().getUser(it, id)
+                SharedPreferences.groupId?.let { id ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val user = UserQueries().getUser(it, id)
+                        if (SharedPreferences.isUserBeingDisplayedCurrentUser(it)) {
+                            if (user != null) assignee.text = UtilsSingleton.setTextForCurrentUser(tThis, user.name)
+                        } else {
                             if (user != null) assignee.text = user.name
                         }
                     }
@@ -217,7 +218,7 @@ class ChoreDetailActivity : AppCompatActivity() {
     private fun observeAssigneeUponSelection() {
         viewModel.assignee.observe(this, { user ->
             if (SharedPreferences.isUserBeingDisplayedCurrentUser(user.id)) {
-                UtilsSingleton.setTextAndIconToYou(baseContext, assignee, null)
+                assignee.text = UtilsSingleton.setTextForCurrentUser(this, user.name)
             } else {
                 assignee.text = user.name
             }

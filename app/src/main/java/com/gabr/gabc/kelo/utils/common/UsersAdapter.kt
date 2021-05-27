@@ -113,12 +113,11 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
          * */
         fun initializeView(position: Int) {
             users[position].id.let { uid ->
+                avatar.setImageDrawable(UtilsSingleton.createAvatar(users[position].name))
                 if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
-                    context.let { UtilsSingleton.setTextAndIconToYou(it, name, avatar) }
-                } else {
-                    avatar.setImageDrawable(UtilsSingleton.createAvatar(users[position].name))
-                    name.text = users[position].name
+                    name.text = UtilsSingleton.setTextForCurrentUser(context, users[position].name)
                 }
+                else name.text = users[position].name
             }
             parent.setOnClickListener(this)
         }

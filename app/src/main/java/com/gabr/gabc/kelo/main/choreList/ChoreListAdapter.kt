@@ -151,12 +151,13 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
                 30 -> choreImportance.setBackgroundColor(context.getColor(R.color.importanceHigh))
             }
             chores[position].assignee?.let { uid ->
-                if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
-                    UtilsSingleton.setTextAndIconToYou(context, choreAssignee, null)
-                } else {
-                    SharedPreferences.groupId?.let { id ->
-                        CoroutineScope(Dispatchers.Main).launch {
-                            val user = chores[position].assignee?.let { UserQueries().getUser(it, id) }
+                SharedPreferences.groupId?.let { id ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val user = chores[position].assignee?.let { UserQueries().getUser(it, id) }
+                        if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
+                            if (user != null) choreAssignee.text = UtilsSingleton.setTextForCurrentUser(context, user.name)
+                            else choreAssignee.text = context.getString(R.string.chore_not_assigned)
+                        } else {
                             if (user != null) choreAssignee.text = user.name
                             else choreAssignee.text = context.getString(R.string.chore_not_assigned)
                         }
