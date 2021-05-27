@@ -90,7 +90,8 @@ class UserQueries {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
                     .collection(fbUsersCollection).document(userId)
                     .get().await()
-            ref.toObject<User>()
+            if (!ref.exists()) null
+            else ref.toObject<User>()
         } catch (e: Exception) {
             null
         }

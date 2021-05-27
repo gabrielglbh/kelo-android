@@ -60,7 +60,8 @@ class ChoreQueries {
         return try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
                 .collection(fbChoresSubCollection).document(choreId).get().await()
-            ref.toObject<Chore>()
+            if (!ref.exists()) null
+            else ref.toObject<Chore>()
         } catch (e: Exception) {
             null
         }

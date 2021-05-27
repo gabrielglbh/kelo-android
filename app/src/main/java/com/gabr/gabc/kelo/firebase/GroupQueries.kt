@@ -50,7 +50,8 @@ class GroupQueries {
             val ref = instance.collection(fbGroupsCollection)
                 .document(groupId).get()
                 .await()
-            ref.toObject<Group>()
+            if (!ref.exists()) null
+            else ref.toObject<Group>()
         } catch (e: Exception) {
             null
         }
