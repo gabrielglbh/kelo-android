@@ -64,6 +64,12 @@
     <string name="settings_dialog_btn_leave_positive">Leave</string>
     <string name="settings_dialog_btn_negative">Cancel</string>
 
+    <!-- Permissions -->
+    <string name="admin" translatable="false">Admin</string>
+    <string name="permission_modify_chore">You are not allowed to modify this chore</string>
+    <string name="permission_remove_chore">You are not allowed to remove this chore</string>
+    <string name="permission_complete_chore">You are not allowed to complete this chore</string>
+
     <!-- Errors -->
     <string name="err_invalid_name">Invalid name</string>
     <string name="err_invalid_code">Invalid code</string>

@@ -1,6 +1,5 @@
 package com.gabr.gabc.kelo.firebase
 
-import android.util.Log
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.constants.UserFields
 import com.gabr.gabc.kelo.models.Group
@@ -103,11 +102,14 @@ class UserQueries {
      *
      * @param groupId: group id in which the chores are
      * @param notifyAdded: function that notifies the recyclerview to update its content
+     * @param notifyUpdated: function that notifies the recyclerview to update its content
      * @param notifyDeleted: function that notifies the recyclerview to update its content
      * @return [ListenerRegistration] of the collection listener
      * */
+    // TODO: Boolean isAdmin is not setting correctly
     fun attachListenerToUsers(groupId: String,
                                notifyAdded: (pos: Int, user: User) -> Unit,
+                               notifyUpdated: (pos: Int, user: User) -> Unit,
                                notifyDeleted: (pos: Int) -> Unit) : ListenerRegistration? {
         try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
@@ -118,7 +120,7 @@ class UserQueries {
                     val user = doc.document.toObject<User>()
                     when (doc.type) {
                         DocumentChange.Type.ADDED -> notifyAdded(doc.newIndex, user)
-                        DocumentChange.Type.MODIFIED -> Log.e("MODIFIED", user.id)
+                        DocumentChange.Type.MODIFIED -> notifyUpdated(doc.newIndex, user)
                         DocumentChange.Type.REMOVED -> notifyDeleted(doc.oldIndex)
                     }
                 }

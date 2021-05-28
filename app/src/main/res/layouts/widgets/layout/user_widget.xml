@@ -30,21 +30,35 @@
         android:text="@string/placeholder_user_name"
         android:textColor="@color/labelText"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/userAvatar"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toEndOf="@+id/userAvatar"
+        app:layout_constraintTop_toTopOf="@+id/userAvatar" />
+
+    <TextView
+        android:id="@+id/admin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/admin"
+        android:textColor="@color/admin"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/userAvatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/userAvatar" />
 
     <TextView
         android:id="@+id/userPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/labelText"
-        android:textSize="18sp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/userAvatar"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/userAvatar"
+        app:layout_constraintStart_toStartOf="@+id/userName"
+        app:layout_constraintTop_toBottomOf="@+id/userName"
         tools:text="Pts: 40" />
 
     <androidx.constraintlayout.widget.Guideline

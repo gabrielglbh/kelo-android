@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -14,11 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.choreDetail.ChoreDetailActivity
 import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /** Fragment that manages the list of chores from a group */
-class ChoreList : Fragment(), ChoreListAdapter.ItemClickListener {
+class ChoreList : Fragment(), ChoreListAdapter.ChoreClickListener {
 
     private lateinit var choreList: RecyclerView
     private lateinit var addChore: FloatingActionButton
@@ -57,10 +59,16 @@ class ChoreList : Fragment(), ChoreListAdapter.ItemClickListener {
         }
     }
 
-    override fun itemClickInPosition(view: View?, chore: Chore) {
-        val intent = Intent(context, ChoreDetailActivity::class.java)
-        intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, true)
-        intent.putExtra(ChoreDetailActivity.CHORE, chore)
-        ContextCompat.startActivity(requireContext(), intent, null)
+    override fun onChoreClick(chore: Chore) {
+        chore.creator?.let {
+            if (PermissionsSingleton.isUserChoreCreator(it)) {
+                val intent = Intent(context, ChoreDetailActivity::class.java)
+                intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, true)
+                intent.putExtra(ChoreDetailActivity.CHORE, chore)
+                ContextCompat.startActivity(requireContext(), intent, null)
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.permission_modify_chore), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

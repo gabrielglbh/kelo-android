@@ -15,5 +15,6 @@
     <color name="importanceHigh">#DD2C00</color>
 
     <color name="errorColor">#CC0000</color>
+    <color name="admin">#34C759</color>
     <color name="swapIconColor">#FFFFFF</color>
 </resources>

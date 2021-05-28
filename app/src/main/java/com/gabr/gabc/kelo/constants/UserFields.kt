@@ -4,4 +4,5 @@ package com.gabr.gabc.kelo.constants
 object UserFields {
     const val name = "name"
     const val points = "points"
+    const val isAdmin = "isAdmin"
 }

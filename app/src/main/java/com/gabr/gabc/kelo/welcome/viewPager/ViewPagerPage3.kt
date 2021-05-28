@@ -86,7 +86,8 @@ class ViewPagerPage3: Fragment() {
             UtilsSingleton.clearErrorFromTextLayout(nameInputLayout)
 
             val groupId = viewModel.groupCode.value!!
-            val user = User("", viewModel.userName.value!!, 0)
+            val mode = viewModel.groupSelectedMode.value
+            val user = User("", viewModel.userName.value!!, 0, mode == Constants.CREATE_GROUP)
 
             when (val userId = UserQueries().joinGroup(groupId, user)) {
                 "-1" -> Toast.makeText(context, getString(R.string.err_join_group), Toast.LENGTH_SHORT).show()
@@ -97,6 +98,8 @@ class ViewPagerPage3: Fragment() {
                     SharedPreferences.putIsFirstLaunched(requireActivity(), true)
                     SharedPreferences.putStringCode(requireActivity(), Constants.GROUP_ID, groupId)
                     SharedPreferences.putStringCode(requireActivity(), Constants.USER_ID, userId)
+                    SharedPreferences.getStringCode(requireActivity(), Constants.GROUP_ID)
+                    SharedPreferences.getStringCode(requireActivity(), Constants.USER_ID)
                     startActivity(intent)
                 }
             }

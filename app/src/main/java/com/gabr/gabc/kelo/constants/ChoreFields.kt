@@ -7,4 +7,5 @@ object ChoreFields {
     const val assignee = "assignee"
     const val expiration = "expiration"
     const val points = "points"
+    const val creator = "creator"
 }

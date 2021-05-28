@@ -14,10 +14,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Chore
-import com.gabr.gabc.kelo.utils.DatesSingleton
-import com.gabr.gabc.kelo.utils.LoadingSingleton
-import com.gabr.gabc.kelo.utils.SharedPreferences
-import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,21 +28,20 @@ import kotlin.collections.ArrayList
  * @param loading: [ProgressBar] widget for showing it and hide it when loading
  * @param groupId: group id to retrieve the chores from
  * */
-class ChoreListAdapter(private val listener: ItemClickListener, private val context: Context,
+class ChoreListAdapter(private val listener: ChoreClickListener, private val context: Context,
                        loading: ProgressBar, groupId: String?)
     : RecyclerView.Adapter<ChoreListAdapter.ChoreHolder>() {
 
     /**
      * Interface that defines a function to be called by the initializer when clicking on a certain item
      * */
-    interface ItemClickListener {
+    interface ChoreClickListener {
         /**
          * Function that gets the selected [Chore] in the adapter to be managed by the caller
          *
-         * @param view: current view
          * @param chore: clicked [Chore]
          * */
-        fun itemClickInPosition(view: View?, chore: Chore)
+        fun onChoreClick(chore: Chore)
     }
     var chores: ArrayList<Chore> = arrayListOf()
 
@@ -83,18 +79,22 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
 
     /**
      * Removes a certain [Chore] of the list. If it fails somehow, [notifyItemChanged] is called
-     * to make the view return to its initial position
+     * to make the view return to its initial position. Only the creator of the chore can remove it.
      *
      * @param position: position in which to remove the item
      * */
     fun removeChoreOnSwap(position: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             chores[position].id?.let {
-                SharedPreferences.groupId?.let { id ->
-                    val success = ChoreQueries().deleteChore(it, id)
-                    if (!success) {
-                        Toast.makeText(context, R.string.err_chore_delete, Toast.LENGTH_SHORT).show()
+                if (PermissionsSingleton.isUserChoreCreator(it)) {
+                    SharedPreferences.groupId?.let { id ->
+                        val success = ChoreQueries().deleteChore(it, id)
+                        if (!success) {
+                            Toast.makeText(context, R.string.err_chore_delete, Toast.LENGTH_SHORT).show()
+                        }
                     }
+                } else {
+                    Toast.makeText(context, context.getString(R.string.permission_remove_chore), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -103,15 +103,23 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
 
     /**
      * Marks as completed the selected chore. If it fails somehow, [notifyItemChanged] is called
-     * to make the view return to its initial position
+     * to make the view return to its initial position. Only the creator of the chore can complete it.
      *
      * @param position: position in which the completed chore is
      * */
     fun completeChoreOnSwap(position: Int) {
         CoroutineScope(Dispatchers.Main).launch {
-            SharedPreferences.groupId?.let { groupId ->
-                val success = ChoreQueries().completeChore(chores[position], groupId)
-                if (!success) Toast.makeText(context, R.string.err_chore_completion, Toast.LENGTH_SHORT).show()
+            chores[position].id?.let { uid ->
+                chores[position].assignee?.let { assignee ->
+                    if (PermissionsSingleton.isUserChoreCreatorOrAssignee(uid, assignee)) {
+                        SharedPreferences.groupId?.let { groupId ->
+                            val success = ChoreQueries().completeChore(chores[position], groupId)
+                            if (!success) Toast.makeText(context, R.string.err_chore_completion, Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.permission_complete_chore), Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
         notifyItemChanged(position)
@@ -135,7 +143,7 @@ class ChoreListAdapter(private val listener: ItemClickListener, private val cont
             choreTitle.isSelected = true
         }
 
-        override fun onClick(v: View?) { listener.itemClickInPosition(v, chores[layoutPosition]) }
+        override fun onClick(v: View?) { listener.onChoreClick(chores[layoutPosition]) }
 
         /**
          * Initializes the [ChoreHolder] fields with actual data

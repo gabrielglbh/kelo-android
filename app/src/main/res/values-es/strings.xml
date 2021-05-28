@@ -62,6 +62,11 @@
     <string name="settings_dialog_btn_leave_positive">Salir</string>
     <string name="settings_dialog_btn_negative">Cancelar</string>
 
+    <!-- Permissions -->
+    <string name="permission_modify_chore">No tienes los permisos suficientes para modificar esta tarea</string>
+    <string name="permission_remove_chore">No tienes los permisos suficientes para eliminar esta tarea</string>
+    <string name="permission_complete_chore">No tienes los permisos suficientes para completar esta tarea</string>
+
     <!-- Errors -->
     <string name="err_invalid_name">Nombre inválido</string>
     <string name="err_invalid_code">Código inválido</string>

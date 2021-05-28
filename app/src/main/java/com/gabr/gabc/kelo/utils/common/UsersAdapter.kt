@@ -14,6 +14,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.LoadingSingleton
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import kotlinx.coroutines.CoroutineScope
@@ -54,6 +55,7 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
             LoadingSingleton.manageLoadingView(loading, null, true)
             val listener = UserQueries().attachListenerToUsers(groupId,
                 { position, user -> addUserAtPosition(position, user) },
+                { position, user -> updateUserAtPosition(position, user) },
                 { position -> removeUserAtPosition(position) })
 
             if (listener == null) Toast.makeText(context, R.string.err_loading_users, Toast.LENGTH_SHORT).show()
@@ -64,6 +66,11 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
     private fun addUserAtPosition(position: Int, user: User) {
         users.add(position, user)
         notifyItemInserted(position)
+    }
+
+    private fun updateUserAtPosition(position: Int, user: User) {
+        users[position] = user
+        notifyItemChanged(position)
     }
 
     private fun removeUserAtPosition(position: Int) {
@@ -102,6 +109,7 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
         inflater.inflate(R.layout.users_list_item, parent, false)), View.OnClickListener {
         private val parent: ConstraintLayout = itemView.findViewById(R.id.usersTab)
         private val name: TextView = itemView.findViewById(R.id.userName)
+        private val isAdmin: TextView = itemView.findViewById(R.id.admin)
         private val points: TextView = itemView.findViewById(R.id.userPoints)
         private val avatar: ImageView = itemView.findViewById(R.id.userAvatar)
 
@@ -121,6 +129,9 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
                 }
                 else name.text = users[position].name
             }
+
+            if (PermissionsSingleton.isUserAdmin(users[position])) isAdmin.visibility = View.VISIBLE
+
             users[position].points.let { pts ->
                 val p = "Pts: $pts"
                 points.text = p
