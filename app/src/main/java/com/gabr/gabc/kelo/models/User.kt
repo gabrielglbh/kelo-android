@@ -11,7 +11,10 @@ class User(
     @DocumentId var id: String = "",
     @PropertyName(UserFields.name) val name: String = "",
     @PropertyName(UserFields.points) var points: Int = 0,
-    @PropertyName(UserFields.isAdmin) var isAdmin: Boolean = false
+    // Added JvmField for Boolean for Kotlin to use the proper setters and getters in the JVM
+    @field:JvmField
+    @PropertyName(UserFields.isAdmin)
+    var isAdmin: Boolean = false
 ) {
     /**
      * Transforms the current [User] into a [Map] to be uploaded to Firebase

@@ -106,7 +106,6 @@ class UserQueries {
      * @param notifyDeleted: function that notifies the recyclerview to update its content
      * @return [ListenerRegistration] of the collection listener
      * */
-    // TODO: Boolean isAdmin is not setting correctly
     fun attachListenerToUsers(groupId: String,
                                notifyAdded: (pos: Int, user: User) -> Unit,
                                notifyUpdated: (pos: Int, user: User) -> Unit,

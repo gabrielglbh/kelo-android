@@ -3,6 +3,7 @@ package com.gabr.gabc.kelo.utils
 import com.gabr.gabc.kelo.models.User
 
 /** Singleton instance with helper functions to validate the permission throughout the code */
+// TODO: The admin of the group can do any action
 object PermissionsSingleton {
     /**
      * Function that verifies if the current user is the admin of the group
@@ -28,5 +29,5 @@ object PermissionsSingleton {
      * @return boolean determining if the user is the chore creator
      * */
     fun isUserChoreCreatorOrAssignee(choreCreator: String, assignee: String) =
-        choreCreator == SharedPreferences.userId && choreCreator == assignee
+        choreCreator == SharedPreferences.userId || assignee == SharedPreferences.userId
 }

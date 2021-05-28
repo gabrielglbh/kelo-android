@@ -85,16 +85,19 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
      * */
     fun removeChoreOnSwap(position: Int) {
         CoroutineScope(Dispatchers.Main).launch {
-            chores[position].id?.let {
-                if (PermissionsSingleton.isUserChoreCreator(it)) {
-                    SharedPreferences.groupId?.let { id ->
-                        val success = ChoreQueries().deleteChore(it, id)
-                        if (!success) {
-                            Toast.makeText(context, R.string.err_chore_delete, Toast.LENGTH_SHORT).show()
+            val chore = chores[position]
+            chore.id?.let { choreId ->
+                chore.creator?.let { creator ->
+                    if (PermissionsSingleton.isUserChoreCreator(creator)) {
+                        SharedPreferences.groupId?.let { id ->
+                            val success = ChoreQueries().deleteChore(choreId, id)
+                            if (!success) {
+                                Toast.makeText(context, R.string.err_chore_delete, Toast.LENGTH_SHORT).show()
+                            }
                         }
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.permission_remove_chore), Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(context, context.getString(R.string.permission_remove_chore), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -109,11 +112,12 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
      * */
     fun completeChoreOnSwap(position: Int) {
         CoroutineScope(Dispatchers.Main).launch {
-            chores[position].id?.let { uid ->
-                chores[position].assignee?.let { assignee ->
-                    if (PermissionsSingleton.isUserChoreCreatorOrAssignee(uid, assignee)) {
+            val chore = chores[position]
+            chore.assignee?.let { assignee ->
+                chore.creator?.let { creator ->
+                    if (PermissionsSingleton.isUserChoreCreatorOrAssignee(creator, assignee)) {
                         SharedPreferences.groupId?.let { groupId ->
-                            val success = ChoreQueries().completeChore(chores[position], groupId)
+                            val success = ChoreQueries().completeChore(chore, groupId)
                             if (!success) Toast.makeText(context, R.string.err_chore_completion, Toast.LENGTH_SHORT).show()
                         }
                     } else {
@@ -135,6 +139,7 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
         private var choreIcon: ImageView = view.findViewById(R.id.choreListIcon)
         private var choreTitle: TextView = view.findViewById(R.id.choreListName)
         private var choreAssignee: TextView = view.findViewById(R.id.choreListAssignee)
+        private var choreCreator: TextView = view.findViewById(R.id.choreListCreator)
         private var choreExpiration: TextView = view.findViewById(R.id.choreListExpiration)
         private var choreImportance: View = view.findViewById(R.id.choreListImportance)
 
@@ -160,21 +165,30 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
             }
             chores[position].assignee?.let { uid ->
                 SharedPreferences.groupId?.let { id ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val user = chores[position].assignee?.let { UserQueries().getUser(it, id) }
-                        if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
-                            if (user != null) choreAssignee.text = UtilsSingleton.setTextForCurrentUser(context, user.name)
-                            else choreAssignee.text = context.getString(R.string.chore_not_assigned)
-                        } else {
-                            if (user != null) choreAssignee.text = user.name
-                            else choreAssignee.text = context.getString(R.string.chore_not_assigned)
-                        }
-                    }
+                    getUserForTextView(choreAssignee, uid, id)
+                }
+            }
+            chores[position].creator?.let { uid ->
+                SharedPreferences.groupId?.let { id ->
+                    getUserForTextView(choreCreator, uid, id)
                 }
             }
             val calendar = Calendar.getInstance()
             chores[position].expiration?.let { calendar.time = it }
             choreExpiration.text = DatesSingleton.parseCalendarToStringOnList(calendar)
+        }
+
+        private fun getUserForTextView(textView: TextView, uid: String, groupId: String) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(uid, groupId)
+                if (SharedPreferences.isUserBeingDisplayedCurrentUser(uid)) {
+                    if (user != null) textView.text = UtilsSingleton.setTextForCurrentUser(context, user.name)
+                    else textView.text = context.getString(R.string.chore_not_assigned)
+                } else {
+                    if (user != null) textView.text = user.name
+                    else textView.text = context.getString(R.string.chore_not_assigned)
+                }
+            }
         }
     }
 

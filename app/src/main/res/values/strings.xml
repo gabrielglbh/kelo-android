@@ -66,8 +66,8 @@
 
     <!-- Permissions -->
     <string name="admin" translatable="false">Admin</string>
-    <string name="permission_modify_chore">You are not allowed to modify this chore</string>
-    <string name="permission_remove_chore">You are not allowed to remove this chore</string>
+    <string name="permission_modify_chore">You are not allowed to modify this chore. Contact with the creator of the chore.</string>
+    <string name="permission_remove_chore">You are not allowed to remove this chore. Contact with the creator of the chore.</string>
     <string name="permission_complete_chore">You are not allowed to complete this chore</string>
 
     <!-- Errors -->

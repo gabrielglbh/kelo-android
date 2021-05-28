@@ -109,6 +109,7 @@ class ChoreDetailActivity : AppCompatActivity() {
                 if (ChoreDetailFunctions.validateChore(chore)) {
                     SharedPreferences.groupId?.let { id ->
                         CoroutineScope(Dispatchers.Main).launch {
+                            SharedPreferences.userId?.let { uid -> chore.creator = uid }
                             if (viewDetails) {
                                 val success = ChoreQueries().updateChore(chore, id)
                                 if (success) finish()
