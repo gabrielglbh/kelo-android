@@ -1,5 +1,6 @@
 package com.gabr.gabc.kelo.firebase
 
+import com.gabr.gabc.kelo.constants.ChoreFields
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.Chore
 import com.google.firebase.firestore.DocumentChange.Type.ADDED
@@ -7,6 +8,7 @@ import com.google.firebase.firestore.DocumentChange.Type.MODIFIED
 import com.google.firebase.firestore.DocumentChange.Type.REMOVED
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -83,7 +85,7 @@ class ChoreQueries {
                                notifyDeleted: (pos: Int) -> Unit) : ListenerRegistration? {
         try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
-                .collection(fbChoresSubCollection)
+                .collection(fbChoresSubCollection).orderBy(ChoreFields.expiration, Query.Direction.ASCENDING)
             return ref.addSnapshotListener { value, e ->
                 if (e != null) return@addSnapshotListener
                 for (doc in value!!.documentChanges) {

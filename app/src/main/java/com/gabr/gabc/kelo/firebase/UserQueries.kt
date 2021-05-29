@@ -112,7 +112,7 @@ class UserQueries {
                                notifyDeleted: (pos: Int) -> Unit) : ListenerRegistration? {
         try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
-                .collection(fbUsersCollection)
+                .collection(fbUsersCollection).orderBy(UserFields.name)
             return ref.addSnapshotListener { value, e ->
                 if (e != null) return@addSnapshotListener
                 for (doc in value!!.documentChanges) {

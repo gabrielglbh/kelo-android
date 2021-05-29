@@ -103,6 +103,7 @@ class ChoreTest {
         q.createChore(uploadChore, group.id)
         assertTrue(result != null)
         assertTrue(chores.size == 2)
+        assertTrue(chores[0].expiration!!.time < chores[1].expiration!!.time)
         assertTrue(chores.indexOf(uploadChore) == 1)
     }
 
