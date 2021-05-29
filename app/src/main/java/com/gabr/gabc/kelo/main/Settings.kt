@@ -18,6 +18,7 @@ import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.DialogSingleton
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.common.UserListSwipeController
 import com.gabr.gabc.kelo.utils.common.UsersAdapter
@@ -115,13 +116,30 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
         viewModel.setLoading(true)
         CoroutineScope(Dispatchers.Main).launch {
             if (SharedPreferences.userId != null && SharedPreferences.groupId != null) {
-                val success = UserQueries().deleteUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
-                viewModel.setLoading(false)
-                if (success) {
-                    startWelcomeActivityAndResetPreferences()
+                val q = UserQueries()
+                val user = q.getUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
+
+                if (PermissionsSingleton.isUserAdmin(user)) {
+                    val success = q.deleteUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
+                    if (success) {
+                        val adminChangedSuccess = q.updateNewAdmin(SharedPreferences.groupId!!)
+                        if (adminChangedSuccess) {
+                            startWelcomeActivityAndResetPreferences()
+                        } else {
+                            Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
+                    val success = q.deleteUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
+                    if (success) {
+                        startWelcomeActivityAndResetPreferences()
+                    } else {
+                        Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
+                    }
                 }
+                viewModel.setLoading(false)
             }
         }
     }

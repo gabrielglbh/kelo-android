@@ -236,6 +236,23 @@ class UserQueries {
     }
 
     /**
+     * Gets a random user from teh users of the group and sets the admin of the group for when
+     * the admin leaves the group
+     *
+     * @return boolean of success
+     * */
+    suspend fun updateNewAdmin(groupId: String): Boolean {
+        val users = getAllUsers(groupId)
+        return if (users != null) {
+            val nextAdmin = users[Random.nextInt(0, users.size)]
+            nextAdmin?.isAdmin = true
+            if (nextAdmin != null) {
+                updateUser(nextAdmin, groupId)
+            } else false
+        } else false
+    }
+
+    /**
      * Function that verifies if the user name of a [User] is already taken in a certain [Group]
      *
      * @param groupId: group ID from Firebase

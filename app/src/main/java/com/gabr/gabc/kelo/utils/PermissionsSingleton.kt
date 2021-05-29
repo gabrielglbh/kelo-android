@@ -3,7 +3,6 @@ package com.gabr.gabc.kelo.utils
 import com.gabr.gabc.kelo.models.User
 
 /** Singleton instance with helper functions to validate the permission throughout the code */
-// TODO: The admin of the group can do any action
 object PermissionsSingleton {
     /**
      * Function that verifies if the current user is the admin of the group
@@ -11,7 +10,7 @@ object PermissionsSingleton {
      * @param user: current user
      * @return boolean determining if the user is the admin
      * */
-    fun isUserAdmin(user: User) = user.isAdmin
+    fun isUserAdmin(user: User?) = user?.isAdmin ?: false
 
     /**
      * Function that verifies if the current user is the creator of a certain Chore

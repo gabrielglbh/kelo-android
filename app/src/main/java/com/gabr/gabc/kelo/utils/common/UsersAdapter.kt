@@ -86,18 +86,29 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
      * */
     fun removeUserFromGroupOnSwap(position: Int) {
         users[position].id.let {
-            if (!SharedPreferences.isUserBeingDisplayedCurrentUser(it)) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    SharedPreferences.groupId?.let { id ->
-                        val success = UserQueries().deleteUser(it, id)
-                        if (!success) {
-                            Toast.makeText(context, R.string.err_user_delete, Toast.LENGTH_SHORT).show()
-                        }
-                    }
+            SharedPreferences.groupId?.let { gid ->
+                SharedPreferences.userId?.let { uid ->
+                    removalRoutine(it, gid, uid)
                 }
             }
         }
         notifyItemChanged(position)
+    }
+
+    private fun removalRoutine(actualId: String, gid: String, uid: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val user = UserQueries().getUser(uid, gid)
+            if (PermissionsSingleton.isUserAdmin(user)) {
+                if (!SharedPreferences.isUserBeingDisplayedCurrentUser(actualId)) {
+                    val success = UserQueries().deleteUser(actualId, gid)
+                    if (!success) {
+                        Toast.makeText(context, R.string.err_user_delete, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(context, "You are not the admin of the group", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     /**

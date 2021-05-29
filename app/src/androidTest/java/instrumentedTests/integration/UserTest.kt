@@ -120,6 +120,12 @@ class UserTest {
         assertTrue(result)
     }
 
+    @Test
+    fun changeNewAdminOnAdminLeaveGroup() = runBlocking {
+        val success = q.updateNewAdmin(group.id)
+        assertTrue(success)
+    }
+
     /** Tests the listener function for users: attachListenerToUsers - Addition */
     @Test
     fun setListenerOnUsersAddSuccessfully() = runBlocking {

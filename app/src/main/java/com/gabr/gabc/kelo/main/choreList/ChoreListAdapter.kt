@@ -84,19 +84,22 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
      * @param position: position in which to remove the item
      * */
     fun removeChoreOnSwap(position: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val chore = chores[position]
-            chore.id?.let { choreId ->
-                chore.creator?.let { creator ->
-                    if (PermissionsSingleton.isUserChoreCreator(creator)) {
-                        SharedPreferences.groupId?.let { id ->
-                            val success = ChoreQueries().deleteChore(choreId, id)
-                            if (!success) {
-                                Toast.makeText(context, R.string.err_chore_delete, Toast.LENGTH_SHORT).show()
+        SharedPreferences.groupId?.let { gid ->
+            SharedPreferences.userId?.let { uid ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    val user = UserQueries().getUser(uid, gid)
+                    val chore = chores[position]
+                    chore.id?.let { choreId ->
+                        chore.creator?.let { creator ->
+                            if (PermissionsSingleton.isUserChoreCreator(creator) || PermissionsSingleton.isUserAdmin(user)) {
+                                val success = ChoreQueries().deleteChore(choreId, gid)
+                                if (!success) {
+                                    Toast.makeText(context, R.string.err_chore_delete, Toast.LENGTH_SHORT).show()
+                                }
+                            } else {
+                                Toast.makeText(context, context.getString(R.string.permission_remove_chore), Toast.LENGTH_SHORT).show()
                             }
                         }
-                    } else {
-                        Toast.makeText(context, context.getString(R.string.permission_remove_chore), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -111,17 +114,21 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
      * @param position: position in which the completed chore is
      * */
     fun completeChoreOnSwap(position: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val chore = chores[position]
-            chore.assignee?.let { assignee ->
-                chore.creator?.let { creator ->
-                    if (PermissionsSingleton.isUserChoreCreatorOrAssignee(creator, assignee)) {
-                        SharedPreferences.groupId?.let { groupId ->
-                            val success = ChoreQueries().completeChore(chore, groupId)
-                            if (!success) Toast.makeText(context, R.string.err_chore_completion, Toast.LENGTH_SHORT).show()
+        SharedPreferences.groupId?.let { gid ->
+            SharedPreferences.userId?.let { uid ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    val user = UserQueries().getUser(uid, gid)
+                    val chore = chores[position]
+                    chore.assignee?.let { assignee ->
+                        chore.creator?.let { creator ->
+                            if (PermissionsSingleton.isUserChoreCreatorOrAssignee(creator, assignee)
+                                || PermissionsSingleton.isUserAdmin(user)) {
+                                val success = ChoreQueries().completeChore(chore, gid)
+                                if (!success) Toast.makeText(context, R.string.err_chore_completion, Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, context.getString(R.string.permission_complete_chore), Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    } else {
-                        Toast.makeText(context, context.getString(R.string.permission_complete_chore), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
