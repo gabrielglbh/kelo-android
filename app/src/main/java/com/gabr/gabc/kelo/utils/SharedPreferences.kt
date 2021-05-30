@@ -7,16 +7,21 @@ import com.gabr.gabc.kelo.constants.Constants
 /** Singleton instance with helper functions for Shared Preferences useful to all code */
 object SharedPreferences {
     var isFirstLaunched: Boolean = false
-    var groupId: String? = null
-    var userId: String? = null
+    var groupId: String = ""
+    var userId: String = ""
 
     /**
      * Function that resets the SharedPreferences of the user when leaving the group, removing the group...
      * */
     fun resetPreferences() {
-        userId = null
-        groupId = null
+        userId = ""
+        groupId = ""
     }
+
+    /**
+     * Function that checks whether both of the [groupId] and [userId] are set to a certain value
+     * */
+    fun checkGroupIdAndUserIdAreSet() = groupId.trim().isNotEmpty() && userId.trim().isNotEmpty()
 
     /**
      * Function that verifies if the current user is currently being displayed in screen

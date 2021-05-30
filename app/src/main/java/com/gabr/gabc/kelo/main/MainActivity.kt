@@ -76,10 +76,8 @@ class MainActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar_widget)
         setSupportActionBar(toolbar)
         CoroutineScope(Dispatchers.Main).launch {
-            SharedPreferences.groupId?.let { gid ->
-                val group = GroupQueries().getGroup(gid)
-                group?.let { gr -> supportActionBar?.subtitle = gr.name }
-            }
+            val group = GroupQueries().getGroup(SharedPreferences.groupId)
+            group?.let { gr -> supportActionBar?.subtitle = gr.name }
         }
     }
 

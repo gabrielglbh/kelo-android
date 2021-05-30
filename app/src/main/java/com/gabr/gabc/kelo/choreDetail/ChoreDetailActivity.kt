@@ -107,18 +107,22 @@ class ChoreDetailActivity : AppCompatActivity() {
             if (!ChoreDetailFunctions.isChoreNameValid(it)) nameLayout.error = getString(R.string.err_invalid_name)
             else {
                 if (ChoreDetailFunctions.validateChore(chore)) {
-                    SharedPreferences.groupId?.let { id ->
-                        CoroutineScope(Dispatchers.Main).launch {
-                            SharedPreferences.userId?.let { uid -> chore.creator = uid }
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val gid = SharedPreferences.groupId
+                        val user = UserQueries().getUser(SharedPreferences.userId, gid)
+                        if (user != null) {
+                            chore.creator = user.id
                             if (viewDetails) {
-                                val success = ChoreQueries().updateChore(chore, id)
+                                val success = ChoreQueries().updateChore(chore, gid)
                                 if (success) finish()
                                 else Toast.makeText(context, R.string.err_chore_update, Toast.LENGTH_SHORT).show()
                             } else {
-                                val res = ChoreQueries().createChore(chore, id)
+                                val res = ChoreQueries().createChore(chore, gid)
                                 if (res != null) finish()
                                 else Toast.makeText(context, R.string.err_chore_creation, Toast.LENGTH_SHORT).show()
                             }
+                        } else {
+                            Toast.makeText(context, R.string.err_chore_creation, Toast.LENGTH_SHORT).show()
                         }
                     }
                 } else {
@@ -195,14 +199,12 @@ class ChoreDetailActivity : AppCompatActivity() {
 
         if (viewDetails) {
             chore.assignee?.let {
-                SharedPreferences.groupId?.let { id ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val user = UserQueries().getUser(it, id)
-                        if (SharedPreferences.isUserBeingDisplayedCurrentUser(it)) {
-                            if (user != null) assignee.text = UtilsSingleton.setTextForCurrentUser(tThis, user.name)
-                        } else {
-                            if (user != null) assignee.text = user.name
-                        }
+                CoroutineScope(Dispatchers.Main).launch {
+                    val user = UserQueries().getUser(it, SharedPreferences.groupId)
+                    if (SharedPreferences.isUserBeingDisplayedCurrentUser(it)) {
+                        if (user != null) assignee.text = UtilsSingleton.setTextForCurrentUser(tThis, user.name)
+                    } else {
+                        if (user != null) assignee.text = user.name
                     }
                 }
             }

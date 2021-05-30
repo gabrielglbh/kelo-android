@@ -46,13 +46,11 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
         selectRandomUser = view.findViewById(R.id.userAssigneeRandom)
         selectLazyUser = view.findViewById(R.id.userAssigneeLazy)
         selectLazyUser.setOnClickListener {
-            SharedPreferences.groupId?.let {
-                CoroutineScope(Dispatchers.Main).launch {
-                    val user = UserQueries().getMostLazyUser(it)
-                    user?.let { u ->
-                        viewModel.setAssignee(u)
-                        dismiss()
-                    }
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getMostLazyUser(SharedPreferences.groupId)
+                user?.let { u ->
+                    viewModel.setAssignee(u)
+                    dismiss()
                 }
             }
         }
@@ -60,7 +58,7 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
         userLists = view.findViewById(R.id.usersList)
         userLists.layoutManager = LinearLayoutManager(context)
 
-        SharedPreferences.groupId?.let { getAllUsers(it) }
+        getAllUsers(SharedPreferences.groupId)
     }
 
     private fun getAllUsers(groupId: String) {

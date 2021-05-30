@@ -85,13 +85,7 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
      * @param position: position in which to remove the item
      * */
     fun removeUserFromGroupOnSwap(position: Int) {
-        users[position].id.let {
-            SharedPreferences.groupId?.let { gid ->
-                SharedPreferences.userId?.let { uid ->
-                    removalRoutine(it, gid, uid)
-                }
-            }
-        }
+        removalRoutine(users[position].id, SharedPreferences.groupId, SharedPreferences.userId)
         notifyItemChanged(position)
     }
 

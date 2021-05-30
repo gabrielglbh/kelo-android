@@ -48,8 +48,8 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
 
         points = view.findViewById(R.id.userPoints)
         CoroutineScope(Dispatchers.Main).launch {
-            if (SharedPreferences.userId != null && SharedPreferences.groupId != null) {
-                val user = UserQueries().getUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
+            if (SharedPreferences.checkGroupIdAndUserIdAreSet()) {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
                 if (user != null) points.text = user.points.toString()
                 else points.text = "0"
             }
@@ -87,27 +87,23 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
         userList = view.findViewById(R.id.settingsUserList)
         userList.layoutManager = LinearLayoutManager(requireContext())
 
-        SharedPreferences.groupId?.let {
-            val adapter = UsersAdapter(this, requireContext(), loading, it)
-            val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
-                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
-            )
-            userList.adapter = adapter
-            swipeHelper.attachToRecyclerView(userList)
-        }
+        val adapter = UsersAdapter(this, requireContext(), loading, SharedPreferences.groupId)
+        val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
+        )
+        userList.adapter = adapter
+        swipeHelper.attachToRecyclerView(userList)
     }
 
     private fun deleteGroup() {
         viewModel.setLoading(true)
         CoroutineScope(Dispatchers.Main).launch {
-            SharedPreferences.groupId?.let {
-                val success = GroupQueries().deleteGroup(it)
-                viewModel.setLoading(false)
-                if (success) {
-                    startWelcomeActivityAndResetPreferences()
-                } else {
-                    Toast.makeText(requireContext(), getString(R.string.err_group_delete), Toast.LENGTH_SHORT).show()
-                }
+            val success = GroupQueries().deleteGroup(SharedPreferences.groupId)
+            viewModel.setLoading(false)
+            if (success) {
+                startWelcomeActivityAndResetPreferences()
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.err_group_delete), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -115,14 +111,16 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     private fun leaveGroup() {
         viewModel.setLoading(true)
         CoroutineScope(Dispatchers.Main).launch {
-            if (SharedPreferences.userId != null && SharedPreferences.groupId != null) {
+            if (SharedPreferences.checkGroupIdAndUserIdAreSet()) {
                 val q = UserQueries()
-                val user = q.getUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
+                val gid = SharedPreferences.groupId
+                val uid = SharedPreferences.userId
+                val user = q.getUser(uid, gid)
 
                 if (PermissionsSingleton.isUserAdmin(user)) {
-                    val success = q.deleteUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
+                    val success = q.deleteUser(uid, gid)
                     if (success) {
-                        val adminChangedSuccess = q.updateNewAdmin(SharedPreferences.groupId!!)
+                        val adminChangedSuccess = q.updateNewAdmin(gid)
                         if (adminChangedSuccess) {
                             startWelcomeActivityAndResetPreferences()
                         } else {
@@ -132,7 +130,7 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                         Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    val success = q.deleteUser(SharedPreferences.userId!!, SharedPreferences.groupId!!)
+                    val success = q.deleteUser(uid, gid)
                     if (success) {
                         startWelcomeActivityAndResetPreferences()
                     } else {

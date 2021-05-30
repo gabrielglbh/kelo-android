@@ -22,29 +22,25 @@ class SplashScreen : AppCompatActivity() {
         SharedPreferences.getStringCode(this, Constants.GROUP_ID)
         SharedPreferences.getStringCode(this, Constants.USER_ID)
 
-        if (SharedPreferences.isFirstLaunched && SharedPreferences.userId != null &&
-            SharedPreferences.groupId != null) verifyUserIsInGroup()
+        if (SharedPreferences.isFirstLaunched && SharedPreferences.checkGroupIdAndUserIdAreSet()) verifyUserIsInGroup()
         else startActivity(Intent(this, WelcomeActivity::class.java))
     }
 
     private fun verifyUserIsInGroup() {
         CoroutineScope(Dispatchers.Main).launch {
-            SharedPreferences.groupId?.let {
-                val group = GroupQueries().getGroup(it)
-                if (group != null) {
-                    SharedPreferences.userId?.let { uid ->
-                        val user = UserQueries().getUser(uid, it)
-                        if (user != null) {
-                            startActivity(Intent(this@SplashScreen, MainActivity::class.java))
-                        } else {
-                            SharedPreferences.resetPreferences()
-                            startActivity(Intent(this@SplashScreen, WelcomeActivity::class.java))
-                        }
-                    }
+            val gid = SharedPreferences.groupId
+            val group = GroupQueries().getGroup(gid)
+            if (group != null) {
+                val user = UserQueries().getUser(SharedPreferences.userId, gid)
+                if (user != null) {
+                    startActivity(Intent(this@SplashScreen, MainActivity::class.java))
                 } else {
                     SharedPreferences.resetPreferences()
                     startActivity(Intent(this@SplashScreen, WelcomeActivity::class.java))
                 }
+            } else {
+                SharedPreferences.resetPreferences()
+                startActivity(Intent(this@SplashScreen, WelcomeActivity::class.java))
             }
         }
     }
