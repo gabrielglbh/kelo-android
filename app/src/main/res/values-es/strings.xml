@@ -61,11 +61,13 @@
     <string name="settings_dialog_btn_delete_positive">Eliminar</string>
     <string name="settings_dialog_btn_leave_positive">Salir</string>
     <string name="settings_dialog_btn_negative">Cancelar</string>
+    <string name="settings_group_currency">Moneda</string>
 
     <!-- Permissions -->
     <string name="permission_modify_chore">No tienes los permisos suficientes para modificar esta tarea. Contacta con el creador de la tarea.</string>
     <string name="permission_remove_chore">No tienes los permisos suficientes para eliminar esta tarea. Contacta con el creador de la tarea.</string>
     <string name="permission_complete_chore">No tienes los permisos suficientes para completar esta tarea</string>
+    <string name="permission_update_currency">No tienes los permisos suficientes para cambiar la moneda del grupo</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Nombre inválido</string>
@@ -85,4 +87,5 @@
     <string name="err_group_delete">Algo ha ocurrido mientras se eliminaba el grupo</string>
     <string name="err_group_leave">Algo ha ocurrido mientras se estaba dejando el grupo</string>
     <string name="err_user_delete">Algo ha ocurrido mientras se eliminaba al usuario del grupo</string>
+    <string name="err_currency_update">Algo ha ocurrido mientras se actualizaba la moneda del grupo</string>
 </resources>

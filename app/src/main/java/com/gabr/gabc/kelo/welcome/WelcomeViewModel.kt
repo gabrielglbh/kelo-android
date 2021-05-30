@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyModel
+import com.gabr.gabc.kelo.utils.common.CurrencyModel
 
 /**
  * ViewModel that handles the login form

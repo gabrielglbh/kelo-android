@@ -1,7 +1,7 @@
 package com.gabr.gabc.kelo.steps
 
 import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
-import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyModel
+import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue

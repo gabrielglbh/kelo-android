@@ -8,7 +8,7 @@ import com.google.firebase.firestore.PropertyName
 data class Group(
     @DocumentId var id: String = "",
     @PropertyName(GroupFields.name) val name: String = "",
-    @PropertyName(GroupFields.currency) val currency: String = ""
+    @PropertyName(GroupFields.currency) var currency: String = ""
 ) {
     /**
      * Transforms the current [Group] into a [Map] to be uploaded to Firebase

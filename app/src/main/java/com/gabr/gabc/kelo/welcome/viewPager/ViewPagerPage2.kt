@@ -17,8 +17,8 @@ import com.gabr.gabc.kelo.constants.*
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.utils.UtilsSingleton
-import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyBottomSheet
-import com.gabr.gabc.kelo.welcome.viewBottomSheet.CurrencyModel
+import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
+import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
 import com.google.android.material.textfield.TextInputEditText
@@ -93,7 +93,7 @@ class ViewPagerPage2 : Fragment() {
 
     private fun initViewsForGroupCreation() {
         groupCurrencyButton.setOnClickListener {
-            CurrencyBottomSheet().show(childFragmentManager, CurrencyBottomSheet.TAG)
+            CurrencyBottomSheet(welcomeViewModel = viewModel).show(childFragmentManager, CurrencyBottomSheet.TAG)
         }
         groupNameEditText.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) UtilsSingleton.hideKeyboard(activity, v)

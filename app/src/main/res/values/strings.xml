@@ -63,12 +63,14 @@
     <string name="settings_dialog_btn_delete_positive">Delete</string>
     <string name="settings_dialog_btn_leave_positive">Leave</string>
     <string name="settings_dialog_btn_negative">Cancel</string>
+    <string name="settings_group_currency">Currency</string>
 
     <!-- Permissions -->
     <string name="admin" translatable="false">Admin</string>
     <string name="permission_modify_chore">You are not allowed to modify this chore. Contact with the creator of the chore.</string>
     <string name="permission_remove_chore">You are not allowed to remove this chore. Contact with the creator of the chore.</string>
     <string name="permission_complete_chore">You are not allowed to complete this chore</string>
+    <string name="permission_update_currency">You are not allowed to change the group\'s currency</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Invalid name</string>
@@ -88,4 +90,5 @@
     <string name="err_group_delete">Something went wrong while removing the group</string>
     <string name="err_group_leave">Something went wrong while leaving the group</string>
     <string name="err_user_delete">Something went wrong while removing the user from the group</string>
+    <string name="err_currency_update">Something went wrong while updating the currency</string>
 </resources>

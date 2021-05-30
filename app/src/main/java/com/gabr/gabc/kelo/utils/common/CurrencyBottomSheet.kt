@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.welcome.viewBottomSheet
+package com.gabr.gabc.kelo.utils.common
 
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -10,13 +10,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
+import com.gabr.gabc.kelo.main.MainViewModel
 import com.gabr.gabc.kelo.welcome.WelcomeViewModel
 
-/** Bottom Sheet Dialog Fragment that holds the currency list in the WelcomeActivity */
-class CurrencyBottomSheet : BottomSheetDialogFragment() {
+/**
+ * Bottom Sheet Dialog Fragment that holds the currency list in the WelcomeActivity
+ *
+ * @param mainViewModel: [MainViewModel] to update the currency in for the settings
+ * @param welcomeViewModel: [WelcomeViewModel] to update the currency in for the welcome pages
+ * */
+class CurrencyBottomSheet(private val mainViewModel: MainViewModel? = null,
+                          private val welcomeViewModel: WelcomeViewModel? = null) : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "currency_bottom_sheet"
@@ -24,15 +30,8 @@ class CurrencyBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var currencyList: RecyclerView
 
-    private lateinit var viewModel: WelcomeViewModel
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.currency_bottom_sheet, container, false)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = activity?.run { ViewModelProvider(this).get(WelcomeViewModel::class.java) }!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +61,8 @@ class CurrencyBottomSheet : BottomSheetDialogFragment() {
                 label.text = currencies[position].name
                 flag.setImageResource(currencies[position].flag)
                 item.setOnClickListener {
-                    viewModel.setCurrency(currencies[position])
+                    mainViewModel?.setCurrency(currencies[position])
+                    welcomeViewModel?.setCurrency(currencies[position])
                     dismiss()
                 }
             }

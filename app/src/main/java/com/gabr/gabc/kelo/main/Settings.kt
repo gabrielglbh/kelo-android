@@ -8,18 +8,23 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
+import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.DialogSingleton
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
+import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
+import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import com.gabr.gabc.kelo.utils.common.UserListSwipeController
 import com.gabr.gabc.kelo.utils.common.UsersAdapter
 import com.gabr.gabc.kelo.welcome.WelcomeActivity
@@ -33,10 +38,12 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
+    private lateinit var currencyGroupButton: MaterialButton
     private lateinit var userList: RecyclerView
     private lateinit var loading: ProgressBar
 
-    private lateinit var viewModel: LoadViewModel
+    private var group: Group? = null
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.settings, container, false)
@@ -44,7 +51,7 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = run { ViewModelProvider(this).get(LoadViewModel::class.java) }
+        viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
 
         points = view.findViewById(R.id.userPoints)
         CoroutineScope(Dispatchers.Main).launch {
@@ -76,10 +83,51 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                 getString(R.string.settings_dialog_btn_leave_positive),
             ) { leaveGroup() }
         }
+
+        viewModel.groupCurrency.observe(viewLifecycleOwner, { currency -> setCurrency(currency) })
+        currencyGroupButton = view.findViewById(R.id.settingsCurrencyButton)
+        currencyGroupButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (PermissionsSingleton.isUserAdmin(user)) {
+                    CurrencyBottomSheet(mainViewModel = viewModel).show(childFragmentManager, CurrencyBottomSheet.TAG)
+                } else {
+                    Toast.makeText(requireContext(), getString(R.string.permission_update_currency), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        getGroup()
     }
 
     override fun onUserClicked(user: User?) {
         Toast.makeText(requireContext(), "USER CLICKED", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getGroup() {
+        CoroutineScope(Dispatchers.Main).launch {
+            group = GroupQueries().getGroup(SharedPreferences.groupId)
+            group?.let { g ->
+                val currentCurrency = Constants.CURRENCIES.filter { it.code == g.currency }[0]
+                setCurrency(currentCurrency)
+            }
+        }
+    }
+
+    private fun setCurrency(currency: CurrencyModel) {
+        CoroutineScope(Dispatchers.Main).launch {
+            group?.let { gr ->
+                gr.currency = currency.code
+                val success = GroupQueries().updateGroup(gr)
+                if (success) {
+                    currencyGroupButton.text = currency.code
+                    val flag = ContextCompat.getDrawable(requireContext(), currency.flag)
+                    currencyGroupButton.setCompoundDrawablesWithIntrinsicBounds(flag, null, null, null)
+                } else {
+                    Toast.makeText(requireContext(), getString(R.string.err_currency_update), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setUpUserList(view: View) {

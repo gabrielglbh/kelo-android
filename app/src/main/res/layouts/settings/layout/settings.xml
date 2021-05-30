@@ -74,6 +74,26 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/currencyLabel"
+            style="@style/HeaderStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/settings_group_currency"
+            app:layout_constraintStart_toStartOf="@+id/settingsUserListContainer"
+            app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settingsCurrencyButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/material_button_height"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
+            app:layout_constraintStart_toStartOf="@+id/currencyLabel"
+            app:layout_constraintTop_toBottomOf="@+id/currencyLabel"
+            tools:text="EUR" />
+
+        <TextView
             android:id="@+id/dangerZoneLabel"
             style="@style/HeaderStyle"
             android:layout_width="wrap_content"
@@ -82,7 +102,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/settings_danger_zone_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
+            app:layout_constraintTop_toBottomOf="@+id/settingsCurrencyButton" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settingsRemoveGroupButton"

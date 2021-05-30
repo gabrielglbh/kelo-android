@@ -32,13 +32,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fullViewLoading: ConstraintLayout
     private lateinit var loading: ProgressBar
 
-    private lateinit var viewModel: LoadViewModel
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = run { ViewModelProvider(this).get(LoadViewModel::class.java) }
+        viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
 
         parent = findViewById(R.id.mainActivityRoot)
 

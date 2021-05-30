@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.welcome.viewBottomSheet
+package com.gabr.gabc.kelo.utils.common
 
 /**
  * Model that holds the currency object
