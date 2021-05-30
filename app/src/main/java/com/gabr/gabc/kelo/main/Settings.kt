@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,11 +22,13 @@ import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.DialogSingleton
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
+import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import com.gabr.gabc.kelo.utils.common.UserListSwipeController
 import com.gabr.gabc.kelo.utils.common.UsersAdapter
 import com.gabr.gabc.kelo.welcome.WelcomeActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,7 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     private lateinit var currencyGroupButton: MaterialButton
     private lateinit var userList: RecyclerView
     private lateinit var loading: ProgressBar
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     private var group: Group? = null
     private lateinit var viewModel: MainViewModel
@@ -52,6 +54,8 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
+
+        bottomNavigationView = requireActivity().findViewById(R.id.mainBottomNavigationView)
 
         points = view.findViewById(R.id.userPoints)
         CoroutineScope(Dispatchers.Main).launch {
@@ -92,7 +96,8 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                 if (PermissionsSingleton.isUserAdmin(user)) {
                     CurrencyBottomSheet(mainViewModel = viewModel).show(childFragmentManager, CurrencyBottomSheet.TAG)
                 } else {
-                    Toast.makeText(requireContext(), getString(R.string.permission_update_currency), Toast.LENGTH_SHORT).show()
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_update_currency),
+                        anchorView = bottomNavigationView)
                 }
             }
         }
@@ -101,7 +106,8 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     }
 
     override fun onUserClicked(user: User?) {
-        Toast.makeText(requireContext(), "USER CLICKED", Toast.LENGTH_SHORT).show()
+        UtilsSingleton.showSnackBar(requireView(), "USER CLICKED",
+            anchorView = bottomNavigationView)
     }
 
     private fun getGroup() {
@@ -124,7 +130,8 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                     val flag = ContextCompat.getDrawable(requireContext(), currency.flag)
                     currencyGroupButton.setCompoundDrawablesWithIntrinsicBounds(flag, null, null, null)
                 } else {
-                    Toast.makeText(requireContext(), getString(R.string.err_currency_update), Toast.LENGTH_SHORT).show()
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_currency_update),
+                        anchorView = bottomNavigationView)
                 }
             }
         }
@@ -135,7 +142,9 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
         userList = view.findViewById(R.id.settingsUserList)
         userList.layoutManager = LinearLayoutManager(requireContext())
 
-        val adapter = UsersAdapter(this, requireContext(), loading, SharedPreferences.groupId)
+        val adapter = UsersAdapter(this, requireContext(),
+            requireView(), loading,
+            anchor = bottomNavigationView, SharedPreferences.groupId)
         val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
         )
@@ -151,7 +160,8 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
             if (success) {
                 startWelcomeActivityAndResetPreferences()
             } else {
-                Toast.makeText(requireContext(), getString(R.string.err_group_delete), Toast.LENGTH_SHORT).show()
+                UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_delete),
+                    anchorView = bottomNavigationView)
             }
         }
     }
@@ -172,17 +182,20 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                         if (adminChangedSuccess) {
                             startWelcomeActivityAndResetPreferences()
                         } else {
-                            Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
+                            UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_leave),
+                                anchorView = bottomNavigationView)
                         }
                     } else {
-                        Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
+                        UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_leave),
+                            anchorView = bottomNavigationView)
                     }
                 } else {
                     val success = q.deleteUser(uid, gid)
                     if (success) {
                         startWelcomeActivityAndResetPreferences()
                     } else {
-                        Toast.makeText(requireContext(), getString(R.string.err_group_leave), Toast.LENGTH_SHORT).show()
+                        UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_leave),
+                            anchorView = bottomNavigationView)
                     }
                 }
                 viewModel.setLoading(false)

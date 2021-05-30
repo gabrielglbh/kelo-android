@@ -6,16 +6,29 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.utils.textDrawable.ColorGenerator
 import com.gabr.gabc.kelo.utils.textDrawable.TextDrawable
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 
 /** Singleton instance with helper functions useful to all code */
 object UtilsSingleton {
+    /**
+     * Shows a snack bar with a desired message for additional information to be shown to the user
+     *
+     * @param view: view in which to show the snack bar
+     * @param msg: message to show in the snack bar, the info
+     * @param duration: duration the snack bar appears on the screen. By default LENGTH_SHORT
+     * @param anchorView: view to set the snack bar above it
+     * */
+    fun showSnackBar(view: View, msg: String, duration: Int? = Snackbar.LENGTH_SHORT, anchorView: View? = null) {
+        val snack = Snackbar.make(view, msg, duration!!)
+        snack.anchorView = anchorView
+        snack.show()
+    }
+
     /**
      * Clears the error from an specified layout
      *

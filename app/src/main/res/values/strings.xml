@@ -71,6 +71,7 @@
     <string name="permission_remove_chore">You are not allowed to remove this chore. Contact with the creator of the chore.</string>
     <string name="permission_complete_chore">You are not allowed to complete this chore</string>
     <string name="permission_update_currency">You are not allowed to change the group\'s currency</string>
+    <string name="permission_remove_user">You are not allowed to remove users from the group</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Invalid name</string>

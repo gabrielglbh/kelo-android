@@ -100,7 +100,6 @@ class ChoreDetailActivity : AppCompatActivity() {
     }
 
     private fun validateChore() {
-        val context = this
         chore.name = nameEditText.text.toString()
 
         chore.name?.let {
@@ -115,18 +114,18 @@ class ChoreDetailActivity : AppCompatActivity() {
                             if (viewDetails) {
                                 val success = ChoreQueries().updateChore(chore, gid)
                                 if (success) finish()
-                                else Toast.makeText(context, R.string.err_chore_update, Toast.LENGTH_SHORT).show()
+                                else UtilsSingleton.showSnackBar(parent, getString(R.string.err_chore_update))
                             } else {
                                 val res = ChoreQueries().createChore(chore, gid)
                                 if (res != null) finish()
-                                else Toast.makeText(context, R.string.err_chore_creation, Toast.LENGTH_SHORT).show()
+                                else UtilsSingleton.showSnackBar(parent, getString(R.string.err_chore_creation))
                             }
                         } else {
-                            Toast.makeText(context, R.string.err_chore_creation, Toast.LENGTH_SHORT).show()
+                            UtilsSingleton.showSnackBar(parent, getString(R.string.err_chore_creation))
                         }
                     }
                 } else {
-                    Toast.makeText(this, getString(R.string.err_chore_not_completed), Toast.LENGTH_SHORT).show()
+                    UtilsSingleton.showSnackBar(parent, getString(R.string.err_chore_not_completed))
                 }
             }
         }

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
@@ -26,11 +25,17 @@ import kotlinx.coroutines.launch
  * It creates the [UserItem] for every position and attaches a listener for each item
  *
  * @param context: context from the caller
+ * @param parent: view in which to show the snack bar
  * @param loading: [ProgressBar] widget for showing it and hide it when loading
+ * @param anchor: view to set the snack bar above it
  * @param groupId: group id to retrieve the chores from
  * */
-class UsersAdapter(private val listener: UserClickListener, private val context: Context,
-                   loading: ProgressBar, groupId: String?)
+class UsersAdapter(private val listener: UserClickListener,
+                   private val context: Context,
+                   private val parent: View,
+                   loading: ProgressBar,
+                   private val anchor: View? = null,
+                   groupId: String?)
     : RecyclerView.Adapter<UsersAdapter.UserItem>() {
 
     /**
@@ -58,9 +63,15 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
                 { position, user -> updateUserAtPosition(position, user) },
                 { position -> removeUserAtPosition(position) })
 
-            if (listener == null) Toast.makeText(context, R.string.err_loading_users, Toast.LENGTH_SHORT).show()
+            if (listener == null) {
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_loading_users),
+                    anchorView = anchor)
+            }
             LoadingSingleton.manageLoadingView(loading, null, false)
-        } else Toast.makeText(context, R.string.err_group_does_not_exist, Toast.LENGTH_SHORT).show()
+        } else {
+            UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_group_does_not_exist),
+                anchorView = anchor)
+        }
     }
 
     private fun addUserAtPosition(position: Int, user: User) {
@@ -96,11 +107,13 @@ class UsersAdapter(private val listener: UserClickListener, private val context:
                 if (!SharedPreferences.isUserBeingDisplayedCurrentUser(actualId)) {
                     val success = UserQueries().deleteUser(actualId, gid)
                     if (!success) {
-                        Toast.makeText(context, R.string.err_user_delete, Toast.LENGTH_SHORT).show()
+                        UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
+                            anchorView = anchor)
                     }
                 }
             } else {
-                Toast.makeText(context, "You are not the admin of the group", Toast.LENGTH_SHORT).show()
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_user),
+                    anchorView = anchor)
             }
         }
     }

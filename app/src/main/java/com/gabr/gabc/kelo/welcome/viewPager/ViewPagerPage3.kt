@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -34,6 +33,7 @@ class ViewPagerPage3: Fragment() {
     private lateinit var finalize: MaterialButton
     private lateinit var nameEditText: TextInputEditText
     private lateinit var nameInputLayout: TextInputLayout
+    private lateinit var page: ConstraintLayout
     private lateinit var parent: ConstraintLayout
 
     private lateinit var viewModel: WelcomeViewModel
@@ -49,8 +49,10 @@ class ViewPagerPage3: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parent = view.findViewById(R.id.constraintLayoutPage3)
-        parent.setOnClickListener { UtilsSingleton.hideKeyboard(activity, view) }
+        parent = requireActivity().findViewById(R.id.welcomePageConstraintLayout)
+
+        page = view.findViewById(R.id.constraintLayoutPage3)
+        page.setOnClickListener { UtilsSingleton.hideKeyboard(activity, view) }
 
         label = view.findViewById(R.id.nameQuestionLabel)
 
@@ -90,9 +92,9 @@ class ViewPagerPage3: Fragment() {
             val user = User("", viewModel.userName.value!!, 0, mode == Constants.CREATE_GROUP)
 
             when (val userId = UserQueries().joinGroup(groupId, user)) {
-                "-1" -> Toast.makeText(context, getString(R.string.err_join_group), Toast.LENGTH_SHORT).show()
-                "-2" -> Toast.makeText(context, getString(R.string.err_username_taken), Toast.LENGTH_SHORT).show()
-                "-3" -> Toast.makeText(context, getString(R.string.err_group_does_not_exist), Toast.LENGTH_SHORT).show()
+                "-1" -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_join_group))
+                "-2" -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_username_taken))
+                "-3" -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_group_does_not_exist))
                 else -> {
                     val intent = Intent(requireActivity(), MainActivity::class.java)
                     SharedPreferences.putIsFirstLaunched(requireActivity(), true)

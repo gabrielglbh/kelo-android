@@ -68,6 +68,7 @@
     <string name="permission_remove_chore">No tienes los permisos suficientes para eliminar esta tarea. Contacta con el creador de la tarea.</string>
     <string name="permission_complete_chore">No tienes los permisos suficientes para completar esta tarea</string>
     <string name="permission_update_currency">No tienes los permisos suficientes para cambiar la moneda del grupo</string>
+    <string name="permission_remove_user">No tienes los permisos suficientes para eliminar a usuarios del grupo</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Nombre inválido</string>

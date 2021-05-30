@@ -62,7 +62,7 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
     }
 
     private fun getAllUsers(groupId: String) {
-        userLists.adapter = UsersAdapter(this, requireContext(), loading, groupId)
+        userLists.adapter = UsersAdapter(this, requireContext(), requireView(), loading, groupId = groupId)
         selectRandomUser.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 UserQueries().getRandomUser(groupId)?.let { rndUser ->

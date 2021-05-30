@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -39,8 +38,9 @@ class ViewPagerPage2 : Fragment() {
     private lateinit var groupCurrencyImageView: ImageView
     private lateinit var joinGroupLayout: TextInputLayout
     private lateinit var joinGroupEditText: TextInputEditText
-    private lateinit var parent: ConstraintLayout
+    private lateinit var page: ConstraintLayout
     private lateinit var label: TextView
+    private lateinit var parent: ConstraintLayout
 
     private lateinit var currency: CurrencyModel
     private lateinit var viewModel: WelcomeViewModel
@@ -58,8 +58,10 @@ class ViewPagerPage2 : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parent = view.findViewById(R.id.constraintLayoutPage2)
-        parent.setOnClickListener { UtilsSingleton.hideKeyboard(activity, view) }
+        parent = requireActivity().findViewById(R.id.welcomePageConstraintLayout)
+
+        page = view.findViewById(R.id.constraintLayoutPage2)
+        page.setOnClickListener { UtilsSingleton.hideKeyboard(activity, view) }
         label = view.findViewById(R.id.createOrJoinGroupLabel)
 
         continueButton = view.findViewById(R.id.welcomeContinueButton)
@@ -120,7 +122,7 @@ class ViewPagerPage2 : Fragment() {
                 if (result != null) {
                     viewModel.setGroupCode(result.id)
                     viewModel.setPagerPage(2)
-                } else Toast.makeText(requireContext(), R.string.err_group_creation, Toast.LENGTH_SHORT).show()
+                } else UtilsSingleton.showSnackBar(parent, requireContext().getString(R.string.err_group_creation))
                 viewModel.setLoading(false)
             }
         }
@@ -135,9 +137,9 @@ class ViewPagerPage2 : Fragment() {
                 UtilsSingleton.clearErrorFromTextLayout(joinGroupLayout)
                 when (GroupQueries().checkGroupAvailability(viewModel.groupCode.value!!)) {
                     0 -> viewModel.setPagerPage(2)
-                    -1 -> Toast.makeText(context, getString(R.string.err_join_group), Toast.LENGTH_SHORT).show()
-                    -2 -> Toast.makeText(context, getString(R.string.err_group_full), Toast.LENGTH_SHORT).show()
-                    -3 -> Toast.makeText(context, getString(R.string.err_group_does_not_exist), Toast.LENGTH_SHORT).show()
+                    -1 -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_join_group))
+                    -2 -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_group_full))
+                    -3 -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_group_does_not_exist))
                 }
                 viewModel.setLoading(false)
             }

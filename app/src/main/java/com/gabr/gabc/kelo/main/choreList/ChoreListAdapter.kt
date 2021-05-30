@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
@@ -26,10 +25,16 @@ import kotlin.collections.ArrayList
  *
  * @param context: activity's context
  * @param loading: [ProgressBar] widget for showing it and hide it when loading
+ * @param parent: view in which to show the snack bar
+ * @param anchor: view to set the snack bar above it
  * @param groupId: group id to retrieve the chores from
  * */
-class ChoreListAdapter(private val listener: ChoreClickListener, private val context: Context,
-                       loading: ProgressBar, groupId: String?)
+class ChoreListAdapter(private val listener: ChoreClickListener,
+                       private val context: Context,
+                       private val parent: View,
+                       private val anchor: View,
+                       loading: ProgressBar,
+                       groupId: String?)
     : RecyclerView.Adapter<ChoreListAdapter.ChoreHolder>() {
 
     /**
@@ -57,9 +62,9 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
                 { position, chore -> updateChoreAtPosition(position, chore) },
                 { position -> removeChoreAtPosition(position) })
 
-            if (listener == null) Toast.makeText(context, R.string.err_loading_chores, Toast.LENGTH_SHORT).show()
+            if (listener == null) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_loading_chores), anchorView = anchor)
             LoadingSingleton.manageLoadingView(loading, null, false)
-        } else Toast.makeText(context, R.string.err_group_does_not_exist, Toast.LENGTH_SHORT).show()
+        } else UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_group_does_not_exist), anchorView = anchor)
     }
 
     private fun addChoreAtPosition(position: Int, chore: Chore) {
@@ -94,15 +99,15 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
                         if (PermissionsSingleton.isUserChoreCreator(creator) || PermissionsSingleton.isUserAdmin(user)) {
                             val success = ChoreQueries().deleteChore(choreId, gid)
                             if (!success) {
-                                Toast.makeText(context, R.string.err_chore_delete, Toast.LENGTH_SHORT).show()
+                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete), anchorView = anchor)
                             }
                         } else {
-                            Toast.makeText(context, context.getString(R.string.permission_remove_chore), Toast.LENGTH_SHORT).show()
+                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore), anchorView = anchor)
                         }
                     }
                 }
             } else {
-                Toast.makeText(context, context.getString(R.string.permission_remove_chore), Toast.LENGTH_SHORT).show()
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore), anchorView = anchor)
             }
         }
         notifyItemChanged(position)
@@ -125,14 +130,14 @@ class ChoreListAdapter(private val listener: ChoreClickListener, private val con
                         if (PermissionsSingleton.isUserChoreCreatorOrAssignee(creator, assignee)
                             || PermissionsSingleton.isUserAdmin(user)) {
                             val success = ChoreQueries().completeChore(chore, gid)
-                            if (!success) Toast.makeText(context, R.string.err_chore_completion, Toast.LENGTH_SHORT).show()
+                            if (!success) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion), anchorView = anchor)
                         } else {
-                            Toast.makeText(context, context.getString(R.string.permission_complete_chore), Toast.LENGTH_SHORT).show()
+                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore), anchorView = anchor)
                         }
                     }
                 }
             } else {
-                Toast.makeText(context, context.getString(R.string.permission_complete_chore), Toast.LENGTH_SHORT).show()
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore), anchorView = anchor)
             }
         }
         notifyItemChanged(position)
