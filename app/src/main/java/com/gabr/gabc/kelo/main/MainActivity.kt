@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.utils.LoadingSingleton
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.google.android.material.appbar.MaterialToolbar
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        PermissionsSingleton.setListenerToUserRemoved(baseContext)
 
         viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
 

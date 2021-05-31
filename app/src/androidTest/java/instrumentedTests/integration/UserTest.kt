@@ -170,4 +170,16 @@ class UserTest {
         assertTrue(result != null)
         assertTrue(users.size == 1)
     }
+
+    /** Tests the listener function for users: attachListenerToAppForUserRemoved */
+    @Test
+    fun setListenerUserWasDeletedRedirectSuccessfully() = runBlocking {
+        var success = false
+        val uploadUser = User("USER_U", "Gabriel", 0)
+        val result = q.attachListenerToAppForUserRemoved(group.id, uploadUser.id) { success = true }
+        q.createUser(uploadUser, group.id)
+        q.deleteUser(uploadUser.id, group.id)
+        assertTrue(result != null)
+        assertTrue(success)
+    }
 }

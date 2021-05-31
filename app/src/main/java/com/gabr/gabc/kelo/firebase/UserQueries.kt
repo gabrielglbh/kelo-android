@@ -97,10 +97,37 @@ class UserQueries {
     }
 
     /**
-     * Function that defines a listener to the chores of a certain group to display them in the User List
+     * Function that defines a listener to the users of a certain group to listen if the admin
+     * deletes any user. If a user is deleted, the user is exited automatically.
+     *
+     * @param groupId: group id in which the users are
+     * @param userId: user id to check if the user must be redirected
+     * @param exitGroup: function that exits the deleted user from the group
+     * @return [ListenerRegistration] of the collection listener
+     * */
+    fun attachListenerToAppForUserRemoved(groupId: String, userId: String, exitGroup: () -> Unit) : ListenerRegistration? {
+        try {
+            val ref = instance.collection(fbGroupsCollection).document(groupId).collection(fbUsersCollection)
+            return ref.addSnapshotListener { value, e ->
+                if (e != null) return@addSnapshotListener
+                for (doc in value!!.documentChanges) {
+                    val user = doc.document.toObject<User>()
+                    if (doc.type == DocumentChange.Type.REMOVED) {
+                        if (user.id == userId) exitGroup()
+                    }
+                }
+            }
+        }
+        catch (e : Exception) {
+            return null
+        }
+    }
+
+    /**
+     * Function that defines a listener to the users of a certain group to display them in the User List
      * Depending on the type of the change, the list of users will update
      *
-     * @param groupId: group id in which the chores are
+     * @param groupId: group id in which the users are
      * @param notifyAdded: function that notifies the recyclerview to update its content
      * @param notifyUpdated: function that notifies the recyclerview to update its content
      * @param notifyDeleted: function that notifies the recyclerview to update its content
