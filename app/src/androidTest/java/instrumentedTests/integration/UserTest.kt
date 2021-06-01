@@ -126,58 +126,13 @@ class UserTest {
         assertTrue(success)
     }
 
-    /** Tests the listener function for users: attachListenerToUsers - Addition */
-    @Test
-    fun setListenerOnUsersAddSuccessfully() = runBlocking {
-        val users = arrayListOf<User>()
-        val uploadUser = User("USER_U", "Gabriel", 0)
-        val result = q.attachListenerToUsers(group.id, { pos, u ->
-            users.add(pos, u)
-        }, { _, _ -> }, { })
-        q.createUser(uploadUser, group.id)
-        assertTrue(result != null)
-        assertTrue(users.size == 2)
-        assertTrue(users.indexOf(uploadUser) == 1)
-    }
-
-    /** Tests the listener function for users: attachListenerToUsers - Update */
-    @Test
-    fun setListenerOnChoresUpdateSuccessfully() = runBlocking {
-        val users = arrayListOf(user)
-        val uploadUser = User(user.id, "USER_UPDATED", 0, false)
-        val result = q.attachListenerToUsers(group.id, { _, _ -> }, { pos, c ->
-            users[pos] = c
-        }, { })
-        q.updateUser(uploadUser, group.id)
-        assertTrue(result != null)
-        assertTrue(users.size == 1)
-        assertTrue(users.indexOf(uploadUser) == 0)
-        assertTrue(user != uploadUser)
-    }
-
-    /** Tests the listener function for users: attachListenerToUsers - Deletion */
-    @Test
-    fun setListenerOnUsersDeleteSuccessfully() = runBlocking {
-        val users = arrayListOf<User>()
-        val uploadUser = User("USER_U", "Gabriel", 0)
-        val result = q.attachListenerToUsers(group.id, { pos, u ->
-            users.add(pos, u)
-        }, { _, _ -> }, { pos ->
-            users.removeAt(pos)
-        })
-        q.createUser(uploadUser, group.id)
-        q.deleteUser(uploadUser.id, group.id)
-        assertTrue(result != null)
-        assertTrue(users.size == 1)
-    }
-
     /** Tests the listener function for users: attachListenerToAppForUserRemoved */
     @Test
     fun setListenerUserWasDeletedRedirectSuccessfully() = runBlocking {
         var success = false
         val uploadUser = User("USER_U", "Gabriel", 0)
-        val result = q.attachListenerToAppForUserRemoved(group.id, uploadUser.id) { success = true }
         q.createUser(uploadUser, group.id)
+        val result = q.attachListenerToAppForUserRemoved(group.id, uploadUser.id) { success = true }
         q.deleteUser(uploadUser.id, group.id)
         assertTrue(result != null)
         assertTrue(success)

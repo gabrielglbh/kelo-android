@@ -12,6 +12,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.SharedPreferences
+import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.utils.common.UsersAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -58,17 +59,25 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
         userLists = view.findViewById(R.id.usersList)
         userLists.layoutManager = LinearLayoutManager(context)
 
-        getAllUsers(SharedPreferences.groupId)
+        getAllUsers()
     }
 
-    private fun getAllUsers(groupId: String) {
-        userLists.adapter = UsersAdapter(this, requireContext(), requireView(), loading, groupId = groupId)
-        selectRandomUser.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                UserQueries().getRandomUser(groupId)?.let { rndUser ->
-                    viewModel.setAssignee(rndUser)
-                    dismiss()
+    private fun getAllUsers() {
+        val listener = this
+        CoroutineScope(Dispatchers.Main).launch {
+            val users = UserQueries().getAllUsers(SharedPreferences.groupId)
+            if (users != null) {
+                userLists.adapter = UsersAdapter(users, requireContext(), requireView(), listener = listener)
+                selectRandomUser.setOnClickListener {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        UserQueries().getRandomUser(SharedPreferences.groupId)?.let { rndUser ->
+                            viewModel.setAssignee(rndUser)
+                            dismiss()
+                        }
+                    }
                 }
+            } else {
+                UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_users))
             }
         }
     }

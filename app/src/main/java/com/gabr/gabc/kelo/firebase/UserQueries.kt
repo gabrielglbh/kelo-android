@@ -124,54 +124,20 @@ class UserQueries {
     }
 
     /**
-     * Function that defines a listener to the users of a certain group to display them in the User List
-     * Depending on the type of the change, the list of users will update
-     *
-     * @param groupId: group id in which the users are
-     * @param notifyAdded: function that notifies the recyclerview to update its content
-     * @param notifyUpdated: function that notifies the recyclerview to update its content
-     * @param notifyDeleted: function that notifies the recyclerview to update its content
-     * @return [ListenerRegistration] of the collection listener
-     * */
-    fun attachListenerToUsers(groupId: String,
-                               notifyAdded: (pos: Int, user: User) -> Unit,
-                               notifyUpdated: (pos: Int, user: User) -> Unit,
-                               notifyDeleted: (pos: Int) -> Unit) : ListenerRegistration? {
-        try {
-            val ref = instance.collection(fbGroupsCollection).document(groupId)
-                .collection(fbUsersCollection).orderBy(UserFields.name)
-            return ref.addSnapshotListener { value, e ->
-                if (e != null) return@addSnapshotListener
-                for (doc in value!!.documentChanges) {
-                    val user = doc.document.toObject<User>()
-                    when (doc.type) {
-                        DocumentChange.Type.ADDED -> notifyAdded(doc.newIndex, user)
-                        DocumentChange.Type.MODIFIED -> notifyUpdated(doc.newIndex, user)
-                        DocumentChange.Type.REMOVED -> notifyDeleted(doc.oldIndex)
-                    }
-                }
-            }
-        }
-        catch (e : Exception) {
-            return null
-        }
-    }
-
-    /**
      * Function that retrieves all users in a group
      *
      * @param groupId: group id in which the users are
-     * @return ArrayList<User?>? containing the users of the group
+     * @return ArrayList<User>? containing the users of the group
      * */
-    suspend fun getAllUsers(groupId: String): ArrayList<User?>? {
+    suspend fun getAllUsers(groupId: String): ArrayList<User>? {
         return try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
                 .collection(fbUsersCollection)
                 .get().await()
-            val users: ArrayList<User?> = arrayListOf()
+            val users = arrayListOf<User>()
             val data = ref.documents
             for (user in data) {
-                users.add(user.toObject<User>())
+                user.toObject<User>()?.let { users.add(it) }
             }
             users
         } catch (e: Exception) {
@@ -272,10 +238,8 @@ class UserQueries {
         val users = getAllUsers(groupId)
         return if (users != null) {
             val nextAdmin = users[Random.nextInt(0, users.size)]
-            nextAdmin?.isAdmin = true
-            if (nextAdmin != null) {
-                updateUser(nextAdmin, groupId)
-            } else false
+            nextAdmin.isAdmin = true
+            updateUser(nextAdmin, groupId)
         } else false
     }
 

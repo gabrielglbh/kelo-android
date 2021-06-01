@@ -66,23 +66,23 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
                     chore.creator?.let { creator ->
                         if (PermissionsSingleton.isUserChoreCreator(creator) || PermissionsSingleton.isUserAdmin(user)) {
                             val success = ChoreQueries().deleteChore(choreId, gid)
-                            if (!success) {
-                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete), anchorView = anchor)
-                                notifyItemChanged(position)
-                            } else {
+                            if (!success) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
+                                    anchorView = anchor)
+                            else {
                                 removedAt(position)
                             }
                         } else {
-                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore), anchorView = anchor)
-                            notifyItemChanged(position)
+                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
+                                anchorView = anchor)
                         }
                     }
                 }
             } else {
-                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore), anchorView = anchor)
-                notifyItemChanged(position)
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
+                    anchorView = anchor)
             }
         }
+        notifyItemChanged(position)
     }
 
     /**
@@ -103,22 +103,23 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
                             || PermissionsSingleton.isUserAdmin(user)) {
                             val success = ChoreQueries().completeChore(chore, gid)
                             if (!success) {
-                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion), anchorView = anchor)
-                                notifyItemChanged(position)
+                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
+                                    anchorView = anchor)
                             } else {
                                 removedAt(position)
                             }
                         } else {
-                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore), anchorView = anchor)
-                            notifyItemChanged(position)
+                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
+                                anchorView = anchor)
                         }
                     }
                 }
             } else {
-                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore), anchorView = anchor)
-                notifyItemChanged(position)
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
+                    anchorView = anchor)
             }
         }
+        notifyItemChanged(position)
     }
 
     /**

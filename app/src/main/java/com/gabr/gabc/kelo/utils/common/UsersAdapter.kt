@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.User
-import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
@@ -26,16 +24,13 @@ import kotlinx.coroutines.launch
  *
  * @param context: context from the caller
  * @param parent: view in which to show the snack bar
- * @param loading: [ProgressBar] widget for showing it and hide it when loading
  * @param anchor: view to set the snack bar above it
- * @param groupId: group id to retrieve the chores from
  * */
-class UsersAdapter(private val listener: UserClickListener,
+class UsersAdapter(private val users: ArrayList<User>,
                    private val context: Context,
                    private val parent: View,
-                   loading: ProgressBar,
                    private val anchor: View? = null,
-                   groupId: String?)
+                   private val listener: UserClickListener? = null)
     : RecyclerView.Adapter<UsersAdapter.UserItem>() {
 
     /**
@@ -49,42 +44,8 @@ class UsersAdapter(private val listener: UserClickListener,
          * */
         fun onUserClicked(user: User?)
     }
-    var users: ArrayList<User> = arrayListOf()
 
-    /**
-     * Initializes the listener to the chores list in Firebase. It updates
-     * the list every time the collection changes
-     * */
-    init {
-        if (groupId != null) {
-            LoadingSingleton.manageLoadingView(loading, null, true)
-            val listener = UserQueries().attachListenerToUsers(groupId,
-                { position, user -> addUserAtPosition(position, user) },
-                { position, user -> updateUserAtPosition(position, user) },
-                { position -> removeUserAtPosition(position) })
-
-            if (listener == null) {
-                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_loading_users),
-                    anchorView = anchor)
-            }
-            LoadingSingleton.manageLoadingView(loading, null, false)
-        } else {
-            UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_group_does_not_exist),
-                anchorView = anchor)
-        }
-    }
-
-    private fun addUserAtPosition(position: Int, user: User) {
-        users.add(position, user)
-        notifyItemInserted(position)
-    }
-
-    private fun updateUserAtPosition(position: Int, user: User) {
-        users[position] = user
-        notifyItemChanged(position)
-    }
-
-    private fun removeUserAtPosition(position: Int) {
+    private fun removedAt(position: Int) {
         users.removeAt(position)
         notifyItemRemoved(position)
     }
@@ -96,17 +57,13 @@ class UsersAdapter(private val listener: UserClickListener,
      * @param position: position in which to remove the item
      * */
     fun removeUserFromGroupOnSwap(position: Int) {
-        removalRoutine(users[position].id, SharedPreferences.groupId, SharedPreferences.userId)
-        notifyItemChanged(position)
-    }
-
-    private fun removalRoutine(actualId: String, gid: String, uid: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            val user = UserQueries().getUser(uid, gid)
+            val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
             if (PermissionsSingleton.isUserAdmin(user)) {
-                if (!SharedPreferences.isUserBeingDisplayedCurrentUser(actualId)) {
-                    val success = UserQueries().deleteUser(actualId, gid)
-                    if (!success) {
+                if (!SharedPreferences.isUserBeingDisplayedCurrentUser(users[position].id)) {
+                    val success = UserQueries().deleteUser(users[position].id, SharedPreferences.groupId)
+                    if (success) removedAt(position)
+                    else {
                         UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
                             anchorView = anchor)
                     }
@@ -116,6 +73,7 @@ class UsersAdapter(private val listener: UserClickListener,
                     anchorView = anchor)
             }
         }
+        notifyItemChanged(position)
     }
 
     /**
@@ -131,7 +89,7 @@ class UsersAdapter(private val listener: UserClickListener,
         private val points: TextView = itemView.findViewById(R.id.userPoints)
         private val avatar: ImageView = itemView.findViewById(R.id.userAvatar)
 
-        override fun onClick(v: View?) { listener.onUserClicked(users[layoutPosition]) }
+        override fun onClick(v: View?) { listener?.onUserClicked(users[layoutPosition]) }
 
         /**
          * Initializes the view of the [UserItem] at a given position

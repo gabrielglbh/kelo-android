@@ -13,16 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
-import com.gabr.gabc.kelo.utils.DialogSingleton
-import com.gabr.gabc.kelo.utils.PermissionsSingleton
-import com.gabr.gabc.kelo.utils.SharedPreferences
-import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.utils.*
 import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import com.gabr.gabc.kelo.utils.common.UserListSwipeController
@@ -35,7 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** Fragment that manages all settings of Kelo */
-class Settings : Fragment(), UsersAdapter.UserClickListener {
+class Settings : Fragment() {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
@@ -43,6 +41,7 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     private lateinit var userList: RecyclerView
     private lateinit var loading: ProgressBar
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var refresh: SwipeRefreshLayout
 
     private var group: Group? = null
     private lateinit var viewModel: MainViewModel
@@ -57,16 +56,11 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
 
         bottomNavigationView = requireActivity().findViewById(R.id.mainBottomNavigationView)
 
-        points = view.findViewById(R.id.userPoints)
-        CoroutineScope(Dispatchers.Main).launch {
-            if (SharedPreferences.checkGroupIdAndUserIdAreSet()) {
-                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
-                if (user != null) points.text = user.points.toString()
-                else points.text = "0"
-            }
-        }
+        loading = view.findViewById(R.id.loadingWidget)
+        userList = view.findViewById(R.id.settingsUserList)
+        userList.layoutManager = LinearLayoutManager(requireContext())
 
-        setUpUserList(view)
+        points = view.findViewById(R.id.userPoints)
 
         deleteGroupButton = view.findViewById(R.id.settingsRemoveGroupButton)
         deleteGroupButton.setOnClickListener {
@@ -102,12 +96,27 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
             }
         }
 
+        refresh = view.findViewById(R.id.settingsRefresh)
+        refresh.setOnRefreshListener {
+            getUserPoints()
+            getGroup()
+            getUsers()
+            refresh.isRefreshing = false
+        }
+
+        getUserPoints()
         getGroup()
+        getUsers()
     }
 
-    override fun onUserClicked(user: User?) {
-        UtilsSingleton.showSnackBar(requireView(), "USER CLICKED",
-            anchorView = bottomNavigationView)
+    private fun getUserPoints() {
+        CoroutineScope(Dispatchers.Main).launch {
+            if (SharedPreferences.checkGroupIdAndUserIdAreSet()) {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (user != null) points.text = user.points.toString()
+                else points.text = "0"
+            }
+        }
     }
 
     private fun getGroup() {
@@ -117,6 +126,19 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                 val currentCurrency = Constants.CURRENCIES.filter { it.code == g.currency }[0]
                 setCurrency(currentCurrency)
             }
+        }
+    }
+
+    private fun getUsers() {
+        LoadingSingleton.manageLoadingView(loading, null, true)
+        CoroutineScope(Dispatchers.Main).launch {
+            val users = UserQueries().getAllUsers(SharedPreferences.groupId)
+            if (users != null) setUpUserList(users)
+            else {
+                UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_users),
+                    anchorView = bottomNavigationView)
+            }
+            LoadingSingleton.manageLoadingView(loading, null, false)
         }
     }
 
@@ -141,14 +163,9 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
         }
     }
 
-    private fun setUpUserList(view: View) {
-        loading = view.findViewById(R.id.loadingWidget)
-        userList = view.findViewById(R.id.settingsUserList)
-        userList.layoutManager = LinearLayoutManager(requireContext())
-
-        val adapter = UsersAdapter(this, requireContext(),
-            requireView(), loading,
-            anchor = bottomNavigationView, SharedPreferences.groupId)
+    private fun setUpUserList(users: ArrayList<User>) {
+        val adapter = UsersAdapter(users, requireContext(), requireView(),
+            anchor = bottomNavigationView)
         val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
         )
