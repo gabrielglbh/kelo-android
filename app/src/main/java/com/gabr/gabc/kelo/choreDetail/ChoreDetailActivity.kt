@@ -50,7 +50,7 @@ class ChoreDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.chore_detail)
+        setContentView(R.layout.activity_chore_detail)
 
         viewModel = run { ViewModelProvider(this).get(AssigneeViewModel::class.java) }
         viewDetails = intent.getBooleanExtra(VIEW_DETAILS, false)
