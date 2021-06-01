@@ -1,5 +1,7 @@
 package com.gabr.gabc.kelo.main
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -11,10 +13,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.GroupQueries
+import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.utils.LoadingSingleton
-import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.welcome.WelcomeActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        PermissionsSingleton.setListenerToUserRemoved(baseContext)
+        setListenerToUserRemoved(baseContext)
 
         viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
 
@@ -71,6 +74,19 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             else -> true
+        }
+    }
+
+    private fun setListenerToUserRemoved(context: Context) {
+        CoroutineScope(Dispatchers.Main).launch {
+            UserQueries().attachListenerToAppForUserRemoved(SharedPreferences.groupId, SharedPreferences.userId) {
+                SharedPreferences.resetPreferences()
+                val intent = Intent(context, WelcomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                val bundle = Bundle()
+                bundle.putBoolean(WelcomeActivity.REMOVED_FROM_GROUP, true)
+                context.startActivity(intent, bundle)
+            }
         }
     }
 

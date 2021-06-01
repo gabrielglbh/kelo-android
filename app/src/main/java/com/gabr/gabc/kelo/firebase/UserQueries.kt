@@ -237,9 +237,11 @@ class UserQueries {
     suspend fun updateNewAdmin(groupId: String): Boolean {
         val users = getAllUsers(groupId)
         return if (users != null) {
-            val nextAdmin = users[Random.nextInt(0, users.size)]
-            nextAdmin.isAdmin = true
-            updateUser(nextAdmin, groupId)
+            if (users.size > 1) {
+                val nextAdmin = users[Random.nextInt(0, users.size)]
+                nextAdmin.isAdmin = true
+                updateUser(nextAdmin, groupId)
+            } else true
         } else false
     }
 

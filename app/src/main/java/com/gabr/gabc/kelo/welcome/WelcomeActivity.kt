@@ -24,6 +24,10 @@ import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage3
 /** Activity that manages the ViewPager fragments and the entire log in logic for joining or creating a group */
 class WelcomeActivity : AppCompatActivity() {
 
+    companion object {
+        const val REMOVED_FROM_GROUP = "REMOVED_FROM_GROUP"
+    }
+
     private lateinit var parent: ConstraintLayout
     private lateinit var viewPager: ViewPager2
     private lateinit var backButton: View
@@ -49,6 +53,11 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+
+        val removedFromGroup = intent.getBooleanExtra(REMOVED_FROM_GROUP, false)
+        if (removedFromGroup) {
+            UtilsSingleton.showSnackBar(parent, "You have been removed from the group")
+        }
 
         viewModel = run { ViewModelProvider(this).get(WelcomeViewModel::class.java) }
         UtilsSingleton.changeStatusBarColor(this, this, R.color.contrast)
