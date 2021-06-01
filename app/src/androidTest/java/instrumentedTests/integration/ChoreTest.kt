@@ -61,6 +61,17 @@ class ChoreTest {
         )
     }
 
+    /** Tests the getAllChores function */
+    @Test
+    fun readAllChoresSuccessfully() = runBlocking {
+        val uploadChore = Chore("CHORE_U", "Lavar los platos", "", "sadca09sd99aaa")
+        q.createChore(uploadChore, group.id)
+        val chores = q.getAllChores(group.id)
+        assertTrue(chores != null)
+        assertTrue(chores?.size == 2)
+        assertTrue(chores!![0].expiration!!.time < chores[1].expiration!!.time)
+    }
+
     /** Tests the updateChore function */
     @Test
     fun updateChoreSuccessfully() = runBlocking {
@@ -89,54 +100,5 @@ class ChoreTest {
         val success = q.completeChore(chore, group.id)
         val user = UserQueries().getUser(user.id, group.id)
         assertTrue(success && user != null && user.points == 50)
-    }
-
-    /** Tests the listener function for chores: attachListenerToChores - Addition */
-    @Test
-    fun setListenerOnChoresAddSuccessfully() = runBlocking {
-        val chores = arrayListOf<Chore>()
-        val uploadChore = Chore("CHORE_U", "Lavar los platos", "", "sadca09sd99aaa",
-            Calendar.getInstance().time)
-        val result = q.attachListenerToChores(group.id, { pos, c ->
-            chores.add(pos, c)
-        }, { _, _ -> }, { })
-        q.createChore(uploadChore, group.id)
-        assertTrue(result != null)
-        assertTrue(chores.size == 2)
-        assertTrue(chores[0].expiration!!.time < chores[1].expiration!!.time)
-        assertTrue(chores.indexOf(uploadChore) == 1)
-    }
-
-    /** Tests the listener function for chores: attachListenerToChores - Update */
-    @Test
-    fun setListenerOnChoresUpdateSuccessfully() = runBlocking {
-        val chores = arrayListOf(chore)
-        val uploadChore = Chore(chore.id, "CHORE_U", "", "asiduhfoasdhfas998",
-            Calendar.getInstance().time)
-        val result = q.attachListenerToChores(group.id, { _, _ -> }, { pos, c ->
-            chores[pos] = c
-        }, { })
-        q.updateChore(uploadChore, group.id)
-        assertTrue(result != null)
-        assertTrue(chores.size == 1)
-        assertTrue(chores.indexOf(uploadChore) == 0)
-        assertTrue(chore != uploadChore)
-    }
-
-    /** Tests the listener function for chores: attachListenerToChores - Deletion */
-    @Test
-    fun setListenerOnChoresDeleteSuccessfully() = runBlocking {
-        val chores = arrayListOf<Chore>()
-        val uploadChore = Chore("CHORE_U", "Lavar los platos", "", "sadca09sd99aaa",
-            Calendar.getInstance().time)
-        val result = q.attachListenerToChores(group.id, { pos, c ->
-            chores.add(pos, c)
-        }, { _, _ -> }, { pos ->
-            chores.removeAt(pos)
-        })
-        q.createChore(uploadChore, group.id)
-        q.deleteChore(uploadChore.id!!, group.id)
-        assertTrue(result != null)
-        assertTrue(chores.size == 1)
     }
 }

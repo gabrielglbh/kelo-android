@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -24,17 +23,14 @@ import kotlin.collections.ArrayList
  * Adapter for the Chore List.
  *
  * @param context: activity's context
- * @param loading: [ProgressBar] widget for showing it and hide it when loading
  * @param parent: view in which to show the snack bar
  * @param anchor: view to set the snack bar above it
- * @param groupId: group id to retrieve the chores from
  * */
-class ChoreListAdapter(private val listener: ChoreClickListener,
+class ChoreListAdapter(private val chores: ArrayList<Chore>,
+                       private val listener: ChoreClickListener,
                        private val context: Context,
                        private val parent: View,
-                       private val anchor: View,
-                       loading: ProgressBar,
-                       groupId: String?)
+                       private val anchor: View)
     : RecyclerView.Adapter<ChoreListAdapter.ChoreHolder>() {
 
     /**
@@ -48,36 +44,8 @@ class ChoreListAdapter(private val listener: ChoreClickListener,
          * */
         fun onChoreClick(chore: Chore)
     }
-    var chores: ArrayList<Chore> = arrayListOf()
 
-    /**
-     * Initializes the listener to the chores list in Firebase. It updates
-     * the list every time the collection changes
-     * */
-    init {
-        if (groupId != null) {
-            LoadingSingleton.manageLoadingView(loading, null, true)
-            val listener = ChoreQueries().attachListenerToChores(groupId,
-                { position, chore -> addChoreAtPosition(position, chore) },
-                { position, chore -> updateChoreAtPosition(position, chore) },
-                { position -> removeChoreAtPosition(position) })
-
-            if (listener == null) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_loading_chores), anchorView = anchor)
-            LoadingSingleton.manageLoadingView(loading, null, false)
-        } else UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_group_does_not_exist), anchorView = anchor)
-    }
-
-    private fun addChoreAtPosition(position: Int, chore: Chore) {
-        chores.add(position, chore)
-        notifyItemInserted(position)
-    }
-
-    private fun updateChoreAtPosition(position: Int, chore: Chore) {
-        chores[position] = chore
-        notifyItemChanged(position)
-    }
-
-    private fun removeChoreAtPosition(position: Int) {
+    private fun removedAt(position: Int) {
         chores.removeAt(position)
         notifyItemRemoved(position)
     }
@@ -100,17 +68,21 @@ class ChoreListAdapter(private val listener: ChoreClickListener,
                             val success = ChoreQueries().deleteChore(choreId, gid)
                             if (!success) {
                                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete), anchorView = anchor)
+                                notifyItemChanged(position)
+                            } else {
+                                removedAt(position)
                             }
                         } else {
                             UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore), anchorView = anchor)
+                            notifyItemChanged(position)
                         }
                     }
                 }
             } else {
                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore), anchorView = anchor)
+                notifyItemChanged(position)
             }
         }
-        notifyItemChanged(position)
     }
 
     /**
@@ -130,17 +102,23 @@ class ChoreListAdapter(private val listener: ChoreClickListener,
                         if (PermissionsSingleton.isUserChoreCreatorOrAssignee(creator, assignee)
                             || PermissionsSingleton.isUserAdmin(user)) {
                             val success = ChoreQueries().completeChore(chore, gid)
-                            if (!success) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion), anchorView = anchor)
+                            if (!success) {
+                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion), anchorView = anchor)
+                                notifyItemChanged(position)
+                            } else {
+                                removedAt(position)
+                            }
                         } else {
                             UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore), anchorView = anchor)
+                            notifyItemChanged(position)
                         }
                     }
                 }
             } else {
                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore), anchorView = anchor)
+                notifyItemChanged(position)
             }
         }
-        notifyItemChanged(position)
     }
 
     /**

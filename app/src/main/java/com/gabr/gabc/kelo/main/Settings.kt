@@ -122,17 +122,21 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
 
     private fun setCurrency(currency: CurrencyModel) {
         CoroutineScope(Dispatchers.Main).launch {
-            group?.let { gr ->
-                gr.currency = currency.code
-                val success = GroupQueries().updateGroup(gr)
-                if (success) {
-                    currencyGroupButton.text = currency.code
-                    val flag = ContextCompat.getDrawable(requireContext(), currency.flag)
-                    currencyGroupButton.setCompoundDrawablesWithIntrinsicBounds(flag, null, null, null)
-                } else {
-                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_currency_update),
-                        anchorView = bottomNavigationView)
+            try {
+                group?.let { gr ->
+                    gr.currency = currency.code
+                    val success = GroupQueries().updateGroup(gr)
+                    if (success) {
+                        currencyGroupButton.text = currency.code
+                        val flag = ContextCompat.getDrawable(requireContext(), currency.flag)
+                        currencyGroupButton.setCompoundDrawablesWithIntrinsicBounds(flag, null, null, null)
+                    } else {
+                        UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_currency_update),
+                            anchorView = bottomNavigationView)
+                    }
                 }
+            } catch (e: IllegalStateException) {
+
             }
         }
     }

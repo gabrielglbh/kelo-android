@@ -3,11 +3,7 @@ package com.gabr.gabc.kelo.firebase
 import com.gabr.gabc.kelo.constants.ChoreFields
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.Chore
-import com.google.firebase.firestore.DocumentChange.Type.ADDED
-import com.google.firebase.firestore.DocumentChange.Type.MODIFIED
-import com.google.firebase.firestore.DocumentChange.Type.REMOVED
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -70,36 +66,25 @@ class ChoreQueries {
     }
 
     /**
-     * Function that defines a listener to the chores of a certain group to display them in the Chore List
-     * Depending on the type of the change, the list of chores will update
+     * Function that retrieves all chores ordered by expiration date
      *
      * @param groupId: group id in which the chores are
-     * @param notifyAdded: function that notifies the recyclerview to update its content
-     * @param notifyModified: function that notifies the recyclerview to update its content
-     * @param notifyDeleted: function that notifies the recyclerview to update its content
-     * @return [ListenerRegistration] of the collection listener
+     * @return list with all the chores
      * */
-    fun attachListenerToChores(groupId: String,
-                               notifyAdded: (pos: Int, chore: Chore) -> Unit,
-                               notifyModified: (pos: Int, chore: Chore) -> Unit,
-                               notifyDeleted: (pos: Int) -> Unit) : ListenerRegistration? {
-        try {
+    suspend fun getAllChores(groupId: String) : ArrayList<Chore>? {
+        return try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
-                .collection(fbChoresSubCollection).orderBy(ChoreFields.expiration, Query.Direction.ASCENDING)
-            return ref.addSnapshotListener { value, e ->
-                if (e != null) return@addSnapshotListener
-                for (doc in value!!.documentChanges) {
-                    val chore = doc.document.toObject<Chore>()
-                    when (doc.type) {
-                        ADDED -> notifyAdded(doc.newIndex, chore)
-                        MODIFIED -> notifyModified(doc.newIndex, chore)
-                        REMOVED -> notifyDeleted(doc.oldIndex)
-                    }
-                }
+                .collection(fbChoresSubCollection)
+                .orderBy(ChoreFields.expiration, Query.Direction.ASCENDING)
+                .get().await()
+            val chores = arrayListOf<Chore>()
+            ref.documents.forEach { chore ->
+                chore.toObject<Chore>()?.let { chores.add(it) }
             }
+            chores
         }
         catch (e : Exception) {
-            return null
+            null
         }
     }
 
