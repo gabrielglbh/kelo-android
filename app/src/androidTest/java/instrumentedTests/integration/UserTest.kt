@@ -5,6 +5,7 @@ import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.google.firebase.FirebaseApp
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -120,8 +121,10 @@ class UserTest {
         assertTrue(result)
     }
 
+    /** Tests the switching of the admin when the current admin leaves the group */
     @Test
     fun changeNewAdminOnAdminLeaveGroup() = runBlocking {
+        q.createUser(User("RND_USER", "Random", 30), group.id)
         val success = q.updateNewAdmin(group.id)
         assertTrue(success)
     }
@@ -136,5 +139,16 @@ class UserTest {
         q.deleteUser(uploadUser.id, group.id)
         assertTrue(result != null)
         assertTrue(success)
+    }
+
+    /** Tests the getAllUsers function to set the admin of the group */
+    @Test
+    fun verifyIfUsersEmptyThenNewUserIsAdmin() = runBlocking {
+        q.deleteUser(user.id, group.id)
+        val users = q.getAllUsers(group.id)
+        val newUser = User("USER_ADMIN", "Gabriel", 0, PermissionsSingleton.willUserBeAdmin(users))
+        q.joinGroup(group.id, newUser)
+        val shouldBeAdmin = q.getUser(newUser.id, group.id)
+        assertTrue(shouldBeAdmin != null && shouldBeAdmin.isAdmin)
     }
 }

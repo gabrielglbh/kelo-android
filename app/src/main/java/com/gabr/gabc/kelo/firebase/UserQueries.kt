@@ -241,7 +241,7 @@ class UserQueries {
                 val nextAdmin = users[Random.nextInt(0, users.size)]
                 nextAdmin.isAdmin = true
                 updateUser(nextAdmin, groupId)
-            } else true
+            } else false
         } else false
     }
 

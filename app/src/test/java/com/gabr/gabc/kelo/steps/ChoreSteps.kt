@@ -2,7 +2,9 @@ package com.gabr.gabc.kelo.steps
 
 import com.gabr.gabc.kelo.choreDetail.ChoreDetailFunctions
 import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.DatesSingleton
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -18,7 +20,12 @@ class ChoreSteps : En {
     private var validChoreName = false
     private var validChore = false
 
+    private var user = User()
+
     init {
+        /**************************
+         *     Validate Chore     *
+         **************************/
         Given("the user that fills up a chore without an assignee") {
             chore = Chore("", "Do the laundry")
         }
@@ -29,6 +36,9 @@ class ChoreSteps : En {
             assertFalse(validChore)
         }
 
+        /*******************************
+         *     Selected Chore Date     *
+         *******************************/
         Given("the user wants to create a new chore") {}
         When("the user enters the add chore page") {}
         When("the user selects a new expiration date") {
@@ -50,6 +60,9 @@ class ChoreSteps : En {
             assertTrue(chore.expiration == selectedDate.time)
         }
 
+        /*******************************
+         *     Validate Chore Name     *
+         *******************************/
         Given("the user that enters a chore {string}") { choreName: String ->
             this.choreName = choreName
         }
@@ -76,6 +89,68 @@ class ChoreSteps : En {
         }
         Then("the chore name must not contain special characters") {
             assertFalse(validChoreName)
+        }
+
+        /***********************************
+         *     Update Chore Permission     *
+         ***********************************/
+        Given("a user with id {string} that wants to update a chore") { uid: String ->
+            user.id = uid
+        }
+        When("the chore creator is {string}") { creatorId: String ->
+            chore.creator = creatorId
+        }
+        Then("the user is permitted to update it") {
+            assertTrue(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+        }
+        Then("the user is not permitted to update it") {
+            assertFalse(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+        }
+
+        /************************************
+         *     Removal Chore Permission     *
+         ************************************/
+        Given("a user with id {string} that wants to remove a chore") { uid: String ->
+            user.id = uid
+        }
+        When("the user is the admin of the group") {
+            user.isAdmin = true
+        }
+        When("the chore is not the creator {string} of the chore nor the admin") { creator: String ->
+            chore.creator = creator
+        }
+        Then("the user is permitted to remove it") {
+            assertTrue(PermissionsSingleton.isUserAdmin(user)
+                    || PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+        }
+        Then("the user is not permitted to remove it") {
+            assertFalse(PermissionsSingleton.isUserAdmin(user)
+                    || PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+        }
+
+        /************************************
+        *     Complete Chore Permission     *
+        ************************************/
+
+        Given("a user with id {string} that wants to complete a chore") { uid: String ->
+            user.id = uid
+        }
+        When("the chore creator is {string} or the assignee {string}") { creator: String, assignee: String ->
+            chore.creator = creator
+            chore.assignee = assignee
+        }
+        When("the chore is not the creator {string} of the chore, nor the assignee {string}, nor the admin") {
+                creator: String, assignee: String ->
+            chore.creator = creator
+            chore.assignee = assignee
+        }
+        Then("the user is permitted to complete it") {
+            assertTrue(PermissionsSingleton.isUserAdmin(user)
+                    || PermissionsSingleton.isUserChoreCreatorOrAssignee(chore.creator!!, chore.assignee!!, uid = user.id))
+        }
+        Then("the user is not permitted to complete it") {
+            assertFalse(PermissionsSingleton.isUserAdmin(user)
+                    || PermissionsSingleton.isUserChoreCreatorOrAssignee(chore.creator!!, chore.assignee!!, uid = user.id))
         }
     }
 }

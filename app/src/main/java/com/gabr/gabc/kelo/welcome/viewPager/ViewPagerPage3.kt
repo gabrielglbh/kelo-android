@@ -15,6 +15,7 @@ import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.welcome.WelcomeViewModel
@@ -88,8 +89,8 @@ class ViewPagerPage3: Fragment() {
             UtilsSingleton.clearErrorFromTextLayout(nameInputLayout)
 
             val groupId = viewModel.groupCode.value!!
-            val mode = viewModel.groupSelectedMode.value
-            val user = User("", viewModel.userName.value!!, 0, mode == Constants.CREATE_GROUP)
+            val users = UserQueries().getAllUsers(SharedPreferences.groupId)
+            val user = User("", viewModel.userName.value!!, 0, PermissionsSingleton.willUserBeAdmin(users))
 
             when (val userId = UserQueries().joinGroup(groupId, user)) {
                 "-1" -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_join_group))

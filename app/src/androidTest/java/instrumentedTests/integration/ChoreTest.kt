@@ -47,8 +47,8 @@ class ChoreTest {
     /** Tests the createChore function */
     @Test
     fun createChoreSuccessfully() = runBlocking {
-        val chore = q.createChore(chore, group.id)
-        assertTrue(chore != null && chore.id == chore.id)
+        val c = q.createChore(chore, group.id)
+        assertTrue(c != null && c.id == chore.id)
     }
 
     /** Tests the getChore function */

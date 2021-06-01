@@ -197,10 +197,10 @@ class Settings : Fragment() {
                 val user = q.getUser(uid, gid)
 
                 if (PermissionsSingleton.isUserAdmin(user)) {
-                    val success = q.deleteUser(uid, gid)
-                    if (success) {
-                        val adminChangedSuccess = q.updateNewAdmin(gid)
-                        if (adminChangedSuccess) {
+                    val adminChangedSuccess = q.updateNewAdmin(gid)
+                    if (adminChangedSuccess) {
+                        val success = q.deleteUser(uid, gid)
+                        if (success) {
                             startWelcomeActivityAndResetPreferences()
                         } else {
                             UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_leave),
