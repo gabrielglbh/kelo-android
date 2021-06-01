@@ -89,7 +89,7 @@ class ViewPagerPage3: Fragment() {
             UtilsSingleton.clearErrorFromTextLayout(nameInputLayout)
 
             val groupId = viewModel.groupCode.value!!
-            val users = UserQueries().getAllUsers(SharedPreferences.groupId)
+            val users = UserQueries().getAllUsers(groupId)
             val user = User("", viewModel.userName.value!!, 0, PermissionsSingleton.willUserBeAdmin(users))
 
             when (val userId = UserQueries().joinGroup(groupId, user)) {
