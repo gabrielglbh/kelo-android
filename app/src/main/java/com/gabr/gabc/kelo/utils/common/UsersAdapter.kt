@@ -79,7 +79,7 @@ class UsersAdapter(private val users: ArrayList<User>,
                             anchorView = anchor)
                         userListener?.updateUsers()
                     }
-                }
+                } else userListener?.updateUsers()
             } else {
                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_user),
                     anchorView = anchor)

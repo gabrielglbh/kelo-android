@@ -110,18 +110,26 @@ object UtilsSingleton {
      * @param context: current context
      * @param dX: axis in which the swipe is being performed
      * @param itemView: holder of the RecyclerView
-     * @param icon: icon to be drawn in the canvas
-     * @param background: color to be set as the background in the canvas
+     * @param dualIcon: boolean to tell the swipe controller to paint two different icons when
+     * swiping LEFT or RIGHT
      * */
-    fun setUpSwipeController(canvas: Canvas, context: Context, dX: Float, itemView: View,
-                             icon: Drawable, background: ColorDrawable) {
-        val margin = 5
+    fun setUpSwipeController(canvas: Canvas, context: Context, dX: Float, itemView: View, dualIcon: Boolean) {
+        lateinit var icon: Drawable
+        lateinit var background: ColorDrawable
+
+        if (dualIcon) {
+            background = ColorDrawable(context.getColor(if (dX > 0) R.color.primaryColor else R.color.errorColor))
+            ContextCompat.getDrawable(context, if (dX > 0) R.drawable.done else R.drawable.clear)?.let { icon = it }
+        } else {
+            background = ColorDrawable(context.getColor(R.color.errorColor))
+            ContextCompat.getDrawable(context, R.drawable.clear)?.let { icon = it }
+        }
 
         val iconHeight = icon.intrinsicHeight
         val iconWidth = icon.intrinsicWidth
 
-        val top = itemView.top + margin
-        val bottom = itemView.bottom - margin
+        val top = itemView.top + 5
+        val bottom = itemView.bottom - 5
 
         val iconMargin = (itemView.height - iconHeight) / 2
         val iconTop = itemView.top + iconMargin

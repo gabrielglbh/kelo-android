@@ -62,7 +62,14 @@ class ChoreDetailActivity : AppCompatActivity() {
         icon = findViewById(R.id.choreDetailIcon)
         if (viewDetails) icon.setImageDrawable(UtilsSingleton.createAvatar(chore.name))
 
-        setUpToolbar()
+        UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
+        toolbar = findViewById(R.id.toolbar_widget)
+        toolbar.title = if (viewDetails) getString(R.string.chore_detail) else getString(R.string.add_chore)
+        toolbar.setNavigationIcon(R.drawable.arrow_back)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         setUpChoreName()
         setUpDatePicker()
         setUpImportance()
@@ -87,16 +94,6 @@ class ChoreDetailActivity : AppCompatActivity() {
             }
             else -> true
         }
-    }
-
-    private fun setUpToolbar() {
-        UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
-        toolbar = findViewById(R.id.toolbar_widget)
-        toolbar.title = if (viewDetails) getString(R.string.chore_detail) else getString(R.string.add_chore)
-        toolbar.setNavigationIcon(R.drawable.arrow_back)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     private fun validateChore() {
@@ -161,16 +158,12 @@ class ChoreDetailActivity : AppCompatActivity() {
         date.setOnClickListener {
             clearFocusOfEditTextAndSetDrawable()
             val datePicker = CustomDatePicker(selectedCalendar) { day, month, year ->
-                onDateSelected(day, month, year)
+                val calendar = ChoreDetailFunctions.parseAndUpdateChoreWithSelectedDate(chore, day, month, year)
+                selectedCalendar = calendar
+                date.text = DatesSingleton.parseCalendarToString(calendar)
             }
             datePicker.show(supportFragmentManager, CustomDatePicker.TAG)
         }
-    }
-
-    private fun onDateSelected(day: Int, month: Int, year: Int) {
-        val calendar = ChoreDetailFunctions.parseAndUpdateChoreWithSelectedDate(chore, day, month, year)
-        selectedCalendar = calendar
-        date.text = DatesSingleton.parseCalendarToString(calendar)
     }
 
     private fun setUpImportance() {

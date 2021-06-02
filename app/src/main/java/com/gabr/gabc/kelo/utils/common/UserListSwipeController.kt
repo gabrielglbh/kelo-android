@@ -2,13 +2,8 @@ package com.gabr.gabc.kelo.utils.common
 
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 
 /**
@@ -34,12 +29,6 @@ class UserListSwipeController(
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
         dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-        lateinit var icon: Drawable
-        val itemView: View = viewHolder.itemView
-
-        val background = ColorDrawable(context.getColor(R.color.errorColor))
-        ContextCompat.getDrawable(context, R.drawable.clear)?.let { icon = it }
-
-        UtilsSingleton.setUpSwipeController(c, context, dX, itemView, icon, background)
+        UtilsSingleton.setUpSwipeController(c, context, dX, viewHolder.itemView, dualIcon = false)
     }
 }

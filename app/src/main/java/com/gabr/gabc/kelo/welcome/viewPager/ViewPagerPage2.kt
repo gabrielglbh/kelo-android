@@ -85,29 +85,21 @@ class ViewPagerPage2 : Fragment() {
 
         setUpObserverLiveData()
         if (mode == Constants.CREATE_GROUP) {
-            initViewsForGroupCreation()
             animateObjectsInForGroupCreation()
+            groupCurrencyButton.setOnClickListener {
+                CurrencyBottomSheet(welcomeViewModel = viewModel).show(childFragmentManager, CurrencyBottomSheet.TAG)
+            }
+            groupNameEditText.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) UtilsSingleton.hideKeyboard(activity, v)
+            }
+            groupNameEditText.doOnTextChanged { _, _, _, _ -> UtilsSingleton.clearErrorFromTextLayout(groupNameLayout) }
         } else {
-            initViewsForJoiningGroup()
             animateObjectsInForJoiningGroup()
+            joinGroupEditText.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) UtilsSingleton.hideKeyboard(activity, v)
+            }
+            joinGroupEditText.doOnTextChanged { _, _, _, _ -> UtilsSingleton.clearErrorFromTextLayout(joinGroupLayout) }
         }
-    }
-
-    private fun initViewsForGroupCreation() {
-        groupCurrencyButton.setOnClickListener {
-            CurrencyBottomSheet(welcomeViewModel = viewModel).show(childFragmentManager, CurrencyBottomSheet.TAG)
-        }
-        groupNameEditText.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) UtilsSingleton.hideKeyboard(activity, v)
-        }
-        groupNameEditText.doOnTextChanged { _, _, _, _ -> UtilsSingleton.clearErrorFromTextLayout(groupNameLayout) }
-    }
-
-    private fun initViewsForJoiningGroup() {
-        joinGroupEditText.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) UtilsSingleton.hideKeyboard(activity, v)
-        }
-        joinGroupEditText.doOnTextChanged { _, _, _, _ -> UtilsSingleton.clearErrorFromTextLayout(joinGroupLayout) }
     }
 
     private fun createGroup() {
