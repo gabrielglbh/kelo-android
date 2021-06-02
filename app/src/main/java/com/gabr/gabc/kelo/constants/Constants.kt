@@ -3,6 +3,7 @@ package com.gabr.gabc.kelo.constants
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
 
+/** Class that defines constant values for their usage in all of the code */
 object Constants {
         // true -> user has completed the welcome form
         // false -> user must log in

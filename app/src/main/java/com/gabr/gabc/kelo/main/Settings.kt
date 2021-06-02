@@ -1,6 +1,7 @@
 package com.gabr.gabc.kelo.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -164,7 +165,7 @@ class Settings : Fragment(), UsersAdapter.UserListener {
                     }
                 }
             } catch (e: IllegalStateException) {
-
+                Log.e("CONTEXT ERROR", e.message.toString())
             }
         }
     }

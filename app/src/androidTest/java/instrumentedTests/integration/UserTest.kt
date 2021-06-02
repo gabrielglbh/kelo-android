@@ -148,7 +148,7 @@ class UserTest {
     @Test
     fun setListenerUserWasDeletedRedirectSuccessfully() = runBlocking {
         var success = false
-        val uploadUser = User("USER_U", "Gabriel", 0)
+        val uploadUser = User("USER_U", "Gabriel Garcia", 0)
         q.createUser(uploadUser, group.id)
         val result = q.attachListenerToAppForUserRemoved(group.id, uploadUser.id) { success = true }
         q.deleteUser(uploadUser.id, group.id)
@@ -173,7 +173,7 @@ class UserTest {
     fun verifyIfUsersEmptyThenNewUserIsAdmin() = runBlocking {
         q.deleteUser(user.id, group.id)
         val users = q.getAllUsers(group.id)
-        val newUser = User("USER_ADMIN", "Gabriel", 0, PermissionsSingleton.willUserBeAdmin(users))
+        val newUser = User("USER_ADMIN", "Raul olmedo", 0, PermissionsSingleton.willUserBeAdmin(users))
         q.joinGroup(group.id, newUser)
         val shouldBeAdmin = q.getUser(newUser.id, group.id)
         assertTrue(shouldBeAdmin != null && shouldBeAdmin.isAdmin)

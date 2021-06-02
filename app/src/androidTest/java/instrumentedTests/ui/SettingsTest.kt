@@ -88,6 +88,7 @@ class SettingsTest {
         onView(withId(R.id.settings_menu)).perform(click())
     }
 
+    /** Cleans up the user for every test */
     @After
     fun cleanUser() {
         runBlocking { UserQueries().deleteAllUsers(group.id) }
