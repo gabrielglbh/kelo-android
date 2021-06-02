@@ -2,13 +2,11 @@ package instrumentedTests.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -52,10 +50,7 @@ class SettingsTest {
         fun setUpFirebase() {
             val context = InstrumentationRegistry.getInstrumentation().targetContext
             FirebaseApp.initializeApp(context)
-            runBlocking {
-                GroupQueries().createGroup(group)
-                UserQueries().createUser(user, group.id)
-            }
+            runBlocking { GroupQueries().createGroup(group) }
 
             // Sets shared preferences for activities to use
             val gr = context.getSharedPreferences(Constants.GROUP_ID, Context.MODE_PRIVATE)
@@ -64,7 +59,7 @@ class SettingsTest {
                 commit()
             }
 
-            val us = context.getSharedPreferences(Constants.USER_ID, Context.MODE_PRIVATE)
+            val us =  context.getSharedPreferences(Constants.USER_ID, Context.MODE_PRIVATE)
             with (us.edit()) {
                 putString(Constants.USER_ID, user.id)
                 commit()
@@ -87,7 +82,15 @@ class SettingsTest {
     @Before
     fun pressSettingsTab() {
         activityScenario.scenario.onActivity { it.keepScreenActive() }
+
+        runBlocking { UserQueries().createUser(user, group.id) }
+
         onView(withId(R.id.settings_menu)).perform(click())
+    }
+
+    @After
+    fun cleanUser() {
+        runBlocking { UserQueries().deleteAllUsers(group.id) }
     }
 
     /**
@@ -114,13 +117,5 @@ class SettingsTest {
         onView(withId(android.R.id.button1)).perform(click())
         Thread.sleep(1000)
         onView(withText(R.string.welcome_to_kelo)).check(matches(isDisplayed()))
-    }
-
-    /** Test that verifies that the currency dialog appears upon selection if admin */
-    @Test
-    fun currencyChangeDialogAppearsOnAdmin() {
-        onView(withId(R.id.settingsCurrencyButton)).perform(scrollTo()).perform(click())
-        onView(withId(R.id.currencyList)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
-        onView(withId(R.id.settingsCurrencyButton)).check(matches(withText("ARS")))
     }
 }
