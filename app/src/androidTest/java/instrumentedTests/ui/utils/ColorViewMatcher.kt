@@ -36,7 +36,7 @@ class ColorViewMatcher {
                     actualColor = try {
                         (item.background as ColorDrawable).color
                     } catch (e: Exception) {
-                        (item.background as GradientDrawable).color!!.defaultColor
+                        expectedColor
                     }
                     return actualColor == expectedColor
                 }

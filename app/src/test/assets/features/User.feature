@@ -73,3 +73,31 @@ Feature: Create User
     Examples:
       | name                    |
       | (**Olmedo**) - ¡El Amo? |
+
+  @User
+  Scenario Outline: User Cannot Remove Itself from the User List
+    Given the user "<uid>"
+    When the user tries to remove a certain user "<removed>"
+    Then the action of removal will not be executed
+    Examples:
+      | uid  | removed |
+      | GABO | GABO    |
+
+  @User
+  Scenario Outline: User Cannot Remove Another User from the User List
+    Given the user whose "<uid>" who is not the admin of the group
+    When the user tries to remove a certain user "<removed>"
+    Then the action of removal will not be executed
+    Examples:
+      | uid  | removed |
+      | GABO | RAUL    |
+      | GABO | GABO    |
+
+  @User
+  Scenario Outline: User Can Remove Other User from the User List
+    Given the user "<uid>" who is admin of the group
+    When the user tries to remove a certain user "<removed>"
+    Then the action of removal will be executed
+    Examples:
+      | uid  | removed |
+      | GABO | RAUL    |

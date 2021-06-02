@@ -1,11 +1,12 @@
 package com.gabr.gabc.kelo.firebase
 
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.constants.UserFields
-import com.gabr.gabc.kelo.constants.fbGroupsCollection
-import com.gabr.gabc.kelo.constants.fbUsersCollection
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -18,6 +19,8 @@ import kotlin.random.Random
 class UserQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore
+    private val fbGroupsCollection = Constants.fbGroupsCollection
+    private val fbUsersCollection = Constants.fbUsersCollection
 
     /**
      * Function that makes a [User] join an existing [Group], validating if the name that the user
@@ -86,9 +89,37 @@ class UserQueries {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
                     .collection(fbUsersCollection).document(userId)
                     .get().await()
-            ref.toObject<User>()
+            if (!ref.exists()) null
+            else ref.toObject<User>()
         } catch (e: Exception) {
             null
+        }
+    }
+
+    /**
+     * Function that defines a listener to the users of a certain group to listen if the admin
+     * deletes any user. If a user is deleted, the user is exited automatically.
+     *
+     * @param groupId: group id in which the users are
+     * @param userId: user id to check if the user must be redirected
+     * @param exitGroup: function that exits the deleted user from the group
+     * @return [ListenerRegistration] of the collection listener
+     * */
+    fun attachListenerToAppForUserRemoved(groupId: String, userId: String, exitGroup: () -> Unit) : ListenerRegistration? {
+        try {
+            val ref = instance.collection(fbGroupsCollection).document(groupId).collection(fbUsersCollection)
+            return ref.addSnapshotListener { value, e ->
+                if (e != null) return@addSnapshotListener
+                for (doc in value!!.documentChanges) {
+                    val user = doc.document.toObject<User>()
+                    if (doc.type == DocumentChange.Type.REMOVED) {
+                        if (user.id == userId) exitGroup()
+                    }
+                }
+            }
+        }
+        catch (e : Exception) {
+            return null
         }
     }
 
@@ -96,17 +127,17 @@ class UserQueries {
      * Function that retrieves all users in a group
      *
      * @param groupId: group id in which the users are
-     * @return ArrayList<User?>? containing the users of the group
+     * @return ArrayList<User>? containing the users of the group
      * */
-    suspend fun getAllUsers(groupId: String): ArrayList<User?>? {
+    suspend fun getAllUsers(groupId: String): ArrayList<User>? {
         return try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
                 .collection(fbUsersCollection)
                 .get().await()
-            val users: ArrayList<User?> = arrayListOf()
+            val users = arrayListOf<User>()
             val data = ref.documents
             for (user in data) {
-                users.add(user.toObject<User>())
+                user.toObject<User>()?.let { users.add(it) }
             }
             users
         } catch (e: Exception) {
@@ -188,13 +219,30 @@ class UserQueries {
     }
 
     /**
-     * Gets a random user from an array
+     * Gets a random user from teh users of the group
      *
-     * @param users: array of users from [getAllUsers]
      * @return randomly selected [User]
      * */
-    fun getRandomUser(users: ArrayList<User?>?): User? {
+    suspend fun getRandomUser(groupId: String): User? {
+        val users = getAllUsers(groupId)
         return if (users != null) users[Random.nextInt(0, users.size)] else null
+    }
+
+    /**
+     * Gets a random user from teh users of the group and sets the admin of the group for when
+     * the admin leaves the group
+     *
+     * @return boolean of success
+     * */
+    suspend fun updateNewAdmin(groupId: String): Boolean {
+        val users = getAllUsers(groupId)
+        return if (users != null) {
+            if (users.size >= 1) {
+                val nextAdmin = users[Random.nextInt(0, users.size)]
+                nextAdmin.isAdmin = true
+                updateUser(nextAdmin, groupId)
+            } else false
+        } else false
     }
 
     /**
@@ -213,6 +261,26 @@ class UserQueries {
                 .get()
                 .await()
             return obs.documents.size == 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    /**
+     * Function that verifies that a certain group is created and that even within it, the user
+     * also exists. If the user or group does not exist, the user will not be permitted to continue.
+     *
+     * @param userId: ID of the to be deleted user
+     * @param groupId: group id in which the chore is
+     * @return Boolean that returns true if query was successful
+     * */
+    suspend fun verifyIsUserInGroupOnStartUp(groupId: String, userId: String): Boolean {
+        return try {
+            val group = GroupQueries().getGroup(groupId)
+            if (group != null) {
+                val user = UserQueries().getUser(userId, groupId)
+                user != null
+            } else false
         } catch (e: Exception) {
             false
         }

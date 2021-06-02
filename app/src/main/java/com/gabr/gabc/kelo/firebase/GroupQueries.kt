@@ -1,7 +1,6 @@
 package com.gabr.gabc.kelo.firebase
 
-import com.gabr.gabc.kelo.constants.fbGroupsCollection
-import com.gabr.gabc.kelo.constants.fbUsersCollection
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.models.Group
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -14,6 +13,8 @@ import java.lang.Exception
 class GroupQueries {
 
     private var instance: FirebaseFirestore = Firebase.firestore
+    private val fbGroupsCollection = Constants.fbGroupsCollection
+    private val fbUsersCollection = Constants.fbUsersCollection
 
     /**
      * Function that creates a [Group]
@@ -49,7 +50,8 @@ class GroupQueries {
             val ref = instance.collection(fbGroupsCollection)
                 .document(groupId).get()
                 .await()
-            ref.toObject<Group>()
+            if (!ref.exists()) null
+            else ref.toObject<Group>()
         } catch (e: Exception) {
             null
         }
@@ -83,8 +85,9 @@ class GroupQueries {
             instance.collection(fbGroupsCollection)
                 .document(groupId).delete()
                 .await()
-            UserQueries().deleteAllUsers(groupId)
-            true
+            val users = UserQueries().deleteAllUsers(groupId)
+            val chores = ChoreQueries().deleteAllChores(groupId)
+            users && chores
         } catch (e: Exception) {
             false
         }

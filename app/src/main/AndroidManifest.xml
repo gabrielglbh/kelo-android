@@ -24,10 +24,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".welcome.WelcomeActivity"
             android:screenOrientation="portrait"
             android:noHistory="true">
             <intent-filter>
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChoreDetailActivity"
+            android:name=".choreDetail.ChoreDetailActivity"
             android:screenOrientation="portrait" />
     </application>
 

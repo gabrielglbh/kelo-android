@@ -1,20 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/settingsDebugButton"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/material_button_height"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="RESET FIRST_LAUNCHED BOOL"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/settings_layout">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pointsLabel"
+                style="@style/HeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings_points_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/userPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/labelText"
+                android:textSize="45sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pointsLabel"
+                tools:text="45" />
+
+            <TextView
+                android:id="@+id/settingsUserLabel"
+                style="@style/HeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings_users_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userPoints" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/settingsUserListContainer"
+                android:layout_width="0dp"
+                android:layout_height="286dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/settingsUserLabel"
+                app:layout_constraintTop_toBottomOf="@+id/settingsUserLabel">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/settingsUserList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:listitem="@layout/users_list_item" />
+
+                <include
+                    layout="@layout/loading_widget"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/currencyLabel"
+                style="@style/HeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings_group_currency"
+                app:layout_constraintStart_toStartOf="@+id/settingsUserListContainer"
+                app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsCurrencyButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
+                app:layout_constraintStart_toStartOf="@+id/currencyLabel"
+                app:layout_constraintTop_toBottomOf="@+id/currencyLabel"
+                tools:text="EUR" />
+
+            <TextView
+                android:id="@+id/dangerZoneLabel"
+                style="@style/HeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings_danger_zone_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsCurrencyButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsRemoveGroupButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/settings_delete_group_button"
+                app:backgroundTint="@color/errorColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline13"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dangerZoneLabel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsExitGroupButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginStart="8dp"
+                android:text="@string/settings_leave_group_button"
+                app:backgroundTint="@color/errorColor"
+                app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
+                app:layout_constraintStart_toStartOf="@+id/guideline13"
+                app:layout_constraintTop_toTopOf="@+id/settingsRemoveGroupButton" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.50121653" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

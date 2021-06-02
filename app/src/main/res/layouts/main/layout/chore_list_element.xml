@@ -29,11 +29,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:singleLine="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
+        android:singleLine="true"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -45,36 +46,65 @@
         android:id="@+id/choreListAssigneeIcon"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/chore_icon_placeholder"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/ic_assigned"
         app:layout_constraintBottom_toBottomOf="@+id/choreListIcon"
-        app:layout_constraintStart_toStartOf="@+id/choreListName" />
+        app:layout_constraintStart_toStartOf="@+id/choreListName"
+        app:layout_constraintTop_toBottomOf="@+id/choreListExpiration" />
+
+    <View
+        android:id="@+id/choreListCreatorIcon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/ic_creator"
+        app:layout_constraintBottom_toBottomOf="@+id/choreListAssigneeIcon"
+        app:layout_constraintStart_toStartOf="@+id/guideline14"
+        app:layout_constraintTop_toTopOf="@+id/choreListAssigneeIcon" />
+
+    <TextView
+        android:id="@+id/choreListCreator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/choreListCreatorIcon"
+        app:layout_constraintEnd_toEndOf="@+id/choreListExpiration"
+        app:layout_constraintStart_toEndOf="@+id/choreListCreatorIcon"
+        app:layout_constraintTop_toTopOf="@+id/choreListCreatorIcon"
+        tools:text="Gabriel Garcia" />
 
     <TextView
         android:id="@+id/choreListAssignee"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="16sp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/choreListAssigneeIcon"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline14"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/choreListAssigneeIcon"
         app:layout_constraintTop_toTopOf="@+id/choreListAssigneeIcon"
-        tools:text="Deafult User" />
+        tools:text="Raul Olmedo" />
 
     <TextView
         android:id="@+id/choreListExpiration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_marginStart="4dp"
         android:textAlignment="center"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/choreListIcon"
+        app:layout_constraintBottom_toBottomOf="@+id/choreListName"
         app:layout_constraintEnd_toStartOf="@+id/choreListImportance"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/choreListIcon"
+        app:layout_constraintTop_toTopOf="@+id/choreListName"
         tools:text="12/3/21" />
 
     <View
@@ -91,6 +121,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.72" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.59" />
 
     <View
         android:id="@+id/choreListImportance"

@@ -88,3 +88,75 @@ Feature: Create Chore
     Examples:
       | name                     |
       | *o$* Lavar Ropa *$o*     |
+
+  @Chore
+  Scenario Outline: User Has Permissions For Updating a Chore
+    Given a user with id "<id>" that wants to update a chore
+    When the chore creator is "<creator>"
+    Then the user is permitted to update it
+    Examples:
+      | id   | creator |
+      | RAUL | RAUL    |
+
+  @Chore
+  Scenario Outline: User Has Not Permissions For Updating a Chore
+    Given a user with id "<id>" that wants to update a chore
+    When the chore creator is "<creator>"
+    Then the user is not permitted to update it
+    Examples:
+      | id   | creator |
+      | RAUL | GABO    |
+
+  @Chore
+  Scenario Outline: (Admin) User Has Permissions For Removing a Chore
+    Given a user with id "<id>" that wants to remove a chore
+    When the user is the admin of the group
+    Then the user is permitted to remove it
+    Examples:
+      | id   |
+      | RAUL |
+
+  @Chore
+  Scenario Outline: (Creator) User Has Permissions For Removing a Chore
+    Given a user with id "<id>" that wants to remove a chore
+    When the chore creator is "<creator>"
+    Then the user is permitted to remove it
+    Examples:
+      | id   | creator |
+      | RAUL | RAUL    |
+
+  @Chore
+  Scenario Outline: User Has Not Permissions For Removing a Chore
+    Given a user with id "<id>" that wants to remove a chore
+    When the chore is not the creator "<creator>" of the chore nor the admin
+    Then the user is not permitted to remove it
+    Examples:
+      | id   | creator |
+      | RAUL | GABO    |
+
+  @Chore
+  Scenario Outline: (Admin) User Has Permissions For Completing a Chore
+    Given a user with id "<id>" that wants to complete a chore
+    When the user is the admin of the group
+    Then the user is permitted to complete it
+    Examples:
+      | id   |
+      | RAUL |
+
+  @Chore
+  Scenario Outline: (Creator/Assignee) User Has Permissions For Completing a Chore
+    Given a user with id "<id>" that wants to complete a chore
+    When the chore creator is either the "<creator>" or the assignee "<assignee>"
+    Then the user is permitted to complete it
+    Examples:
+      | id   | creator | assignee |
+      | RAUL | RAUL    | RAUL     |
+
+  @Chore
+  Scenario Outline: User Has Not Permissions For Completing a Chore
+    Given a user with id "<id>" that wants to complete a chore
+    When the chore is not the creator "<creator>" of the chore, nor the assignee "<assignee>", nor the admin
+    Then the user is not permitted to complete it
+    Examples:
+      | id   | creator | assignee |
+      | RAUL | GABO    | ALEX     |

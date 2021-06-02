@@ -15,11 +15,12 @@ import java.util.*
  * */
 class Chore(
     @DocumentId var id: String? = "",
-    @PropertyName("name") var name: String? = "",
-    @PropertyName("icon") var icon: String? = "",
-    @PropertyName("assignee") var assignee: String? = "",
-    @PropertyName("expiration") var expiration: Date? = Calendar.getInstance().time,
-    @PropertyName("points") var points: Int = 10
+    @PropertyName(ChoreFields.name) var name: String? = "",
+    @PropertyName(ChoreFields.icon) var icon: String? = "",
+    @PropertyName(ChoreFields.assignee) var assignee: String? = "",
+    @PropertyName(ChoreFields.expiration) var expiration: Date? = Calendar.getInstance().time,
+    @PropertyName(ChoreFields.points) var points: Int = 10,
+    @PropertyName(ChoreFields.creator) var creator: String? = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this (
         parcel.readString(),
@@ -27,7 +28,8 @@ class Chore(
         parcel.readString(),
         parcel.readString(),
         parcel.readDate(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readString()
     )
 
     /**
@@ -39,7 +41,8 @@ class Chore(
             ChoreFields.icon to icon,
             ChoreFields.assignee to assignee,
             ChoreFields.expiration to expiration,
-            ChoreFields.points to points
+            ChoreFields.points to points,
+            ChoreFields.creator to creator
         )
     }
 
@@ -50,6 +53,7 @@ class Chore(
         parcel.writeString(assignee)
         parcel.writeDate(expiration)
         parcel.writeInt(points)
+        parcel.writeString(creator)
     }
 
     override fun describeContents(): Int { return 0 }
@@ -58,7 +62,8 @@ class Chore(
         val chore = other as Chore
         return id == chore.id && name == chore.name &&
                 icon == chore.icon && assignee == chore.assignee &&
-                expiration == chore.expiration && points == chore.points
+                expiration == chore.expiration && points == chore.points &&
+                creator == chore.creator
     }
 
     override fun hashCode(): Int {
@@ -68,6 +73,7 @@ class Chore(
         result = 31 * result + (assignee?.hashCode() ?: 0)
         result = 31 * result + (expiration?.hashCode() ?: 0)
         result = 31 * result + points
+        result = 31 * result + (creator?.hashCode() ?: 0)
         return result
     }
 

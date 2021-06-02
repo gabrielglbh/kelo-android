@@ -7,8 +7,8 @@ import com.google.firebase.firestore.PropertyName
 /** Class that holds the Group for managing communications with Firebase */
 data class Group(
     @DocumentId var id: String = "",
-    @PropertyName("name") val name: String = "",
-    @PropertyName("currency") val currency: String = ""
+    @PropertyName(GroupFields.name) val name: String = "",
+    @PropertyName(GroupFields.currency) var currency: String = ""
 ) {
     /**
      * Transforms the current [Group] into a [Map] to be uploaded to Firebase

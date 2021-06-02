@@ -12,17 +12,16 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.gabr.gabc.kelo.MainActivity
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.GROUP_ID
-import com.gabr.gabc.kelo.constants.USER_ID
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
+import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
-import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.DisableAnimationsRule
 import instrumentedTests.ui.utils.keepScreenActive
@@ -47,7 +46,8 @@ class EditChoreTest {
     companion object {
         private val group = Group("UI_GROUP", "generic group", "EUR")
         private val user = User("UI_USER", "Gabriel", 0)
-        private val chore = Chore("CHORE_C", "CHORE_C", "", "UI_USER", Calendar.getInstance().time, 20)
+        private val chore = Chore("CHORE_C", "CHORE_C", "", user.id,
+            Calendar.getInstance().time, 20, user.id)
 
         /** Initializes and creates Firebase needed data for the tests */
         @JvmStatic
@@ -62,15 +62,15 @@ class EditChoreTest {
             }
 
             // Sets shared preferences for activities to use
-            val gr = context.getSharedPreferences(GROUP_ID, Context.MODE_PRIVATE)
+            val gr = context.getSharedPreferences(Constants.GROUP_ID, Context.MODE_PRIVATE)
             with (gr.edit()) {
-                putString(GROUP_ID, group.id)
+                putString(Constants.GROUP_ID, group.id)
                 commit()
             }
 
-            val us = context.getSharedPreferences(USER_ID, Context.MODE_PRIVATE)
+            val us = context.getSharedPreferences(Constants.USER_ID, Context.MODE_PRIVATE)
             with (us.edit()) {
-                putString(USER_ID, user.id)
+                putString(Constants.USER_ID, user.id)
                 commit()
             }
         }
@@ -95,14 +95,14 @@ class EditChoreTest {
     @Test
     fun verifyDataOfChoreIsCorrectlyDisplayedOnEditChore() {
         val date = Calendar.getInstance()
-        val expectedDate = UtilsSingleton.parseCalendarToString(date)
+        val expectedDate = DatesSingleton.parseCalendarToString(date)
 
         Thread.sleep(2000)
         onView(withId(R.id.choreListRecyclerView)).perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         // Verify Selected Chore is populated
         onView(withId(R.id.choreDetailNameEditText)).check(ViewAssertions.matches(withText(chore.name)))
-        onView(withId(R.id.choreDetailAssigneeButton)).check(ViewAssertions.matches(withText("YOU")))
+        onView(withId(R.id.choreDetailAssigneeButton)).check(ViewAssertions.matches(withText("Gabriel (You)")))
         onView(withId(R.id.choreDetailMedium)).check(ViewAssertions.matches(isChecked()))
         onView(withId(R.id.choreDetailExpireDateButton)).check(ViewAssertions.matches(withText(expectedDate)))
     }

@@ -5,7 +5,9 @@ import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.google.firebase.FirebaseApp
+import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.*
@@ -17,7 +19,7 @@ import org.junit.runners.BlockJUnit4ClassRunner
 class UserTest {
     private val q = UserQueries()
     private val group = Group("GROUP", "generic group", "EUR")
-    private val user = User("CREATE_USER", "createUser", 0)
+    private val user = User("USER_A", "createUser", 0)
 
     /** Initializes and creates Firebase needed data for the tests */
     @Before
@@ -55,10 +57,17 @@ class UserTest {
         )
     }
 
+    /** Tests the getUser function when is null */
+    @Test
+    fun readUserNotSuccessfully() = runBlocking {
+        val result = q.getUser("RAUL", group.id)
+        assertTrue(result == null)
+    }
+
     /** Tests the getMostLazyUser function */
     @Test
     fun readMostLazyUserSuccessfully() = runBlocking {
-        val u = User("CREATE_USER_2", "createUser", 30)
+        val u = User("CREATE_USER_2", "anotherusername", 30)
         val notToBeRetrievedUser = q.createUser(u, group.id)
         assertTrue(notToBeRetrievedUser != null)
         val result = q.getMostLazyUser(group.id)
@@ -72,8 +81,7 @@ class UserTest {
     @Test
     fun readRandomUserSuccessfully() = runBlocking {
         q.createUser(User("RND_USER", "Random", 30), group.id)
-        val users = q.getAllUsers(group.id)
-        val rndUser = q.getRandomUser(users)
+        val rndUser = q.getRandomUser(group.id)
         assertTrue(rndUser != null)
     }
 
@@ -114,10 +122,81 @@ class UserTest {
         assertTrue(result == join.id)
     }
 
-    /** Tests the isUsernameAvailable function */
+    /** Tests the isUsernameAvailable function for a positive outcome */
     @Test
     fun isUsernameAvailableSuccessfully() = runBlocking {
         val result = q.isUsernameAvailable(group.id, "nameIsFullyAvailable")
         assertTrue(result)
+    }
+
+    /** Tests the isUsernameAvailable function for a negative outcome */
+    @Test
+    fun isUsernameNotAvailableSuccessfully() = runBlocking {
+        val result = q.isUsernameAvailable(group.id, user.name)
+        assertFalse(result)
+    }
+
+    /** Tests the switching of the admin when the current admin leaves the group */
+    @Test
+    fun changeNewAdminOnAdminLeaveGroup() = runBlocking {
+        q.createUser(User("RND_USER", "Random", 30), group.id)
+        val success = q.updateNewAdmin(group.id)
+        assertTrue(success)
+    }
+
+    /** Tests the listener function for users: attachListenerToAppForUserRemoved for the correct deleted user */
+    @Test
+    fun setListenerUserWasDeletedRedirectSuccessfully() = runBlocking {
+        var success = false
+        val uploadUser = User("USER_U", "Gabriel Garcia", 0)
+        q.createUser(uploadUser, group.id)
+        val result = q.attachListenerToAppForUserRemoved(group.id, uploadUser.id) { success = true }
+        q.deleteUser(uploadUser.id, group.id)
+        assertTrue(result != null)
+        assertTrue(success)
+    }
+
+    /** Tests the listener function for users: attachListenerToAppForUserRemoved for the incorrect deleted user */
+    @Test
+    fun setListenerUserWasDeletedNotRedirectSuccessfully() = runBlocking {
+        var success = false
+        val uploadUser = User("USER_U", "Gabriel", 0)
+        q.createUser(uploadUser, group.id)
+        val result = q.attachListenerToAppForUserRemoved(group.id, user.id) { success = true }
+        q.deleteUser(uploadUser.id, group.id)
+        assertTrue(result != null)
+        assertFalse(success)
+    }
+
+    /** Tests the getAllUsers function to set the admin of the group */
+    @Test
+    fun verifyIfUsersEmptyThenNewUserIsAdmin() = runBlocking {
+        q.deleteUser(user.id, group.id)
+        val users = q.getAllUsers(group.id)
+        val newUser = User("USER_ADMIN", "Raul olmedo", 0, PermissionsSingleton.willUserBeAdmin(users))
+        q.joinGroup(group.id, newUser)
+        val shouldBeAdmin = q.getUser(newUser.id, group.id)
+        assertTrue(shouldBeAdmin != null && shouldBeAdmin.isAdmin)
+    }
+
+    /** Tests the verifyIsUserInGroup function with a positive outcome */
+    @Test
+    fun verifyIsUserInGroupSuccessfully() = runBlocking {
+        val isValid = q.verifyIsUserInGroupOnStartUp(group.id, user.id)
+        assertTrue(isValid)
+    }
+
+    /** Tests the verifyIsUserInGroup function with a negative outcome from the group not existing */
+    @Test
+    fun verifyIsUserInGroupWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val isValid = q.verifyIsUserInGroupOnStartUp("GROUP_DOES_NOT_EXIST", user.id)
+        assertFalse(isValid)
+    }
+
+    /** Tests the verifyIsUserInGroup function with a negative outcome from the user not existing in the group */
+    @Test
+    fun verifyIsUserInGroupWhenUserDoesNotExistSuccessfully() = runBlocking {
+        val isValid = q.verifyIsUserInGroupOnStartUp(group.id, "USER_DOES_NOT_EXIST")
+        assertFalse(isValid)
     }
 }

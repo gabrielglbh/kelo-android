@@ -8,11 +8,13 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_widget"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:background="@color/toolbarBackground"
         app:title="@string/chores"
-        app:titleTextColor="@color/labelText"
         app:titleTextAppearance="@style/TitleStyle"
-        app:menu="@menu/toolbar_menu" />
+        app:buttonGravity="center_vertical"
+        app:subtitle=""
+        app:subtitleTextAppearance="@style/SubtitleStyle"
+        app:menu="@menu/toolbar_menu"/>
 
 </LinearLayout>

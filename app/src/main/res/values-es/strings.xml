@@ -2,11 +2,13 @@
 <resources>
     <string name="app_name">KELO</string>
 
+    <!-- Welcome Activity - Page 1 -->
     <string name="welcome_to_kelo">Bienvenido a Kelo</string>
     <string name="create_group_button">Crear un Grupo</string>
     <string name="join_group_button">Unirse a un Grupo</string>
     <string name="welcomeChoiceLabel">¿Qué te gustaría hacer?</string>
 
+    <!-- Welcome Activity - Page 2 -->
     <string name="create_new_group_label">Crear un Nuevo Grupo</string>
     <string name="join_group_label">Unirse a un Grupo</string>
     <string name="code_placeholder">¡Inserta el código de grupo aquí!</string>
@@ -15,14 +17,17 @@
     <string name="back_button">Atrás</string>
     <string name="select_a_currency">Selecciona una Moneda</string>
 
+    <!-- Welcome Activity - Page 3 -->
     <string name="question_name">¿Quién eres?</string>
     <string name="placeholder_name">Juan Pérez</string>
 
+    <!-- Main Activity -->
     <string name="chores">Tareas</string>
     <string name="settings">Ajustes</string>
     <string name="add_chore">Añadir Tarea</string>
     <string name="chore_detail">Detalles</string>
 
+    <!-- Chore Detail Activity -->
     <string name="chore_name_label">Nombre de la Tarea</string>
     <string name="chore_expire_label">Fecha de Vencimiento</string>
     <string name="chore_assignee_label">Asignado</string>
@@ -37,11 +42,36 @@
     <string name="chore_users_select_randomly">Aleatorio</string>
     <string name="users_you">Tú</string>
     <string name="lazy_user_button">Más Vago</string>
+    <string name="chore_not_assigned">Sin Asignado</string>
 
+    <!-- Share Code Bottom Sheet -->
     <string name="group_code_label">Código del Grupo:</string>
     <string name="share_group_code">Comparte el Código del Grupo</string>
     <string name="message_on_code_sharing">¡Únete a mi grupo en Kelo copiando este código!</string>
 
+    <!-- Settings -->
+    <string name="settings_points_label">Tus Puntos</string>
+    <string name="settings_danger_zone_label">Zona de Peligro</string>
+    <string name="settings_delete_group_button">Eliminar Grupo</string>
+    <string name="settings_leave_group_button">Salir del Grupo</string>
+    <string name="settings_delete_user_button">Eliminar Usuario</string>
+    <string name="settings_users_label">Usuarios</string>
+    <string name="settings_dialog_msg_delete_group">¿Estás seguro de que quieres eliminar este grupo? Esta acción no se puede deshacer</string>
+    <string name="settings_dialog_msg_leave_group">¿Estás seguro de que quieres irte de este grupo? Esta acción no se puede deshacer</string>
+    <string name="settings_dialog_btn_delete_positive">Eliminar</string>
+    <string name="settings_dialog_btn_leave_positive">Salir</string>
+    <string name="settings_dialog_btn_negative">Cancelar</string>
+    <string name="settings_group_currency">Moneda</string>
+
+    <!-- Permissions -->
+    <string name="permission_modify_chore">No tienes los permisos suficientes para modificar esta tarea. Contacta con el creador de la tarea.</string>
+    <string name="permission_remove_chore">No tienes los permisos suficientes para eliminar esta tarea. Contacta con el creador de la tarea.</string>
+    <string name="permission_complete_chore">No tienes los permisos suficientes para completar esta tarea</string>
+    <string name="permission_update_currency">No tienes los permisos suficientes para cambiar la moneda del grupo</string>
+    <string name="permission_remove_user">No tienes los permisos suficientes para eliminar a usuarios del grupo</string>
+    <string name="permission_remove_group">No tienes los permisos suficientes para eliminar el grupo</string>
+
+    <!-- Errors -->
     <string name="err_invalid_name">Nombre inválido</string>
     <string name="err_invalid_code">Código inválido</string>
     <string name="err_group_creation">Algo ha ocurrido mientras se creaba el grupo</string>
@@ -56,4 +86,8 @@
     <string name="err_loading_users">Algo ha ocurrido mientras se cargaban los usuarios</string>
     <string name="err_chore_delete">Algo ha ocurrido mientras se eliminaba la tarea</string>
     <string name="err_chore_completion">Algo ha ocurrido mientras se marcaba la tarea como completada</string>
+    <string name="err_group_delete">Algo ha ocurrido mientras se eliminaba el grupo</string>
+    <string name="err_group_leave">Algo ha ocurrido mientras se estaba dejando el grupo</string>
+    <string name="err_user_delete">Algo ha ocurrido mientras se eliminaba al usuario del grupo</string>
+    <string name="err_currency_update">Algo ha ocurrido mientras se actualizaba la moneda del grupo</string>
 </resources>

@@ -44,11 +44,35 @@
     <string name="chore_users_select_randomly">Random</string>
     <string name="users_you">You</string>
     <string name="lazy_user_button">Most Lazy</string>
+    <string name="chore_not_assigned">Not Assigned</string>
 
     <!-- Share Code Bottom Sheet -->
     <string name="group_code_label">Group Code:</string>
     <string name="share_group_code">Share Group Code</string>
     <string name="message_on_code_sharing">Join my Kelo group by pasting this code!</string>
+
+    <!-- Settings -->
+    <string name="settings_points_label">Your Points</string>
+    <string name="settings_danger_zone_label">Danger Zone</string>
+    <string name="settings_delete_group_button">Delete Group</string>
+    <string name="settings_leave_group_button">Leave Group</string>
+    <string name="settings_delete_user_button">Delete User</string>
+    <string name="settings_users_label">Users</string>
+    <string name="settings_dialog_msg_delete_group">Are you sure you want to delete this group? This action cannot be undone</string>
+    <string name="settings_dialog_msg_leave_group">Are you sure you want to leave this group? This action cannot be undone</string>
+    <string name="settings_dialog_btn_delete_positive">Delete</string>
+    <string name="settings_dialog_btn_leave_positive">Leave</string>
+    <string name="settings_dialog_btn_negative">Cancel</string>
+    <string name="settings_group_currency">Currency</string>
+
+    <!-- Permissions -->
+    <string name="admin" translatable="false">Admin</string>
+    <string name="permission_modify_chore">You are not allowed to modify this chore. Contact with the creator of the chore.</string>
+    <string name="permission_remove_chore">You are not allowed to remove this chore. Contact with the creator of the chore.</string>
+    <string name="permission_complete_chore">You are not allowed to complete this chore</string>
+    <string name="permission_update_currency">You are not allowed to change the group\'s currency</string>
+    <string name="permission_remove_user">You are not allowed to remove users from the group</string>
+    <string name="permission_remove_group">You are not allowed to remove the group</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Invalid name</string>
@@ -65,4 +89,8 @@
     <string name="err_loading_users">Something went wrong while loading the users</string>
     <string name="err_chore_delete">Something went wrong while removing the chore</string>
     <string name="err_chore_completion">Something went wrong while marking the chore as completed</string>
+    <string name="err_group_delete">Something went wrong while removing the group</string>
+    <string name="err_group_leave">Something went wrong while leaving the group</string>
+    <string name="err_user_delete">Something went wrong while removing the user from the group</string>
+    <string name="err_currency_update">Something went wrong while updating the currency</string>
 </resources>
