@@ -135,7 +135,7 @@ class ChoreSteps : En {
         Given("a user with id {string} that wants to complete a chore") { uid: String ->
             user.id = uid
         }
-        When("the chore creator is {string} or the assignee {string}") { creator: String, assignee: String ->
+        When("the chore creator is either the {string} or the assignee {string}") { creator: String, assignee: String ->
             chore.creator = creator
             chore.assignee = assignee
         }

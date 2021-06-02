@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.gabr.gabc.kelo.R
+import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.utils.LoadingSingleton
@@ -41,6 +42,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (!SharedPreferences.checkGroupIdAndUserIdAreSet()) {
+            SharedPreferences.getStringCode(this, Constants.GROUP_ID)
+            SharedPreferences.getStringCode(this, Constants.USER_ID)
+        }
 
         setListenerToUserRemoved(baseContext)
 

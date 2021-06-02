@@ -16,6 +16,7 @@ import com.gabr.gabc.kelo.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,16 +28,16 @@ import kotlin.collections.ArrayList
  * @param anchor: view to set the snack bar above it
  * */
 class ChoreListAdapter(private val chores: ArrayList<Chore>,
-                       private val listener: ChoreClickListener,
+                       private val listener: ChoreListener,
                        private val context: Context,
                        private val parent: View,
                        private val anchor: View)
     : RecyclerView.Adapter<ChoreListAdapter.ChoreHolder>() {
 
     /**
-     * Interface that defines a function to be called by the initializer when clicking on a certain item
+     * Interface that defines functions to be called by the initializer after meeting certain actions
      * */
-    interface ChoreClickListener {
+    interface ChoreListener {
         /**
          * Function that gets the selected [Chore] in the adapter to be managed by the caller
          *
@@ -59,27 +60,29 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
     fun removeChoreOnSwap(position: Int) {
         val gid = SharedPreferences.groupId
         CoroutineScope(Dispatchers.Main).launch {
-            val user = UserQueries().getUser(SharedPreferences.userId, gid)
-            if (user != null) {
-                val chore = chores[position]
-                chore.id?.let { choreId ->
-                    chore.creator?.let { creator ->
-                        if (PermissionsSingleton.isUserChoreCreator(creator) || PermissionsSingleton.isUserAdmin(user)) {
-                            val success = ChoreQueries().deleteChore(choreId, gid)
-                            if (!success) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
+            try {
+                val user = UserQueries().getUser(SharedPreferences.userId, gid)
+                if (user != null) {
+                    val chore = chores[position]
+                    chore.id?.let { choreId ->
+                        chore.creator?.let { creator ->
+                            if (PermissionsSingleton.isUserChoreCreator(creator) || PermissionsSingleton.isUserAdmin(user)) {
+                                val success = ChoreQueries().deleteChore(choreId, gid)
+                                if (!success) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
+                                        anchorView = anchor)
+                                else removedAt(position)
+                            } else {
+                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
                                     anchorView = anchor)
-                            else {
-                                removedAt(position)
                             }
-                        } else {
-                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
-                                anchorView = anchor)
                         }
                     }
+                } else {
+                    UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
+                        anchorView = anchor)
                 }
-            } else {
-                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
-                    anchorView = anchor)
+            } catch (e: Exception) {
+                UtilsSingleton.showSnackBar(parent, e.message.toString(), anchorView = anchor)
             }
         }
         notifyItemChanged(position)
@@ -94,29 +97,30 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
     fun completeChoreOnSwap(position: Int) {
         val gid = SharedPreferences.groupId
         CoroutineScope(Dispatchers.Main).launch {
-            val user = UserQueries().getUser(SharedPreferences.userId, gid)
-            if (user != null) {
-                val chore = chores[position]
-                chore.assignee?.let { assignee ->
-                    chore.creator?.let { creator ->
-                        if (PermissionsSingleton.isUserChoreCreatorOrAssignee(creator, assignee)
-                            || PermissionsSingleton.isUserAdmin(user)) {
-                            val success = ChoreQueries().completeChore(chore, gid)
-                            if (!success) {
-                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
+            try {
+                val user = UserQueries().getUser(SharedPreferences.userId, gid)
+                if (user != null) {
+                    val chore = chores[position]
+                    chore.assignee?.let { assignee ->
+                        chore.creator?.let { creator ->
+                            if (PermissionsSingleton.isUserChoreCreatorOrAssignee(creator, assignee)
+                                || PermissionsSingleton.isUserAdmin(user)) {
+                                val success = ChoreQueries().completeChore(chore, gid)
+                                if (!success) UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
                                     anchorView = anchor)
+                                else removedAt(position)
                             } else {
-                                removedAt(position)
+                                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
+                                    anchorView = anchor)
                             }
-                        } else {
-                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
-                                anchorView = anchor)
                         }
                     }
+                } else {
+                    UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
+                        anchorView = anchor)
                 }
-            } else {
-                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
-                    anchorView = anchor)
+            } catch (e: Exception) {
+                UtilsSingleton.showSnackBar(parent, e.message.toString(), anchorView = anchor)
             }
         }
         notifyItemChanged(position)

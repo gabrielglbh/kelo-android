@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** Fragment that manages the list of chores from a group */
-class ChoreList : Fragment(), ChoreListAdapter.ChoreClickListener {
+class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
 
     private lateinit var choreList: RecyclerView
     private lateinit var addChore: FloatingActionButton
@@ -62,14 +62,18 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreClickListener {
     }
 
     private fun setRecyclerView(chores: ArrayList<Chore>) {
-        val adapter = ChoreListAdapter(
-            chores, this, requireContext(),
-            parent = requireView(), anchor = addChore)
-        val swipeHelper = ItemTouchHelper(ChoreListSwipeController(0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext()))
+        try {
+            val adapter = ChoreListAdapter(
+                chores, this, requireContext(),
+                parent = requireView(), anchor = addChore)
+            val swipeHelper = ItemTouchHelper(
+                ChoreListSwipeController(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext()))
 
-        choreList.adapter = adapter
-        swipeHelper.attachToRecyclerView(choreList)
+            choreList.adapter = adapter
+            swipeHelper.attachToRecyclerView(choreList)
+        } catch (e: IllegalStateException) {
+
+        }
     }
 
     private fun setFAB(view: View) {

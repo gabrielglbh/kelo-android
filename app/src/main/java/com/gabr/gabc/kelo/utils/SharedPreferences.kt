@@ -20,6 +20,8 @@ object SharedPreferences {
 
     /**
      * Function that checks whether both of the [groupId] and [userId] are set to a certain value
+     *
+     * @return boolean deciding if the values are not empty
      * */
     fun checkGroupIdAndUserIdAreSet() = groupId.trim().isNotEmpty() && userId.trim().isNotEmpty()
 
@@ -27,9 +29,10 @@ object SharedPreferences {
      * Function that verifies if the current user is currently being displayed in screen
      *
      * @param userId: current user id
+     * @param savedUid: current saved user id in SharedPreferences
      * @return true if the userId matches the saved one in shared preferences
      * */
-    fun isUserBeingDisplayedCurrentUser(userId: String): Boolean = userId == SharedPreferences.userId
+    fun isUserBeingDisplayedCurrentUser(userId: String, savedUid: String? = this.userId): Boolean = userId == savedUid
 
     /**
      * Function that sets the pair of value-key by an specified key to the desired single instance

@@ -1,6 +1,5 @@
 package com.gabr.gabc.kelo.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,6 @@ import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import com.gabr.gabc.kelo.utils.common.UserListSwipeController
 import com.gabr.gabc.kelo.utils.common.UsersAdapter
-import com.gabr.gabc.kelo.welcome.WelcomeActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -64,12 +62,20 @@ class Settings : Fragment() {
 
         deleteGroupButton = view.findViewById(R.id.settingsRemoveGroupButton)
         deleteGroupButton.setOnClickListener {
-            DialogSingleton.createCustomDialog(
-                requireActivity(),
-                getString(R.string.settings_delete_group_button),
-                getString(R.string.settings_dialog_msg_delete_group),
-                getString(R.string.settings_dialog_btn_delete_positive),
-            ) { deleteGroup() }
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (user?.isAdmin == true) {
+                    DialogSingleton.createCustomDialog(
+                        requireActivity(),
+                        getString(R.string.settings_delete_group_button),
+                        getString(R.string.settings_dialog_msg_delete_group),
+                        getString(R.string.settings_dialog_btn_delete_positive),
+                    ) { deleteGroup() }
+                } else {
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_remove_group),
+                        anchorView = bottomNavigationView)
+                }
+            }
         }
 
         leaveGroupButton = view.findViewById(R.id.settingsExitGroupButton)
@@ -179,7 +185,7 @@ class Settings : Fragment() {
             val success = GroupQueries().deleteGroup(SharedPreferences.groupId)
             viewModel.setLoading(false)
             if (success) {
-                startWelcomeActivityAndResetPreferences()
+                SharedPreferences.resetPreferences()
             } else {
                 UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_delete),
                     anchorView = bottomNavigationView)
@@ -201,7 +207,7 @@ class Settings : Fragment() {
                     if (adminChangedSuccess) {
                         val success = q.deleteUser(uid, gid)
                         if (success) {
-                            startWelcomeActivityAndResetPreferences()
+                            SharedPreferences.resetPreferences()
                         } else {
                             UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_leave),
                                 anchorView = bottomNavigationView)
@@ -213,7 +219,7 @@ class Settings : Fragment() {
                 } else {
                     val success = q.deleteUser(uid, gid)
                     if (success) {
-                        startWelcomeActivityAndResetPreferences()
+                        SharedPreferences.resetPreferences()
                     } else {
                         UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_group_leave),
                             anchorView = bottomNavigationView)
@@ -222,12 +228,5 @@ class Settings : Fragment() {
                 viewModel.setLoading(false)
             }
         }
-    }
-
-    private fun startWelcomeActivityAndResetPreferences() {
-        SharedPreferences.resetPreferences()
-        val intent = Intent(requireContext(), WelcomeActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
     }
 }

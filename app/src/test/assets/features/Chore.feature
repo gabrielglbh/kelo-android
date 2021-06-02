@@ -146,7 +146,7 @@ Feature: Create Chore
   @Chore
   Scenario Outline: (Creator/Assignee) User Has Permissions For Completing a Chore
     Given a user with id "<id>" that wants to complete a chore
-    When the chore creator is "<creator>" or the assignee "<assignee>"
+    When the chore creator is either the "<creator>" or the assignee "<assignee>"
     Then the user is permitted to complete it
     Examples:
       | id   | creator | assignee |

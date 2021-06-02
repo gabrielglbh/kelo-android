@@ -48,7 +48,7 @@ class AddChoreTest {
     val activityScenario = ActivityScenarioRule<MainActivity>(intent)
 
     companion object {
-        private const val expectedUserName = "You"
+        private const val expectedUserName = "Gabriel (You)"
         private const val expectedChoreName = "Colada"
         private val group = Group("UI_GROUP", "generic group", "EUR")
         private val user = User("UI_USER", "Gabriel", 0)
@@ -107,16 +107,17 @@ class AddChoreTest {
 
         onView(withId(R.id.choreDetailNameEditText)).perform(typeText(expectedChoreName))
         closeSoftKeyboard()
+
+        onView(withId(R.id.choreDetailAssigneeButton)).perform(click())
+        Thread.sleep(2000)
+        onView(withId(R.id.usersList)).perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
         onView(withId(R.id.choreDetailHigh)).perform(click())
 
         onView(withId(R.id.choreDetailExpireDateButton)).perform(click())
         onView(withClassName(equalTo(DatePicker::class.qualifiedName))).perform(PickerActions
             .setDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH)+1, date.get(Calendar.DAY_OF_MONTH)))
         onView(withText("OK")).perform(click())
-
-        onView(withId(R.id.choreDetailAssigneeButton)).perform(click())
-        Thread.sleep(2000)
-        onView(withId(R.id.usersList)).perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
 
         onView(withId(R.id.toolbar_done)).perform(click())
 

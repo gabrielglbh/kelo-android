@@ -265,4 +265,24 @@ class UserQueries {
             false
         }
     }
+
+    /**
+     * Function that verifies that a certain group is created and that even within it, the user
+     * also exists. If the user or group does not exist, the user will not be permitted to continue.
+     *
+     * @param userId: ID of the to be deleted user
+     * @param groupId: group id in which the chore is
+     * @return Boolean that returns true if query was successful
+     * */
+    suspend fun verifyIsUserInGroupOnStartUp(groupId: String, userId: String): Boolean {
+        return try {
+            val group = GroupQueries().getGroup(groupId)
+            if (group != null) {
+                val user = UserQueries().getUser(userId, groupId)
+                user != null
+            } else false
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

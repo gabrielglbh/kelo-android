@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.utils.SharedPreferences
@@ -22,26 +21,17 @@ class SplashScreen : AppCompatActivity() {
         SharedPreferences.getStringCode(this, Constants.GROUP_ID)
         SharedPreferences.getStringCode(this, Constants.USER_ID)
 
-        if (SharedPreferences.isFirstLaunched && SharedPreferences.checkGroupIdAndUserIdAreSet()) verifyUserIsInGroup()
-        else startActivity(Intent(this, WelcomeActivity::class.java))
-    }
-
-    private fun verifyUserIsInGroup() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val gid = SharedPreferences.groupId
-            val group = GroupQueries().getGroup(gid)
-            if (group != null) {
-                val user = UserQueries().getUser(SharedPreferences.userId, gid)
-                if (user != null) {
+        if (SharedPreferences.isFirstLaunched && SharedPreferences.checkGroupIdAndUserIdAreSet()) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val isValid = UserQueries().verifyIsUserInGroupOnStartUp(SharedPreferences.groupId, SharedPreferences.userId)
+                if (isValid) {
                     startActivity(Intent(this@SplashScreen, MainActivity::class.java))
                 } else {
                     SharedPreferences.resetPreferences()
                     startActivity(Intent(this@SplashScreen, WelcomeActivity::class.java))
                 }
-            } else {
-                SharedPreferences.resetPreferences()
-                startActivity(Intent(this@SplashScreen, WelcomeActivity::class.java))
             }
         }
+        else startActivity(Intent(this, WelcomeActivity::class.java))
     }
 }

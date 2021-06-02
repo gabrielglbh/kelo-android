@@ -7,6 +7,7 @@ import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.google.firebase.FirebaseApp
+import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.*
@@ -54,6 +55,13 @@ class UserTest {
             result != null &&
             result.id == user.id
         )
+    }
+
+    /** Tests the getUser function when is null */
+    @Test
+    fun readUserNotSuccessfully() = runBlocking {
+        val result = q.getUser("RAUL", group.id)
+        assertTrue(result == null)
     }
 
     /** Tests the getMostLazyUser function */
@@ -114,11 +122,18 @@ class UserTest {
         assertTrue(result == join.id)
     }
 
-    /** Tests the isUsernameAvailable function */
+    /** Tests the isUsernameAvailable function for a positive outcome */
     @Test
     fun isUsernameAvailableSuccessfully() = runBlocking {
         val result = q.isUsernameAvailable(group.id, "nameIsFullyAvailable")
         assertTrue(result)
+    }
+
+    /** Tests the isUsernameAvailable function for a negative outcome */
+    @Test
+    fun isUsernameNotAvailableSuccessfully() = runBlocking {
+        val result = q.isUsernameAvailable(group.id, "createUser")
+        assertFalse(result)
     }
 
     /** Tests the switching of the admin when the current admin leaves the group */
@@ -129,7 +144,7 @@ class UserTest {
         assertTrue(success)
     }
 
-    /** Tests the listener function for users: attachListenerToAppForUserRemoved */
+    /** Tests the listener function for users: attachListenerToAppForUserRemoved for the correct deleted user */
     @Test
     fun setListenerUserWasDeletedRedirectSuccessfully() = runBlocking {
         var success = false
@@ -141,6 +156,18 @@ class UserTest {
         assertTrue(success)
     }
 
+    /** Tests the listener function for users: attachListenerToAppForUserRemoved for the incorrect deleted user */
+    @Test
+    fun setListenerUserWasDeletedNotRedirectSuccessfully() = runBlocking {
+        var success = false
+        val uploadUser = User("USER_U", "Gabriel", 0)
+        q.createUser(uploadUser, group.id)
+        val result = q.attachListenerToAppForUserRemoved(group.id, user.id) { success = true }
+        q.deleteUser(uploadUser.id, group.id)
+        assertTrue(result != null)
+        assertFalse(success)
+    }
+
     /** Tests the getAllUsers function to set the admin of the group */
     @Test
     fun verifyIfUsersEmptyThenNewUserIsAdmin() = runBlocking {
@@ -150,5 +177,26 @@ class UserTest {
         q.joinGroup(group.id, newUser)
         val shouldBeAdmin = q.getUser(newUser.id, group.id)
         assertTrue(shouldBeAdmin != null && shouldBeAdmin.isAdmin)
+    }
+
+    /** Tests the verifyIsUserInGroup function with a positive outcome */
+    @Test
+    fun verifyIsUserInGroupSuccessfully() = runBlocking {
+        val isValid = q.verifyIsUserInGroupOnStartUp(group.id, user.id)
+        assertTrue(isValid)
+    }
+
+    /** Tests the verifyIsUserInGroup function with a negative outcome from the group not existing */
+    @Test
+    fun verifyIsUserInGroupWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val isValid = q.verifyIsUserInGroupOnStartUp("GROUP_DOES_NOT_EXIST", user.id)
+        assertFalse(isValid)
+    }
+
+    /** Tests the verifyIsUserInGroup function with a negative outcome from the user not existing in the group */
+    @Test
+    fun verifyIsUserInGroupWhenUserDoesNotExistSuccessfully() = runBlocking {
+        val isValid = q.verifyIsUserInGroupOnStartUp(group.id, "USER_DOES_NOT_EXIST")
+        assertFalse(isValid)
     }
 }

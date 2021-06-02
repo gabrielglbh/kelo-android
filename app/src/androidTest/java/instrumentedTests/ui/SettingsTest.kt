@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -18,21 +20,18 @@ import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
-import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
-import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.DisableAnimationsRule
 import instrumentedTests.ui.utils.keepScreenActive
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.junit.runner.RunWith
-import java.util.*
 
-/** Defines the Edit Chore UI Test */
+/** Defines the Settings UI Tests */
 @RunWith(AndroidJUnit4::class)
-class EditChoreTest {
+class SettingsTest {
     private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
     @Rule(order = 0)
@@ -45,9 +44,7 @@ class EditChoreTest {
 
     companion object {
         private val group = Group("UI_GROUP", "generic group", "EUR")
-        private val user = User("UI_USER", "Gabriel", 0)
-        private val chore = Chore("CHORE_C", "CHORE_C", "", "UI_USER",
-            Calendar.getInstance().time, 20, "UI_USER")
+        private val user = User("UI_USER", "Gabriel", 0, true)
 
         /** Initializes and creates Firebase needed data for the tests */
         @JvmStatic
@@ -57,7 +54,6 @@ class EditChoreTest {
             FirebaseApp.initializeApp(context)
             runBlocking {
                 GroupQueries().createGroup(group)
-                ChoreQueries().createChore(chore, group.id)
                 UserQueries().createUser(user, group.id)
             }
 
@@ -75,7 +71,7 @@ class EditChoreTest {
             }
         }
 
-        /** Cleans Up Firebase */
+        /** Cleans up Firebase */
         @JvmStatic
         @AfterClass
         fun cleanFirebase() {
@@ -87,23 +83,44 @@ class EditChoreTest {
         }
     }
 
-    /** Function called before each test to keep the screen active */
+    /** Function called before each test to go to the desired activity */
     @Before
-    fun setUp() { activityScenario.scenario.onActivity { it.keepScreenActive() } }
+    fun pressSettingsTab() {
+        activityScenario.scenario.onActivity { it.keepScreenActive() }
+        onView(withId(R.id.settings_menu)).perform(click())
+    }
 
-    /** Tests that the view details chore whole routine works perfectly */
+    /**
+     * Test that verifies that leaving a group automatically removes the user and sets the current
+     * user to the Welcome Page
+     * */
     @Test
-    fun verifyDataOfChoreIsCorrectlyDisplayedOnEditChore() {
-        val date = Calendar.getInstance()
-        val expectedDate = DatesSingleton.parseCalendarToString(date)
+    fun dialogOnLeaveGroupAppearsAndRedirectsToWelcomePage() {
+        onView(withId(R.id.settingsExitGroupButton)).perform(scrollTo()).perform(click())
+        onView(withText(R.string.settings_dialog_msg_leave_group)).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withId(android.R.id.button1)).perform(click())
+        Thread.sleep(1000)
+        onView(withText(R.string.welcome_to_kelo)).check(matches(isDisplayed()))
+    }
 
-        Thread.sleep(2000)
-        onView(withId(R.id.choreListRecyclerView)).perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+    /**
+     * Test that verifies that removing a group automatically removes the user and sets the current
+     * user to the Welcome Page
+     * */
+    @Test
+    fun dialogOnDeleteGroupAppearsAndRedirectsToWelcomePage() {
+        onView(withId(R.id.settingsRemoveGroupButton)).perform(scrollTo()).perform(click())
+        onView(withText(R.string.settings_dialog_msg_delete_group)).inRoot(isDialog()).check(matches(isDisplayed()))
+        onView(withId(android.R.id.button1)).perform(click())
+        Thread.sleep(1000)
+        onView(withText(R.string.welcome_to_kelo)).check(matches(isDisplayed()))
+    }
 
-        // Verify Selected Chore is populated
-        onView(withId(R.id.choreDetailNameEditText)).check(ViewAssertions.matches(withText(chore.name)))
-        onView(withId(R.id.choreDetailAssigneeButton)).check(ViewAssertions.matches(withText("Gabriel (You)")))
-        onView(withId(R.id.choreDetailMedium)).check(ViewAssertions.matches(isChecked()))
-        onView(withId(R.id.choreDetailExpireDateButton)).check(ViewAssertions.matches(withText(expectedDate)))
+    /** Test that verifies that the currency dialog appears upon selection if admin */
+    @Test
+    fun currencyChangeDialogAppearsOnAdmin() {
+        onView(withId(R.id.settingsCurrencyButton)).perform(scrollTo()).perform(click())
+        onView(withId(R.id.currencyList)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+        onView(withId(R.id.settingsCurrencyButton)).check(matches(withText("ARS")))
     }
 }
