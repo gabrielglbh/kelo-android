@@ -30,7 +30,8 @@ class UsersAdapter(private val users: ArrayList<User>,
                    private val context: Context,
                    private val parent: View,
                    private val anchor: View? = null,
-                   private val listener: UserClickListener? = null)
+                   private val clickListener: UserClickListener? = null,
+                   private val userListener: UserListener? = null)
     : RecyclerView.Adapter<UsersAdapter.UserItem>() {
 
     /**
@@ -45,9 +46,19 @@ class UsersAdapter(private val users: ArrayList<User>,
         fun onUserClicked(user: User?)
     }
 
+    /**
+     * Interface that defines functions to be called by the initializer after meeting certain actions
+     * */
+    interface UserListener {
+        /**
+         * Function that gets called when the users list needs to be refreshed upon removal of users
+         * */
+        fun updateUsers()
+    }
+
     private fun removedAt(position: Int) {
         users.removeAt(position)
-        notifyItemRemoved(position)
+        userListener?.updateUsers()
     }
 
     /**
@@ -66,14 +77,15 @@ class UsersAdapter(private val users: ArrayList<User>,
                     else {
                         UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
                             anchorView = anchor)
+                        userListener?.updateUsers()
                     }
                 }
             } else {
                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_user),
                     anchorView = anchor)
+                userListener?.updateUsers()
             }
         }
-        notifyItemChanged(position)
     }
 
     /**
@@ -89,7 +101,7 @@ class UsersAdapter(private val users: ArrayList<User>,
         private val points: TextView = itemView.findViewById(R.id.userPoints)
         private val avatar: ImageView = itemView.findViewById(R.id.userAvatar)
 
-        override fun onClick(v: View?) { listener?.onUserClicked(users[layoutPosition]) }
+        override fun onClick(v: View?) { clickListener?.onUserClicked(users[layoutPosition]) }
 
         /**
          * Initializes the view of the [UserItem] at a given position

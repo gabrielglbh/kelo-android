@@ -98,4 +98,6 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
             }
         }
     }
+
+    override fun updateChores() { getChores() }
 }

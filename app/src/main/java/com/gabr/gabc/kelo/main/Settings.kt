@@ -31,7 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** Fragment that manages all settings of Kelo */
-class Settings : Fragment() {
+class Settings : Fragment(), UsersAdapter.UserListener {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
@@ -171,7 +171,7 @@ class Settings : Fragment() {
 
     private fun setUpUserList(users: ArrayList<User>) {
         val adapter = UsersAdapter(users, requireContext(), requireView(),
-            anchor = bottomNavigationView)
+            anchor = bottomNavigationView, userListener = this)
         val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
         )
@@ -229,4 +229,6 @@ class Settings : Fragment() {
             }
         }
     }
+
+    override fun updateUsers() { getUsers() }
 }

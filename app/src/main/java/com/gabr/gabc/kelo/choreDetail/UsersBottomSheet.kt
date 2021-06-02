@@ -67,7 +67,7 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
         CoroutineScope(Dispatchers.Main).launch {
             val users = UserQueries().getAllUsers(SharedPreferences.groupId)
             if (users != null) {
-                userLists.adapter = UsersAdapter(users, requireContext(), requireView(), listener = listener)
+                userLists.adapter = UsersAdapter(users, requireContext(), requireView(), clickListener = listener)
                 selectRandomUser.setOnClickListener {
                     CoroutineScope(Dispatchers.Main).launch {
                         UserQueries().getRandomUser(SharedPreferences.groupId)?.let { rndUser ->
