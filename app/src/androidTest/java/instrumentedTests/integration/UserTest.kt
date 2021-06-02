@@ -67,7 +67,7 @@ class UserTest {
     /** Tests the getMostLazyUser function */
     @Test
     fun readMostLazyUserSuccessfully() = runBlocking {
-        val u = User("CREATE_USER_2", "createUser", 30)
+        val u = User("CREATE_USER_2", "anotherusername", 30)
         val notToBeRetrievedUser = q.createUser(u, group.id)
         assertTrue(notToBeRetrievedUser != null)
         val result = q.getMostLazyUser(group.id)
@@ -132,7 +132,7 @@ class UserTest {
     /** Tests the isUsernameAvailable function for a negative outcome */
     @Test
     fun isUsernameNotAvailableSuccessfully() = runBlocking {
-        val result = q.isUsernameAvailable(group.id, "createUser")
+        val result = q.isUsernameAvailable(group.id, user.name)
         assertFalse(result)
     }
 

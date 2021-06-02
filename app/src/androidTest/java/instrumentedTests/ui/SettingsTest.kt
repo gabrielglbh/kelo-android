@@ -102,9 +102,7 @@ class SettingsTest {
     fun dialogOnLeaveGroupAppearsAndRedirectsToWelcomePage() {
         onView(withId(R.id.settingsExitGroupButton)).perform(scrollTo()).perform(click())
         onView(withText(R.string.settings_dialog_msg_leave_group)).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withId(android.R.id.button1)).perform(click())
-        Thread.sleep(1000)
-        onView(withText(R.string.welcome_to_kelo)).check(matches(isDisplayed()))
+        clickOnDialogAndCheckReturnToWelcomeActivity()
     }
 
     /**
@@ -115,6 +113,10 @@ class SettingsTest {
     fun dialogOnDeleteGroupAppearsAndRedirectsToWelcomePage() {
         onView(withId(R.id.settingsRemoveGroupButton)).perform(scrollTo()).perform(click())
         onView(withText(R.string.settings_dialog_msg_delete_group)).inRoot(isDialog()).check(matches(isDisplayed()))
+        clickOnDialogAndCheckReturnToWelcomeActivity()
+    }
+
+    private fun clickOnDialogAndCheckReturnToWelcomeActivity() {
         onView(withId(android.R.id.button1)).perform(click())
         Thread.sleep(1000)
         onView(withText(R.string.welcome_to_kelo)).check(matches(isDisplayed()))

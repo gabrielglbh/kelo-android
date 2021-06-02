@@ -3,6 +3,10 @@ package com.gabr.gabc.kelo.utils
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -97,5 +101,52 @@ object UtilsSingleton {
     fun setTextForCurrentUser(context: Context, name: String): String {
         val you = context.getString(R.string.users_you)
         return "$name ($you)"
+    }
+
+    /**
+     * Paints the background of the dragged item in a RecyclerView with a custom item and backgroun color
+     *
+     * @param canvas: actual container to draw the stuff
+     * @param context: current context
+     * @param dX: axis in which the swipe is being performed
+     * @param itemView: holder of the RecyclerView
+     * @param icon: icon to be drawn in the canvas
+     * @param background: color to be set as the background in the canvas
+     * */
+    fun setUpSwipeController(canvas: Canvas, context: Context, dX: Float, itemView: View,
+                             icon: Drawable, background: ColorDrawable) {
+        val margin = 5
+
+        val iconHeight = icon.intrinsicHeight
+        val iconWidth = icon.intrinsicWidth
+
+        val top = itemView.top + margin
+        val bottom = itemView.bottom - margin
+
+        val iconMargin = (itemView.height - iconHeight) / 2
+        val iconTop = itemView.top + iconMargin
+        val iconBottom = iconTop + iconHeight
+
+        when {
+            dX > 0 -> {
+                icon.colorFilter = PorterDuffColorFilter(
+                    ContextCompat.getColor(context, R.color.swapIconColor),
+                    PorterDuff.Mode.SRC_IN)
+                val iconLeft = itemView.left + iconMargin
+                val iconRight = iconLeft + iconWidth
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                background.setBounds(itemView.left, top, itemView.left + dX.toInt(), bottom)
+            }
+            dX < 0 -> {
+                val iconLeft = itemView.right - iconMargin - iconWidth
+                val iconRight = itemView.right - iconMargin
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                background.setBounds(itemView.right + dX.toInt(), top, itemView.right, bottom)
+            }
+            else -> background.setBounds(0, 0, 0, 0)
+        }
+
+        background.draw(canvas)
+        icon.draw(canvas)
     }
 }

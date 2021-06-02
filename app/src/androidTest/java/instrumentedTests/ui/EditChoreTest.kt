@@ -46,8 +46,8 @@ class EditChoreTest {
     companion object {
         private val group = Group("UI_GROUP", "generic group", "EUR")
         private val user = User("UI_USER", "Gabriel", 0)
-        private val chore = Chore("CHORE_C", "CHORE_C", "", "UI_USER",
-            Calendar.getInstance().time, 20, "UI_USER")
+        private val chore = Chore("CHORE_C", "CHORE_C", "", user.id,
+            Calendar.getInstance().time, 20, user.id)
 
         /** Initializes and creates Firebase needed data for the tests */
         @JvmStatic

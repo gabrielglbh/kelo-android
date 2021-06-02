@@ -4,6 +4,34 @@ import java.util.*
 
 /** Singleton instance with helper functions to parse dates across all code */
 object DatesSingleton {
+    private val months : Map<String, Map<Int, String>> = hashMapOf(
+        "en" to hashMapOf(
+            0 to "January", 1 to "February", 2 to "March",
+            3 to "April", 4 to "May", 5 to "June",
+            6 to "July", 7 to "August", 8 to "September",
+            9 to "October", 10 to "November", 11 to "December"
+        ),
+        "es" to hashMapOf(
+            0 to "Enero", 1 to "Febrero", 2 to "Marzo",
+            3 to "Abril", 4 to "Mayo", 5 to "Junio",
+            6 to "Julio", 7 to "Agosto", 8 to "Septiembre",
+            9 to "Octubre", 10 to "Noviembre", 11 to "Diciembre"
+        )
+    )
+
+    private val dayOfWeek : Map<String, Map<Int, String>> = hashMapOf(
+        "en" to hashMapOf(
+            1 to "Sunday", 2 to "Monday",
+            3 to "Tuesday", 4 to "Wednesday", 5 to "Thursday",
+            6 to "Friday", 7 to "Saturday"
+        ),
+        "es" to hashMapOf(
+            1 to "Domingo", 2 to "Lunes",
+            3 to "Martes", 4 to "Miércoles", 5 to "Jueves",
+            6 to "Viernes", 7 to "Sábado"
+        )
+    )
+
     /**
      * Parses a [Calendar] object to a recognizable [String]
      *
@@ -11,33 +39,11 @@ object DatesSingleton {
      * @return A recognizable String formatted as DAY/MONTH/YEAR
      * */
     fun parseCalendarToString(calendar: Calendar): String {
-        lateinit var dayOfWeek: String
-        lateinit var month: String
-        val ln = Locale.getDefault().language
+        var ln = Locale.getDefault().language
+        if (ln != "es" && ln != "en") ln = "en"
 
-        when (calendar.get(Calendar.MONTH)) {
-            Calendar.JANUARY -> month = if (ln == "en") "January" else "Enero"
-            Calendar.FEBRUARY -> month = if (ln == "en") "February" else "Febrero"
-            Calendar.MARCH -> month = if (ln == "en") "March" else "Marzo"
-            Calendar.APRIL -> month = if (ln == "en") "April" else "Abril"
-            Calendar.MAY -> month = if (ln == "en") "May" else "Mayo"
-            Calendar.JUNE -> month = if (ln == "en") "June" else "Junio"
-            Calendar.JULY -> month = if (ln == "en") "July" else "Julio"
-            Calendar.AUGUST -> month = if (ln == "en") "August" else "Agosto"
-            Calendar.SEPTEMBER -> month = if (ln == "en") "September" else "Septiembre"
-            Calendar.OCTOBER -> month = if (ln == "en") "October" else "Octubre"
-            Calendar.NOVEMBER -> month = if (ln == "en") "November" else "Noviembre"
-            Calendar.DECEMBER -> month = if (ln == "en") "December" else "Diciembre"
-        }
-        when (calendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> dayOfWeek = if (ln == "en") "Monday" else "Lunes"
-            Calendar.TUESDAY -> dayOfWeek = if (ln == "en") "Tuesday" else "Martes"
-            Calendar.WEDNESDAY -> dayOfWeek = if (ln == "en") "Wednesday" else "Miércoles"
-            Calendar.THURSDAY -> dayOfWeek = if (ln == "en") "Thursday" else "Jueves"
-            Calendar.FRIDAY -> dayOfWeek = if (ln == "en") "Friday" else "Viernes"
-            Calendar.SATURDAY -> dayOfWeek = if (ln == "en") "Saturday" else "Sábado"
-            Calendar.SUNDAY -> dayOfWeek = if (ln == "en") "Sunday" else "Domingo"
-        }
+        val month = months[ln]?.get(calendar.get(Calendar.MONTH))
+        val dayOfWeek = dayOfWeek[ln]?.get(calendar.get(Calendar.DAY_OF_WEEK))
 
         return "$dayOfWeek, ${calendar.get(Calendar.DAY_OF_MONTH)} $month ${calendar.get(Calendar.YEAR)}"
     }
