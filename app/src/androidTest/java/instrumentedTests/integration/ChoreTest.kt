@@ -8,6 +8,7 @@ import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.models.Group
 import com.gabr.gabc.kelo.models.User
 import com.google.firebase.FirebaseApp
+import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.*
@@ -51,6 +52,13 @@ class ChoreTest {
         assertTrue(c != null && c.id == chore.id)
     }
 
+    /** Tests the createChore function when the group does not exist */
+    @Test
+    fun createChoreWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val c = q.createChore(chore, "")
+        assertTrue(c == null)
+    }
+
     /** Tests the getChore function */
     @Test
     fun readChoreSuccessfully() = runBlocking {
@@ -59,6 +67,13 @@ class ChoreTest {
             result != null &&
             result.id == chore.id
         )
+    }
+
+    /** Tests the getChore function when the group does not exist*/
+    @Test
+    fun readChoreNotSuccessfully() = runBlocking {
+        val result = q.getChore("NON_EXISTING_CHORE", group.id)
+        assertTrue(result == null)
     }
 
     /** Tests the getAllChores function */
@@ -80,6 +95,14 @@ class ChoreTest {
         assertTrue(result)
     }
 
+    /** Tests the updateChore function when the group does not exist */
+    @Test
+    fun updateChoreWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val modified = Chore(chore.id, "Lavar Platos", "", "Gabriel", Calendar.getInstance().time)
+        val result = q.updateChore(modified, "")
+        assertFalse(result)
+    }
+
     /** Tests the deleteChore function */
     @Test
     fun deleteChoreSuccessfully() = runBlocking {
@@ -94,11 +117,26 @@ class ChoreTest {
         assertTrue(result)
     }
 
+    /** Tests the deleteAllChores function when the group does not exist */
+    @Test
+    fun deleteAllChoresWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val result = q.deleteAllChores("")
+        assertFalse(result)
+    }
+
     /** Tests the completeChore function */
     @Test
     fun completeChoreSuccessfully() = runBlocking {
         val success = q.completeChore(chore, group.id)
         val user = UserQueries().getUser(user.id, group.id)
         assertTrue(success && user != null && user.points == 50)
+    }
+
+    /** Tests the completeChore function when the user does not exist */
+    @Test
+    fun completeChoreWhenUserDoesNotExistSuccessfully() = runBlocking {
+        val c = q.createChore(Chore("NEW_CHORE", "Tidy Up", "", ""), group.id)
+        val success = c?.let { q.completeChore(it, group.id) }
+        assertTrue(success != null && !success)
     }
 }

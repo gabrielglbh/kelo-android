@@ -85,7 +85,7 @@ jobs:
       # that also create a code coverage report
       - run:
           name: Run Instrumented (Integration & UI) and Unit Tests
-          command: ./gradlew codecovReport
+          command: ./gradlew connectedAndroidTest --info | grep 'instrumentedTests\..* >' && ./gradlew codecovReport
 
       - codecov/upload:
           file: app/build/reports/jacoco/codecovReport/codecovReport.xml

@@ -97,13 +97,14 @@ class GroupQueries {
      * Function that validates the group for a later user to be joined without worrying
      *
      * @param groupId: group ID where the user would like to join
+     * @param maxUsers: maximum users to check against when joining a group. By default 16.
      * @return Int determining the success:
      *      0: no errors
      *      -1: generic error
      *      -2: group is full of users
      *      -3: group does not exist
      * */
-    suspend fun checkGroupAvailability(groupId: String): Int {
+    suspend fun checkGroupAvailability(groupId: String, maxUsers: Int? = 16): Int {
         return try {
             val group = instance.collection(fbGroupsCollection)
                 .document(groupId).get()
@@ -114,7 +115,7 @@ class GroupQueries {
                         .document(groupId)
                         .collection(fbUsersCollection).get()
                         .await()
-                if (obs.size() == 16) -2
+                if (obs.size() == maxUsers) -2
                 else 0
             }
         } catch (e: Exception) {

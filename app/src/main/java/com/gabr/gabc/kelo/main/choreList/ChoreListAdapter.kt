@@ -65,22 +65,28 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
     fun removeChoreOnSwap(position: Int) {
         val gid = SharedPreferences.groupId
         CoroutineScope(Dispatchers.Main).launch {
-            val user = UserQueries().getUser(SharedPreferences.userId, gid)
-            if (user != null) {
-                val chore = chores[position]
-                if (PermissionsSingleton.isUserChoreCreator(chore.creator!!) || PermissionsSingleton.isUserAdmin(user)) {
-                    val success = ChoreQueries().deleteChore(chore.id!!, gid)
-                    if (success) removedAt(position)
-                    else {
-                        UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
+            try {
+                val user = UserQueries().getUser(SharedPreferences.userId, gid)
+                if (user != null) {
+                    val chore = chores[position]
+                    if (PermissionsSingleton.isUserChoreCreator(chore.creator!!) || PermissionsSingleton.isUserAdmin(user)) {
+                        val success = ChoreQueries().deleteChore(chore.id!!, gid)
+                        if (success) removedAt(position)
+                        else {
+                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
+                                anchorView = anchor)
+                            listener.updateChores()
+                        }
+                    } else {
+                        UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
                             anchorView = anchor)
                         listener.updateChores()
                     }
-                } else {
-                    UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
-                        anchorView = anchor)
-                    listener.updateChores()
                 }
+            } catch (e: Exception) {
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
+                    anchorView = anchor)
+                listener.updateChores()
             }
         }
     }
@@ -94,23 +100,29 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
     fun completeChoreOnSwap(position: Int) {
         val gid = SharedPreferences.groupId
         CoroutineScope(Dispatchers.Main).launch {
-            val user = UserQueries().getUser(SharedPreferences.userId, gid)
-            if (user != null) {
-                val chore = chores[position]
-                if (PermissionsSingleton.isUserChoreCreatorOrAssignee(chore.creator!!, chore.assignee!!)
-                    || PermissionsSingleton.isUserAdmin(user)) {
-                    val success = ChoreQueries().completeChore(chore, gid)
-                    if (success) removedAt(position)
-                    else {
-                        UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
+            try {
+                val user = UserQueries().getUser(SharedPreferences.userId, gid)
+                if (user != null) {
+                    val chore = chores[position]
+                    if (PermissionsSingleton.isUserChoreCreatorOrAssignee(chore.creator!!, chore.assignee!!)
+                        || PermissionsSingleton.isUserAdmin(user)) {
+                        val success = ChoreQueries().completeChore(chore, gid)
+                        if (success) removedAt(position)
+                        else {
+                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
+                                anchorView = anchor)
+                            listener.updateChores()
+                        }
+                    } else {
+                        UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
                             anchorView = anchor)
                         listener.updateChores()
                     }
-                } else {
-                    UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
-                        anchorView = anchor)
-                    listener.updateChores()
                 }
+            } catch (e: Exception) {
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
+                    anchorView = anchor)
+                listener.updateChores()
             }
         }
     }

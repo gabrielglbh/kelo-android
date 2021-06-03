@@ -2,8 +2,11 @@ package instrumentedTests.integration
 
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gabr.gabc.kelo.firebase.GroupQueries
+import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Group
+import com.gabr.gabc.kelo.models.User
 import com.google.firebase.FirebaseApp
+import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.junit.Assert.assertTrue
@@ -51,6 +54,13 @@ class GroupTest {
         )
     }
 
+    /** Tests the getGroup function when the group does not exist */
+    @Test
+    fun readGroupNotSuccessfully() = runBlocking {
+        val result = q.getGroup("NON_EXISTING_GROUP")
+        assertTrue(result == null)
+    }
+
     /** Tests the updateGroup function */
     @Test
     fun updateGroupSuccessfully() = runBlocking {
@@ -66,10 +76,33 @@ class GroupTest {
         assertTrue(result)
     }
 
+    /** Tests the deleteGroup function when group does not exist */
+    @Test
+    fun deleteGroupWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val result = q.deleteGroup("")
+        assertFalse(result)
+    }
+
     /** Tests the checkGroupAvailability function */
     @Test
     fun checkGroupAvailabilitySuccessfully() = runBlocking {
         val result = q.checkGroupAvailability(group.id)
         assertTrue(result == 0)
+    }
+
+    /** Tests the checkGroupAvailability function when group is full */
+    @Test
+    fun checkGroupAvailabilityWhenGroupIsFullSuccessfully() = runBlocking {
+        UserQueries().createUser(User("USER_1", "Gabriel"), group.id)
+        UserQueries().createUser(User("USER_2", "Raul"), group.id)
+            val result = q.checkGroupAvailability(group.id, maxUsers = 2)
+            assertTrue(result == -2)
+        }
+
+    /** Tests the checkGroupAvailability function when group is non existing */
+    @Test
+    fun checkGroupAvailabilityWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val result = q.checkGroupAvailability("NO_GROUP")
+        assertTrue(result == -3)
     }
 }

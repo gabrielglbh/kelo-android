@@ -47,16 +47,25 @@ android {
     }
 
     // Custom gradle command that runs the unit and instrumented tests and generates a code coverage report
-    task codecovReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+    task codecovReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
         reports {
             xml.enabled = true
             html.enabled = true
         }
 
         classDirectories.setFrom(fileTree(
+                // Removed:
+                //      - external libraries (textDrawable)
+                //      - POJO models for chores, users, groups and rewards
+                //      - ViewPager2 pages, as all of it is tested in integration tests and it gives 0%
+                //      - RecyclerView Adapters as they paint in UI the elements gathered from Firebase (already tested)
+                //      - BottomSheets as they paint in UI elements gathered from Firebase (already tested)
+                //      - SwipeControllers as they execute functions from Firebase (already tested)
                 dir: "$buildDir/tmp/kotlin-classes/debug",
                 excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*',
-                           '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+                           '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*',
+                           '**/textDrawable', '**/models', '**/viewPager',
+                           '**/*Adapter*.*', '**/*BottomSheet*.*', '**/*Swipe*.*']
         ))
         sourceDirectories.setFrom(files("src/main/kotlin"))
         executionData.setFrom(fileTree(dir: "$buildDir", includes: [

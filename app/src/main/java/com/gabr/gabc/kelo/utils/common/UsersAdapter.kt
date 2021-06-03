@@ -69,19 +69,25 @@ class UsersAdapter(private val users: ArrayList<User>,
      * */
     fun removeUserFromGroupOnSwap(position: Int) {
         CoroutineScope(Dispatchers.Main).launch {
-            val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
-            if (PermissionsSingleton.isUserAdmin(user)) {
-                if (!SharedPreferences.isUserBeingDisplayedCurrentUser(users[position].id)) {
-                    val success = UserQueries().deleteUser(users[position].id, SharedPreferences.groupId)
-                    if (success) removedAt(position)
-                    else {
-                        UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
-                            anchorView = anchor)
-                        userListener?.updateUsers()
-                    }
-                } else userListener?.updateUsers()
-            } else {
-                UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_user),
+            try {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (PermissionsSingleton.isUserAdmin(user)) {
+                    if (!SharedPreferences.isUserBeingDisplayedCurrentUser(users[position].id)) {
+                        val success = UserQueries().deleteUser(users[position].id, SharedPreferences.groupId)
+                        if (success) removedAt(position)
+                        else {
+                            UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
+                                anchorView = anchor)
+                            userListener?.updateUsers()
+                        }
+                    } else userListener?.updateUsers()
+                } else {
+                    UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_user),
+                        anchorView = anchor)
+                    userListener?.updateUsers()
+                }
+            } catch (e: Exception) {
+                UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
                     anchorView = anchor)
                 userListener?.updateUsers()
             }

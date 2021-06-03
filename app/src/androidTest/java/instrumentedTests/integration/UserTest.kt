@@ -47,6 +47,13 @@ class UserTest {
         assertTrue(user != null && user.id == user.id)
     }
 
+    /** Tests the createUser function when the group does not exist  */
+    @Test
+    fun createUserGroupDoesNotExistSuccessfully() = runBlocking {
+        val user = q.createUser(user, "")
+        assertTrue(user == null)
+    }
+
     /** Tests the getUser function */
     @Test
     fun readUserSuccessfully() = runBlocking {
@@ -100,11 +107,26 @@ class UserTest {
         assertTrue(result)
     }
 
+    /** Tests the updateUser function when the group does not exist */
+    @Test
+    fun updateUserWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val modified = User(user.id, "Gabriel", 56)
+        val result = q.updateUser(modified, "")
+        assertFalse(result)
+    }
+
     /** Tests the deleteUser function */
     @Test
     fun deleteUserSuccessfully() = runBlocking {
         val result = q.deleteUser(user.id, group.id)
         assertTrue(result)
+    }
+
+    /** Tests the deleteUser function when the user does not exist  */
+    @Test
+    fun deleteUserWhenUserDoesNotExistSuccessfully() = runBlocking {
+        val result = q.deleteUser("", group.id)
+        assertFalse(result)
     }
 
     /** Tests the deleteAllUsers function */
@@ -114,12 +136,35 @@ class UserTest {
         assertTrue(result)
     }
 
-    /** Tests the joinGroup function */
+    /** Tests the deleteAllUsers function when the group does not exist */
+    @Test
+    fun deleteAllUsersWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val result = q.deleteAllUsers("")
+        assertFalse(result)
+    }
+
+    /** Tests the joinGroup function on positive outcome */
     @Test
     fun joinGroupSuccessfully() = runBlocking {
         val join = User("JOIN_USER", "joining user", 0)
         val result = q.joinGroup(group.id, join)
         assertTrue(result == join.id)
+    }
+
+    /** Tests the joinGroup function on negative outcome: when username is already taken */
+    @Test
+    fun joinGroupWhenUsernameIsTakenSuccessfully() = runBlocking {
+        val join = User("JOIN_USER", user.name, 0)
+        val result = q.joinGroup(group.id, join)
+        assertTrue(result == "-2")
+    }
+
+    /** Tests the joinGroup function on negative outcome: when the group does not exist */
+    @Test
+    fun joinGroupWhenGroupDoesNotExistSuccessfully() = runBlocking {
+        val join = User("JOIN_USER", "Raul Olmedo Checa", 0)
+        val result = q.joinGroup("NON_EXISTING_GROUP", join)
+        assertTrue(result == "-3")
     }
 
     /** Tests the isUsernameAvailable function for a positive outcome */
@@ -142,6 +187,15 @@ class UserTest {
         q.createUser(User("RND_USER", "Random", 30), group.id)
         val success = q.updateNewAdmin(group.id)
         assertTrue(success)
+    }
+
+    /** Tests the switching of the admin when the current admin leaves the group. This test
+     * fails as there are no users left in the group */
+    @Test
+    fun changeNewAdminWhenGroupIsEmpty() = runBlocking {
+        q.deleteUser(user.id, group.id)
+        val success = q.updateNewAdmin(group.id)
+        assertFalse(success)
     }
 
     /** Tests the listener function for users: attachListenerToAppForUserRemoved for the correct deleted user */
