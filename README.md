@@ -2,6 +2,10 @@
 
 [![master](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/main)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android?branch=main) [![master](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f65a342064ea42bd99d4661b7b94aa17)](https://www.codacy.com/gh/gabrielglbh/tfm-android/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gabrielglbh/tfm-android&amp;utm_campaign=Badge_Grade)
 
+## Developers ONLY
+
+Remember to change the `versionCode` and `versionName` on the `gradle:app` file when releasing a new version through tags
+
 ## Application Description
 
 KELO is a project for managing your house chores with your friends!
