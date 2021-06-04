@@ -5,4 +5,5 @@ object UserFields {
     const val name = "name"
     const val points = "points"
     const val isAdmin = "isAdmin"
+    const val messagingToken = "messagingToken"
 }

@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             SharedPreferences.getStringCode(this, Constants.USER_ID)
         }
 
+        updateFCMTokenIfNecessary()
         setListenerToUserRemoved(baseContext)
 
         viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
@@ -94,6 +95,10 @@ class MainActivity : AppCompatActivity() {
                 context.startActivity(intent, bundle)
             }
         }
+    }
+
+    private fun updateFCMTokenIfNecessary() {
+        CoroutineScope(Dispatchers.Main).launch { UserQueries().getFCMToken() }
     }
 
     private fun setUpToolbar() {

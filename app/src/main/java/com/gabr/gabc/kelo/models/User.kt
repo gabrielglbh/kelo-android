@@ -14,7 +14,8 @@ class User(
     // Added JvmField for Boolean for Kotlin to use the proper setters and getters in the JVM
     @field:JvmField
     @PropertyName(UserFields.isAdmin)
-    var isAdmin: Boolean = false
+    var isAdmin: Boolean = false,
+    @PropertyName(UserFields.messagingToken) var messagingToken: String = ""
 ) {
     /**
      * Transforms the current [User] into a [Map] to be uploaded to Firebase
@@ -23,7 +24,8 @@ class User(
         return hashMapOf(
             UserFields.name to name,
             UserFields.points to points,
-            UserFields.isAdmin to isAdmin
+            UserFields.isAdmin to isAdmin,
+            UserFields.messagingToken to messagingToken
         )
     }
 

@@ -93,4 +93,5 @@
     <string name="err_group_leave">Something went wrong while leaving the group</string>
     <string name="err_user_delete">Something went wrong while removing the user from the group</string>
     <string name="err_currency_update">Something went wrong while updating the currency</string>
+    <string name="default_notification_channel_id" translatable="false">MAIN_NOTIFICATION_CHANNEL</string>
 </resources>

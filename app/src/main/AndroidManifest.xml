@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gabr.gabc.kelo">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!--
     Activity:
         - screenOrientation: for setting the orientations on each of the activities
@@ -14,6 +16,23 @@
         android:roundIcon="@mipmap/kelo_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KELO">
+        <!-- Notifications -->
+        <service
+            android:name="com.gabr.gabc.kelo.utils.CustomFirebaseMessagingService"
+            android:exported="false"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/kelo_icon" />
+
+        <!-- Activities -->
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -25,7 +44,9 @@
         </activity>
         <activity
             android:name=".main.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"/>
         <activity
             android:name=".welcome.WelcomeActivity"
             android:screenOrientation="portrait"

@@ -152,9 +152,13 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
 
-    // Firebase FireStore
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-messaging-directboot:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
 
     // For getting the UI Device for Disabling Animations
     implementation "androidx.test.uiautomator:uiautomator:2.2.0"
