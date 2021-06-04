@@ -90,13 +90,22 @@ Feature: Create Chore
       | *o$* Lavar Ropa *$o*     |
 
   @Chore
-  Scenario Outline: User Has Permissions For Updating a Chore
+  Scenario Outline: (Creator) User Has Permissions For Updating a Chore
     Given a user with id "<id>" that wants to update a chore
     When the chore creator is "<creator>"
     Then the user is permitted to update it
     Examples:
       | id   | creator |
       | RAUL | RAUL    |
+
+  @Chore
+  Scenario Outline: (Admin) User Has Permissions For Updating a Chore
+    Given a user with id "<id>" that wants to update a chore
+    When the user is the admin of the group
+    Then the user is permitted to update it
+    Examples:
+      | id   |
+      | RAUL |
 
   @Chore
   Scenario Outline: User Has Not Permissions For Updating a Chore

@@ -101,10 +101,16 @@ class ChoreSteps : En {
             chore.creator = creatorId
         }
         Then("the user is permitted to update it") {
-            assertTrue(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+            assertTrue(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id)
+                    || PermissionsSingleton.isUserAdmin(user))
         }
         Then("the user is not permitted to update it") {
-            assertFalse(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+            assertFalse(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id)
+                    || PermissionsSingleton.isUserAdmin(user))
+        }
+
+        When("the user is the admin of the group") {
+            user.isAdmin = true
         }
 
         /************************************
@@ -112,9 +118,6 @@ class ChoreSteps : En {
          ************************************/
         Given("a user with id {string} that wants to remove a chore") { uid: String ->
             user.id = uid
-        }
-        When("the user is the admin of the group") {
-            user.isAdmin = true
         }
         When("the chore is not the creator {string} of the chore nor the admin") { creator: String ->
             chore.creator = creator

@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -17,6 +16,7 @@ import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * Function that manages the states of Firebase Cloud Messaging for push notifications.
@@ -52,16 +52,19 @@ open class CustomFirebaseMessagingService : FirebaseMessagingService() {
 
                 val builder = NotificationCompat.Builder(this, channelId).apply {
                     setContentIntent(notifyPendingIntent)
-                    setSmallIcon(R.mipmap.kelo_icon)
-                    setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.kelo_icon))
-                    priority = NotificationManager.IMPORTANCE_HIGH
+                    setSmallIcon(R.drawable.kelo_icon_foreground)
+                    color = getColor(R.color.primaryColor)
                     setChannelId(channelId)
-                    setVibrate(longArrayOf(1000, 1000))
+                    setAutoCancel(true)
+                    setVibrate(longArrayOf(2000, 2000))
                     setContentTitle(notification.title)
                     setContentText(notification.body)
                 }
+
+                // The notification ID is based on the date in order to have various notifications
+                // in the control center
                 with(NotificationManagerCompat.from(this)) {
-                    notify(666, builder.build())
+                    notify(((Date().time / 1000L % Int.MAX_VALUE).toInt()), builder.build())
                 }
             }
         } catch (e: Exception) {

@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.choreDetail.ChoreDetailActivity
 import com.gabr.gabc.kelo.firebase.ChoreQueries
+import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.models.Chore
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
@@ -88,14 +89,17 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
 
     override fun onChoreClick(chore: Chore) {
         chore.creator?.let {
-            if (PermissionsSingleton.isUserChoreCreator(it)) {
-                val intent = Intent(context, ChoreDetailActivity::class.java)
-                intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, true)
-                intent.putExtra(ChoreDetailActivity.CHORE, chore)
-                ContextCompat.startActivity(requireContext(), intent, null)
-            } else {
-                UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_modify_chore),
-                    anchorView = addChore)
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (PermissionsSingleton.isUserChoreCreator(it) || PermissionsSingleton.isUserAdmin(user)) {
+                    val intent = Intent(context, ChoreDetailActivity::class.java)
+                    intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, true)
+                    intent.putExtra(ChoreDetailActivity.CHORE, chore)
+                    ContextCompat.startActivity(requireContext(), intent, null)
+                } else {
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_modify_chore),
+                        anchorView = addChore)
+                }
             }
         }
     }

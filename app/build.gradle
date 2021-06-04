@@ -61,11 +61,13 @@ android {
                 //      - RecyclerView Adapters as they paint in UI the elements gathered from Firebase (already tested)
                 //      - BottomSheets as they paint in UI elements gathered from Firebase (already tested)
                 //      - SwipeControllers as they execute functions from Firebase (already tested)
+                //      - FirebaseMessagingService as it is an external service
                 dir: "$buildDir/tmp/kotlin-classes/debug",
                 excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*',
                            '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*',
                            '**/textDrawable', '**/models', '**/viewPager',
-                           '**/*Adapter*.*', '**/*BottomSheet*.*', '**/*Swipe*.*']
+                           '**/*Adapter*.*', '**/*BottomSheet*.*', '**/*Swipe*.*',
+                           '**/*MessagingService*.*']
         ))
         sourceDirectories.setFrom(files("src/main/kotlin"))
         executionData.setFrom(fileTree(dir: "$buildDir", includes: [
