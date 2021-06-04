@@ -12,8 +12,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.main.MainViewModel
-import com.gabr.gabc.kelo.welcome.WelcomeViewModel
+import com.gabr.gabc.kelo.viewModels.MainViewModel
+import com.gabr.gabc.kelo.viewModels.WelcomeViewModel
 
 /**
  * Bottom Sheet Dialog Fragment that holds the currency list in the WelcomeActivity

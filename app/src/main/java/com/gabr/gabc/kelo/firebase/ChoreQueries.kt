@@ -2,7 +2,7 @@ package com.gabr.gabc.kelo.firebase
 
 import com.gabr.gabc.kelo.constants.ChoreFields
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.dataModels.Chore
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore

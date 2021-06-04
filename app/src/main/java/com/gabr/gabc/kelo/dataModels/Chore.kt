@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.models
+package com.gabr.gabc.kelo.dataModels
 
 import android.os.Parcel
 import android.os.Parcelable

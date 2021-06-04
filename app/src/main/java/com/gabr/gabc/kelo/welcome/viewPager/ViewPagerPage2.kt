@@ -14,11 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.*
 import com.gabr.gabc.kelo.firebase.GroupQueries
-import com.gabr.gabc.kelo.models.Group
+import com.gabr.gabc.kelo.dataModels.Group
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
-import com.gabr.gabc.kelo.welcome.WelcomeViewModel
+import com.gabr.gabc.kelo.viewModels.WelcomeViewModel
 import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout

@@ -18,6 +18,7 @@ import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.viewModels.MainViewModel
 import com.gabr.gabc.kelo.welcome.WelcomeActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView

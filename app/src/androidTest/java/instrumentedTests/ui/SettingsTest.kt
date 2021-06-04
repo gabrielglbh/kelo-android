@@ -18,8 +18,8 @@ import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
-import com.gabr.gabc.kelo.models.Group
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.User
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.DisableAnimationsRule
 import instrumentedTests.ui.utils.keepScreenActive

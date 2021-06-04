@@ -3,8 +3,8 @@ package instrumentedTests.integration
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.Group
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.google.firebase.FirebaseApp
 import junit.framework.TestCase.assertFalse

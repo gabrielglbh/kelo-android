@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.viewModels.ChoreListViewModel
+import com.gabr.gabc.kelo.viewModels.UserListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,17 +25,29 @@ import kotlinx.coroutines.launch
  * Adapter for the Recycler View.
  * It creates the [UserItem] for every position and attaches a listener for each item
  *
+ * @param lifecycleOwner: owner of the observable of the live data object
+ * @param viewModel: [ChoreListViewModel] to observe the state of the local chore list
  * @param context: context from the caller
  * @param parent: view in which to show the snack bar
  * @param anchor: view to set the snack bar above it
  * */
-class UsersAdapter(private val users: ArrayList<User>,
+class UsersAdapter(lifecycleOwner: LifecycleOwner,
+                   viewModel: UserListViewModel,
                    private val context: Context,
                    private val parent: View,
                    private val anchor: View? = null,
-                   private val clickListener: UserClickListener? = null,
-                   private val userListener: UserListener? = null)
+                   private val clickListener: UserClickListener? = null)
     : RecyclerView.Adapter<UsersAdapter.UserItem>() {
+
+    private val users = arrayListOf<User>()
+
+    init {
+        viewModel.userList.observe(lifecycleOwner, { users ->
+            this.users.clear()
+            this.users.addAll(users)
+            notifyDataSetChanged()
+        })
+    }
 
     /**
      * Interface that defines a function to be called by the initializer when clicking on a certain item
@@ -46,19 +61,9 @@ class UsersAdapter(private val users: ArrayList<User>,
         fun onUserClicked(user: User?)
     }
 
-    /**
-     * Interface that defines functions to be called by the initializer after meeting certain actions
-     * */
-    interface UserListener {
-        /**
-         * Function that gets called when the users list needs to be refreshed upon removal of users
-         * */
-        fun updateUsers()
-    }
-
     private fun removedAt(position: Int) {
         users.removeAt(position)
-        userListener?.updateUsers()
+        notifyItemRemoved(position)
     }
 
     /**
@@ -78,20 +83,18 @@ class UsersAdapter(private val users: ArrayList<User>,
                         else {
                             UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
                                 anchorView = anchor)
-                            userListener?.updateUsers()
                         }
-                    } else userListener?.updateUsers()
+                    }
                 } else {
                     UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_user),
                         anchorView = anchor)
-                    userListener?.updateUsers()
                 }
             } catch (e: Exception) {
                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_user_delete),
                     anchorView = anchor)
-                userListener?.updateUsers()
             }
         }
+        notifyItemChanged(position)
     }
 
     /**

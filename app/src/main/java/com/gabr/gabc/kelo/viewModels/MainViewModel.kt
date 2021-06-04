@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.main
+package com.gabr.gabc.kelo.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

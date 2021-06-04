@@ -18,13 +18,14 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.Group
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Group
 import com.gabr.gabc.kelo.utils.*
 import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import com.gabr.gabc.kelo.utils.common.UserListSwipeController
 import com.gabr.gabc.kelo.utils.common.UsersAdapter
+import com.gabr.gabc.kelo.viewModels.MainViewModel
+import com.gabr.gabc.kelo.viewModels.UserListViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** Fragment that manages all settings of Kelo */
-class Settings : Fragment(), UsersAdapter.UserListener {
+class Settings : Fragment() {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
@@ -44,20 +45,25 @@ class Settings : Fragment(), UsersAdapter.UserListener {
 
     private var group: Group? = null
     private lateinit var viewModel: MainViewModel
+    private lateinit var userViewModel: UserListViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.settings, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        getUsers()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
+        userViewModel = run { ViewModelProvider(this).get(UserListViewModel::class.java) }
 
         bottomNavigationView = requireActivity().findViewById(R.id.mainBottomNavigationView)
 
         loading = view.findViewById(R.id.loadingWidget)
-        userList = view.findViewById(R.id.settingsUserList)
-        userList.layoutManager = LinearLayoutManager(requireContext())
 
         points = view.findViewById(R.id.userPoints)
 
@@ -113,6 +119,7 @@ class Settings : Fragment(), UsersAdapter.UserListener {
 
         getUserPoints()
         getGroup()
+        setUpUserList(view)
         getUsers()
     }
 
@@ -140,7 +147,7 @@ class Settings : Fragment(), UsersAdapter.UserListener {
         LoadingSingleton.manageLoadingView(loading, null, true)
         CoroutineScope(Dispatchers.Main).launch {
             val users = UserQueries().getAllUsers(SharedPreferences.groupId)
-            if (users != null) setUpUserList(users)
+            if (users != null) userViewModel.addAllUsers(users)
             else {
                 UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_users),
                     anchorView = bottomNavigationView)
@@ -170,9 +177,11 @@ class Settings : Fragment(), UsersAdapter.UserListener {
         }
     }
 
-    private fun setUpUserList(users: ArrayList<User>) {
-        val adapter = UsersAdapter(users, requireContext(), requireView(),
-            anchor = bottomNavigationView, userListener = this)
+    private fun setUpUserList(view: View) {
+        userList = view.findViewById(R.id.settingsUserList)
+        userList.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = UsersAdapter(this, userViewModel, requireContext(), requireView(),
+            anchor = bottomNavigationView)
         val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
         )
@@ -230,6 +239,4 @@ class Settings : Fragment(), UsersAdapter.UserListener {
             }
         }
     }
-
-    override fun updateUsers() { getUsers() }
 }

@@ -2,12 +2,12 @@ package com.gabr.gabc.kelo.main.choreList
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,10 +16,11 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.choreDetail.ChoreDetailActivity
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.dataModels.Chore
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.viewModels.ChoreListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,8 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
     private lateinit var choreList: RecyclerView
     private lateinit var addChore: FloatingActionButton
     private lateinit var refresh: SwipeRefreshLayout
+
+    private lateinit var viewModel: ChoreListViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chore_list, container, false)
@@ -44,10 +47,9 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = run { ViewModelProvider(this).get(ChoreListViewModel::class.java) }
         setFAB(view)
-
-        choreList = view.findViewById(R.id.choreListRecyclerView)
-        choreList.layoutManager = LinearLayoutManager(requireContext())
+        setRecyclerView(view)
         getChores()
 
         refresh = view.findViewById(R.id.choresRefresh)
@@ -57,24 +59,9 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
     private fun getChores() {
         CoroutineScope(Dispatchers.Main).launch {
             val chores = ChoreQueries().getAllChores(SharedPreferences.groupId)
-            if (chores != null) setRecyclerView(chores)
+            if (chores != null) viewModel.addAllChores(chores)
             else UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_chores), anchorView = addChore)
             refresh.isRefreshing = false
-        }
-    }
-
-    private fun setRecyclerView(chores: ArrayList<Chore>) {
-        try {
-            val adapter = ChoreListAdapter(
-                chores, this, requireContext(),
-                parent = requireView(), anchor = addChore)
-            val swipeHelper = ItemTouchHelper(
-                ChoreListSwipeController(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext()))
-
-            choreList.adapter = adapter
-            swipeHelper.attachToRecyclerView(choreList)
-        } catch (e: IllegalStateException) {
-            Log.e("CONTEXT ERROR", e.message.toString())
         }
     }
 
@@ -85,6 +72,17 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
             intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, false)
             startActivity(intent)
         }
+    }
+
+    private fun setRecyclerView(view: View) {
+        choreList = view.findViewById(R.id.choreListRecyclerView)
+        choreList.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = ChoreListAdapter(this, viewModel, this, requireContext(),
+            parent = requireView(), anchor = addChore)
+        val swipeHelper = ItemTouchHelper(ChoreListSwipeController(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext()))
+        choreList.adapter = adapter
+        swipeHelper.attachToRecyclerView(choreList)
     }
 
     override fun onChoreClick(chore: Chore) {
@@ -103,6 +101,4 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
             }
         }
     }
-
-    override fun updateChores() { getChores() }
 }

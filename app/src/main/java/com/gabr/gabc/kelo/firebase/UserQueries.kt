@@ -2,8 +2,8 @@ package com.gabr.gabc.kelo.firebase
 
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.constants.UserFields
-import com.gabr.gabc.kelo.models.Group
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore

@@ -1,7 +1,7 @@
 package com.gabr.gabc.kelo.firebase
 
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.models.Group
+import com.gabr.gabc.kelo.dataModels.Group
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject

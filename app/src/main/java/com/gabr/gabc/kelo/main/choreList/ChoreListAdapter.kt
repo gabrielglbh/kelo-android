@@ -7,31 +7,45 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.dataModels.Chore
 import com.gabr.gabc.kelo.utils.*
+import com.gabr.gabc.kelo.viewModels.ChoreListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Adapter for the Chore List.
  *
+ * @param lifecycleOwner: owner of the observable of the live data object
+ * @param viewModel: [ChoreListViewModel] to observe the state of the local chore list
  * @param context: activity's context
  * @param parent: view in which to show the snack bar
  * @param anchor: view to set the snack bar above it
  * */
-class ChoreListAdapter(private val chores: ArrayList<Chore>,
+class ChoreListAdapter(lifecycleOwner: LifecycleOwner,
+                       viewModel: ChoreListViewModel,
                        private val listener: ChoreListener,
                        private val context: Context,
                        private val parent: View,
                        private val anchor: View)
     : RecyclerView.Adapter<ChoreListAdapter.ChoreHolder>() {
+
+    private val chores = arrayListOf<Chore>()
+
+    init {
+        viewModel.choreList.observe(lifecycleOwner, { chores ->
+            this.chores.clear()
+            this.chores.addAll(chores)
+            notifyDataSetChanged()
+        })
+    }
 
     /**
      * Interface that defines functions to be called by the initializer after meeting certain actions
@@ -43,17 +57,11 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
          * @param chore: clicked [Chore]
          * */
         fun onChoreClick(chore: Chore)
-
-        /**
-         * Function that gets called when the chore list needs to be refreshed upon removal of
-         * chores or completion
-         * */
-        fun updateChores()
     }
 
     private fun removedAt(position: Int) {
         chores.removeAt(position)
-        listener.updateChores()
+        notifyItemRemoved(position)
     }
 
     /**
@@ -75,20 +83,18 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
                         else {
                             UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
                                 anchorView = anchor)
-                            listener.updateChores()
                         }
                     } else {
                         UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_remove_chore),
                             anchorView = anchor)
-                        listener.updateChores()
                     }
                 }
             } catch (e: Exception) {
                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_delete),
                     anchorView = anchor)
-                listener.updateChores()
             }
         }
+        notifyItemChanged(position)
     }
 
     /**
@@ -111,20 +117,18 @@ class ChoreListAdapter(private val chores: ArrayList<Chore>,
                         else {
                             UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
                                 anchorView = anchor)
-                            listener.updateChores()
                         }
                     } else {
                         UtilsSingleton.showSnackBar(parent, context.getString(R.string.permission_complete_chore),
                             anchorView = anchor)
-                        listener.updateChores()
                     }
                 }
             } catch (e: Exception) {
                 UtilsSingleton.showSnackBar(parent, context.getString(R.string.err_chore_completion),
                     anchorView = anchor)
-                listener.updateChores()
             }
         }
+        notifyItemChanged(position)
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.gabr.gabc.kelo.utils
 
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.User
 
 /** Singleton instance with helper functions to validate the permission throughout the code */
 object PermissionsSingleton {

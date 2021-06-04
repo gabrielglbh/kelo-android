@@ -1,9 +1,9 @@
-package com.gabr.gabc.kelo.choreDetail
+package com.gabr.gabc.kelo.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.User
 
 /**
  * ViewModel class that serves to control the variable assignee between UsersBottomSheet

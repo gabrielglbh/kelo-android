@@ -1,8 +1,8 @@
 package com.gabr.gabc.kelo.steps
 
 import com.gabr.gabc.kelo.choreDetail.ChoreDetailFunctions
-import com.gabr.gabc.kelo.models.Chore
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Chore
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import io.cucumber.java8.En

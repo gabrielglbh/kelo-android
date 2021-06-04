@@ -17,6 +17,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.UtilsSingleton
+import com.gabr.gabc.kelo.viewModels.WelcomeViewModel
 import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage1
 import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage2
 import com.gabr.gabc.kelo.welcome.viewPager.ViewPagerPage3

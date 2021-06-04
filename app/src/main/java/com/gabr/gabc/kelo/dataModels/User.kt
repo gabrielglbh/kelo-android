@@ -1,4 +1,4 @@
-package com.gabr.gabc.kelo.models
+package com.gabr.gabc.kelo.dataModels
 
 import com.gabr.gabc.kelo.constants.UserFields
 import com.google.firebase.firestore.DocumentId
