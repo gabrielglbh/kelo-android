@@ -149,12 +149,8 @@ class ChoreDetailActivity : AppCompatActivity() {
     private fun setUpDatePicker() {
         date = findViewById(R.id.choreDetailExpireDateButton)
 
-        if (viewDetails) {
-            val c = Calendar.getInstance()
-            chore.expiration?.let { c.time = it }
-            date.text = DatesSingleton.parseCalendarToString(c)
-        }
-        else date.text = DatesSingleton.parseCalendarToString(Calendar.getInstance())
+        if (viewDetails) chore.expiration?.let { selectedCalendar.time = it }
+        date.text = DatesSingleton.parseCalendarToString(selectedCalendar)
 
         date.setOnClickListener {
             clearFocusOfEditTextAndSetDrawable()

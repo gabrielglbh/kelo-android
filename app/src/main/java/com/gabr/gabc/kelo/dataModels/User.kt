@@ -7,7 +7,7 @@ import com.google.firebase.firestore.PropertyName
 /**
  * Class that holds the User for managing communications with Firebase
  * */
-class User(
+data class User(
     @DocumentId var id: String = "",
     @PropertyName(UserFields.name) val name: String = "",
     @PropertyName(UserFields.points) var points: Int = 0,

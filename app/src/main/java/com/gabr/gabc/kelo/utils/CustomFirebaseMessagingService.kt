@@ -56,6 +56,7 @@ open class CustomFirebaseMessagingService : FirebaseMessagingService() {
                     color = getColor(R.color.primaryColor)
                     setChannelId(channelId)
                     setAutoCancel(true)
+                    setStyle(NotificationCompat.BigTextStyle().bigText(notification.body))
                     setVibrate(longArrayOf(2000, 2000))
                     setContentTitle(notification.title)
                     setContentText(notification.body)

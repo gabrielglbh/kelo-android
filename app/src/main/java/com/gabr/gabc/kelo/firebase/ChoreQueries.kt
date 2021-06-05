@@ -66,15 +66,18 @@ class ChoreQueries {
     }
 
     /**
-     * Function that retrieves all chores ordered by expiration date
+     * Function that retrieves all chores ordered by expiration date and filtered by isCompleted field
      *
      * @param groupId: group id in which the chores are
+     * @param isCompleted: filter for getting all the chores, depending if the user wants the complete
+     * chores or the unfinished ones
      * @return list with all the chores
      * */
-    suspend fun getAllChores(groupId: String) : ArrayList<Chore>? {
+    suspend fun getAllChores(groupId: String, isCompleted: Boolean? = false) : ArrayList<Chore>? {
         return try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
                 .collection(fbChoresSubCollection)
+                .whereEqualTo(ChoreFields.isCompleted, isCompleted)
                 .orderBy(ChoreFields.expiration, Query.Direction.ASCENDING)
                 .get().await()
             val chores = arrayListOf<Chore>()
@@ -142,7 +145,10 @@ class ChoreQueries {
             if (user != null) {
                 user.points += chore.points
                 val success = q.updateUser(user, groupId)
-                if (success) { return deleteChore(chore.id!!, groupId) }
+                if (success) {
+                    chore.isCompleted = true
+                    return updateChore(chore, groupId)
+                }
                 else false
             } else false
         } catch (e: Exception) {

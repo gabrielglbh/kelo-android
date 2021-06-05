@@ -13,14 +13,18 @@ import java.util.*
  * [Chore] extends from [Parcelable] in order to be able to pass it through intents
  * It makes a map in the simple scheme of things
  * */
-class Chore(
+data class Chore(
     @DocumentId var id: String? = "",
     @PropertyName(ChoreFields.name) var name: String? = "",
     @PropertyName(ChoreFields.icon) var icon: String? = "",
     @PropertyName(ChoreFields.assignee) var assignee: String? = "",
     @PropertyName(ChoreFields.expiration) var expiration: Date? = Calendar.getInstance().time,
     @PropertyName(ChoreFields.points) var points: Int = 10,
-    @PropertyName(ChoreFields.creator) var creator: String? = ""
+    @PropertyName(ChoreFields.creator) var creator: String? = "",
+    // Added JvmField for Boolean for Kotlin to use the proper setters and getters in the JVM
+    @field:JvmField
+    @PropertyName(ChoreFields.isCompleted)
+    var isCompleted: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this (
         parcel.readString(),
@@ -29,7 +33,8 @@ class Chore(
         parcel.readString(),
         parcel.readDate(),
         parcel.readInt(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readBooleanFromInt()
     )
 
     /**
@@ -42,7 +47,8 @@ class Chore(
             ChoreFields.assignee to assignee,
             ChoreFields.expiration to expiration,
             ChoreFields.points to points,
-            ChoreFields.creator to creator
+            ChoreFields.creator to creator,
+            ChoreFields.isCompleted to isCompleted
         )
     }
 
@@ -54,6 +60,7 @@ class Chore(
         parcel.writeDate(expiration)
         parcel.writeInt(points)
         parcel.writeString(creator)
+        parcel.writeBooleanOnInt(isCompleted)
     }
 
     override fun describeContents(): Int { return 0 }
@@ -63,7 +70,7 @@ class Chore(
         return id == chore.id && name == chore.name &&
                 icon == chore.icon && assignee == chore.assignee &&
                 expiration == chore.expiration && points == chore.points &&
-                creator == chore.creator
+                creator == chore.creator && isCompleted == chore.isCompleted
     }
 
     override fun hashCode(): Int {
@@ -74,6 +81,7 @@ class Chore(
         result = 31 * result + (expiration?.hashCode() ?: 0)
         result = 31 * result + points
         result = 31 * result + (creator?.hashCode() ?: 0)
+        result = 31 * result + isCompleted.hashCode()
         return result
     }
 
@@ -84,6 +92,9 @@ class Chore(
             val long = readLong()
             return if (long != 1L) Date(long) else null
         }
+
+        private fun Parcel.writeBooleanOnInt(value: Boolean) { writeInt(if (value) 1 else 0) }
+        private fun Parcel.readBooleanFromInt(): Boolean = readInt() == 1
 
         override fun createFromParcel(parcel: Parcel): Chore { return Chore(parcel) }
         override fun newArray(size: Int): Array<Chore?> { return arrayOfNulls(size) }

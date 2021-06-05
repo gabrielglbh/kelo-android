@@ -8,7 +8,7 @@ import java.util.*
 /**
  * Class that holds the Reward for managing communications with Firebase
  * */
-class Reward(
+data class Reward(
     @DocumentId var id: String = "",
     @PropertyName(RewardFields.name) val name: String = "",
     @PropertyName(RewardFields.frequency) val frequency: Date = Calendar.getInstance().time,
