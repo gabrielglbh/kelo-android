@@ -14,8 +14,28 @@ class ChoreListViewModel: ViewModel() {
     val choreList: LiveData<ArrayList<Chore>>
         get() = _choreList
 
+    private val _showCompleted: MutableLiveData<Boolean> = MutableLiveData()
+    val showCompleted: LiveData<Boolean>
+        get() = _showCompleted
+
+    private val _actionBarTitle: MutableLiveData<String> = MutableLiveData()
+    val actionBarTitle: LiveData<String>
+        get() = _actionBarTitle
+
+    init { _showCompleted.postValue(false) }
+
     /** Adds all chores stated by the parameter to the current live data object */
     fun addAllChores(chores: ArrayList<Chore>) {
         _choreList.postValue(chores)
+    }
+
+    /** Sets the mode for showing the chores depending of the value of the parameter [mode] */
+    fun setShowCompleted(mode: Boolean) {
+        _showCompleted.postValue(mode)
+    }
+
+    /** Sets the title for the action bar when the chore list is changed */
+    fun setActionBarTitle(title: String) {
+        _actionBarTitle.postValue(title)
     }
 }

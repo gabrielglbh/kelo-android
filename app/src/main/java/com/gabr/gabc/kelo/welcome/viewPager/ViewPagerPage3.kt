@@ -98,7 +98,7 @@ class ViewPagerPage3: Fragment() {
                 "-3" -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_group_does_not_exist))
                 else -> {
                     val intent = Intent(requireActivity(), MainActivity::class.java)
-                    SharedPreferences.putIsFirstLaunched(requireActivity(), true)
+                    SharedPreferences.putBooleanCode(requireActivity(), Constants.FIRST_LAUNCHED, true)
                     SharedPreferences.putStringCode(requireActivity(), Constants.GROUP_ID, groupId)
                     SharedPreferences.putStringCode(requireActivity(), Constants.USER_ID, userId)
                     SharedPreferences.getStringCode(requireActivity(), Constants.GROUP_ID)

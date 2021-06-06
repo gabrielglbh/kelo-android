@@ -30,10 +30,17 @@ import kotlinx.coroutines.launch
 class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
 
     private lateinit var choreList: RecyclerView
+    private lateinit var swipeController: ItemTouchHelper
+
     private lateinit var addChore: FloatingActionButton
     private lateinit var refresh: SwipeRefreshLayout
 
     private lateinit var viewModel: ChoreListViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run { ViewModelProvider(this).get(ChoreListViewModel::class.java) }!!
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chore_list, container, false)
@@ -47,10 +54,21 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = run { ViewModelProvider(this).get(ChoreListViewModel::class.java) }
         setFAB(view)
         setRecyclerView(view)
         getChores()
+
+        viewModel.showCompleted.observe(viewLifecycleOwner, {
+            getChores()
+            if (it) {
+                viewModel.setActionBarTitle(getString(R.string.history))
+                swipeController.attachToRecyclerView(null)
+            }
+            else {
+                viewModel.setActionBarTitle(getString(R.string.chores))
+                swipeController.attachToRecyclerView(choreList)
+            }
+        })
 
         refresh = view.findViewById(R.id.choresRefresh)
         refresh.setOnRefreshListener { getChores() }
@@ -58,7 +76,7 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
 
     private fun getChores() {
         CoroutineScope(Dispatchers.Main).launch {
-            val chores = ChoreQueries().getAllChores(SharedPreferences.groupId)
+            val chores = ChoreQueries().getAllChores(SharedPreferences.groupId, isCompleted =  viewModel.showCompleted.value)
             if (chores != null) viewModel.addAllChores(chores)
             else UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_chores), anchorView = addChore)
             refresh.isRefreshing = false
@@ -79,24 +97,28 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
         choreList.layoutManager = LinearLayoutManager(requireContext())
         val adapter = ChoreListAdapter(this, viewModel, this, requireContext(),
             parent = requireView(), anchor = addChore)
-        val swipeHelper = ItemTouchHelper(ChoreListSwipeController(0,
+        swipeController = ItemTouchHelper(ChoreListSwipeController(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext()))
         choreList.adapter = adapter
-        swipeHelper.attachToRecyclerView(choreList)
+        swipeController.attachToRecyclerView(choreList)
     }
 
     override fun onChoreClick(chore: Chore) {
-        chore.creator?.let {
-            CoroutineScope(Dispatchers.Main).launch {
-                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
-                if (PermissionsSingleton.isUserChoreCreator(it) || PermissionsSingleton.isUserAdmin(user)) {
-                    val intent = Intent(context, ChoreDetailActivity::class.java)
-                    intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, true)
-                    intent.putExtra(ChoreDetailActivity.CHORE, chore)
-                    ContextCompat.startActivity(requireContext(), intent, null)
-                } else {
-                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_modify_chore),
-                        anchorView = addChore)
+        viewModel.showCompleted.value?.let { isCompleted ->
+            if (!isCompleted) {
+                chore.creator?.let {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                        if (PermissionsSingleton.isUserChoreCreator(it) || PermissionsSingleton.isUserAdmin(user)) {
+                            val intent = Intent(context, ChoreDetailActivity::class.java)
+                            intent.putExtra(ChoreDetailActivity.VIEW_DETAILS, true)
+                            intent.putExtra(ChoreDetailActivity.CHORE, chore)
+                            ContextCompat.startActivity(requireContext(), intent, null)
+                        } else {
+                            UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_modify_chore),
+                                anchorView = addChore)
+                        }
+                    }
                 }
             }
         }

@@ -8,6 +8,7 @@ object Constants {
         // true -> user has completed the welcome form
         // false -> user must log in
         const val FIRST_LAUNCHED = "isFirstLaunched"
+        const val SHOW_COMPLETED_CHORES = "showCompletedChores"
         const val GROUP_ID = "GroupID"
         const val USER_ID = "UserID"
 

@@ -26,6 +26,8 @@
     <string name="settings">Ajustes</string>
     <string name="add_chore">Añadir Tarea</string>
     <string name="chore_detail">Detalles</string>
+    <string name="completed_chores">Tareas Completadas</string>
+    <string name="history">Completadas</string>
 
     <!-- Chore Detail Activity -->
     <string name="chore_name_label">Nombre de la Tarea</string>

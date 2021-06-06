@@ -28,6 +28,8 @@
     <string name="settings">Settings</string>
     <string name="add_chore">Add Chore</string>
     <string name="chore_detail">Details</string>
+    <string name="completed_chores">Completed Chores</string>
+    <string name="history">Completed</string>
 
     <!-- Chore Detail Activity -->
     <string name="chore_name_label">Chore Name</string>
