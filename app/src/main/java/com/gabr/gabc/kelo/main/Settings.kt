@@ -68,19 +68,16 @@ class Settings : Fragment() {
 
         updateGroupButton = view.findViewById(R.id.settingsUpdateGroupButton)
         updateGroupButton.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
-                if (user?.isAdmin == true) {
-                    DialogSingleton.createDialogWithEditTextField(
-                        requireActivity(),
-                        requireContext(),
-                        group = group
-                    ) { newTitle -> viewModel.setTitle(newTitle) }
-                } else {
-                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_update_group),
+            DialogSingleton.createDialogWithEditTextField(
+                requireActivity(),
+                requireContext(),
+                group = group,
+                onSuccess = { newTitle ->
+                    viewModel.setTitle(newTitle)
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.settings_successful_group_update),
                         anchorView = bottomNavigationView)
                 }
-            }
+            )
         }
 
         updateUserButton = view.findViewById(R.id.settingsUpdateUserButton)
@@ -91,7 +88,11 @@ class Settings : Fragment() {
                     DialogSingleton.createDialogWithEditTextField(
                         requireActivity(),
                         requireContext(),
-                        user = user
+                        user = user,
+                        onSuccess = {
+                            UtilsSingleton.showSnackBar(requireView(), getString(R.string.settings_successful_user_update),
+                                anchorView = bottomNavigationView)
+                        },
                     )
                 }
             }

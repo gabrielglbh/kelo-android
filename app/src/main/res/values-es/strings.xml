@@ -66,9 +66,12 @@
     <string name="settings_group_currency">Moneda</string>
     <string name="settings_change_user_name_label">Cambia tu nombre</string>
     <string name="settings_change_group_name_label">Cambia el nombre del grupo</string>
-    <string name="settings_edit_label">Edición</string>
-    <string name="settings_update_group_button">Cambiar Nombre del Grupo</string>
-    <string name="settings_update_user_button">Cambiar Nombre del Usuario</string>
+    <string name="settings_edit_label">Varios</string>
+    <string name="settings_update_group_button">Editar Grupo</string>
+    <string name="settings_update_user_button">Editar Usuario</string>
+    <string name="settings_dialog_btn_change">Guardar</string>
+    <string name="settings_successful_group_update">¡El grupo ha sido actualizado!</string>
+    <string name="settings_successful_user_update">¡Tu usuario ha sido actualizado!</string>
 
     <!-- Permissions -->
     <string name="permission_modify_chore">No tienes los permisos suficientes para modificar esta tarea. Contacta con el creador de la tarea.</string>

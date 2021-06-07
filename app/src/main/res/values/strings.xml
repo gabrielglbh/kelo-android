@@ -68,9 +68,12 @@
     <string name="settings_group_currency">Currency</string>
     <string name="settings_change_user_name_label">Change your user name</string>
     <string name="settings_change_group_name_label">Change the group name</string>
-    <string name="settings_edit_label">Edit</string>
-    <string name="settings_update_group_button">Change Group Name</string>
-    <string name="settings_update_user_button">Change User Name</string>
+    <string name="settings_edit_label">Miscellaneous</string>
+    <string name="settings_update_group_button">Edit Group</string>
+    <string name="settings_update_user_button">Edit User</string>
+    <string name="settings_dialog_btn_change">Save</string>
+    <string name="settings_successful_group_update">The group has been updated!</string>
+    <string name="settings_successful_user_update">Your user has been updated!</string>
 
     <!-- Permissions -->
     <string name="admin" translatable="false">Admin</string>
