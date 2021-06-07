@@ -19,6 +19,7 @@ import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.*
 import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
@@ -33,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** Fragment that manages all settings of Kelo */
-class Settings : Fragment() {
+class Settings : Fragment(), UsersAdapter.UserClickListener {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
@@ -119,8 +120,17 @@ class Settings : Fragment() {
 
         getUserPoints()
         getGroup()
-        setUpUserList(view)
         getUsers()
+
+        userList = view.findViewById(R.id.settingsUserList)
+        userList.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = UsersAdapter(this, userViewModel, requireContext(), requireView(),
+            clickListener = this, anchor = bottomNavigationView)
+        val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
+        )
+        userList.adapter = adapter
+        swipeHelper.attachToRecyclerView(userList)
     }
 
     private fun getUserPoints() {
@@ -177,18 +187,6 @@ class Settings : Fragment() {
         }
     }
 
-    private fun setUpUserList(view: View) {
-        userList = view.findViewById(R.id.settingsUserList)
-        userList.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = UsersAdapter(this, userViewModel, requireContext(), requireView(),
-            anchor = bottomNavigationView)
-        val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
-        )
-        userList.adapter = adapter
-        swipeHelper.attachToRecyclerView(userList)
-    }
-
     private fun deleteGroup() {
         viewModel.setLoading(true)
         CoroutineScope(Dispatchers.Main).launch {
@@ -236,6 +234,20 @@ class Settings : Fragment() {
                     }
                 }
                 viewModel.setLoading(false)
+            }
+        }
+    }
+
+    override fun onUserClicked(user: User?) {
+        user?.let { u ->
+            CoroutineScope(Dispatchers.Main).launch {
+                val admin = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                admin?.let {
+                    if (SharedPreferences.isUserBeingDisplayedCurrentUser(u.id) ||
+                        PermissionsSingleton.isUserAdmin(admin)) {
+                        UserNameBottomSheet(u).show(childFragmentManager, UserNameBottomSheet.TAG)
+                    }
+                }
             }
         }
     }

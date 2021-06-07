@@ -9,7 +9,7 @@ import com.google.firebase.firestore.PropertyName
  * */
 data class User(
     @DocumentId var id: String = "",
-    @PropertyName(UserFields.name) val name: String = "",
+    @PropertyName(UserFields.name) var name: String = "",
     @PropertyName(UserFields.points) var points: Int = 0,
     // Added JvmField for Boolean for Kotlin to use the proper setters and getters in the JVM
     @field:JvmField
@@ -39,6 +39,7 @@ data class User(
         result = 31 * result + name.hashCode()
         result = 31 * result + points
         result = 31 * result + isAdmin.hashCode()
+        result = 31 * result + messagingToken.hashCode()
         return result
     }
 }

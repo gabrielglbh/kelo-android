@@ -34,7 +34,7 @@ data class Chore(
         parcel.readDate(),
         parcel.readInt(),
         parcel.readString(),
-        parcel.readBooleanFromInt()
+        parcel.readByte() != 0.toByte(),
     )
 
     /**
@@ -60,7 +60,7 @@ data class Chore(
         parcel.writeDate(expiration)
         parcel.writeInt(points)
         parcel.writeString(creator)
-        parcel.writeBooleanOnInt(isCompleted)
+        parcel.writeByte(if (isCompleted) 1 else 0)
     }
 
     override fun describeContents(): Int { return 0 }
@@ -92,9 +92,6 @@ data class Chore(
             val long = readLong()
             return if (long != 1L) Date(long) else null
         }
-
-        private fun Parcel.writeBooleanOnInt(value: Boolean) { writeInt(if (value) 1 else 0) }
-        private fun Parcel.readBooleanFromInt(): Boolean = readInt() == 1
 
         override fun createFromParcel(parcel: Parcel): Chore { return Chore(parcel) }
         override fun newArray(size: Int): Array<Chore?> { return arrayOfNulls(size) }
