@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.isLoading.observe(this, { loading ->
             LoadingSingleton.showFullLoadingScreen(this, parent, this.loading, fullViewLoading, loading)
         })
+        viewModel.groupName.observe(this, { supportActionBar?.subtitle = it })
         choreListViewModel.actionBarTitle.observe(this, { title -> supportActionBar?.title = title })
     }
 

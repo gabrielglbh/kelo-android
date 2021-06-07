@@ -66,7 +66,11 @@
     <string name="settings_dialog_btn_leave_positive">Leave</string>
     <string name="settings_dialog_btn_negative">Cancel</string>
     <string name="settings_group_currency">Currency</string>
-    <string name="change_user_name_label">Change your user name</string>
+    <string name="settings_change_user_name_label">Change your user name</string>
+    <string name="settings_change_group_name_label">Change the group name</string>
+    <string name="settings_edit_label">Edit</string>
+    <string name="settings_update_group_button">Change Group Name</string>
+    <string name="settings_update_user_button">Change User Name</string>
 
     <!-- Permissions -->
     <string name="admin" translatable="false">Admin</string>
@@ -76,6 +80,7 @@
     <string name="permission_update_currency">You are not allowed to change the group\'s currency</string>
     <string name="permission_remove_user">You are not allowed to remove users from the group</string>
     <string name="permission_remove_group">You are not allowed to remove the group</string>
+    <string name="permission_update_group">You are not allowed to change the group name</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Invalid name</string>
@@ -98,4 +103,5 @@
     <string name="err_currency_update">Something went wrong while updating the currency</string>
     <string name="default_notification_channel_id" translatable="false">MAIN_NOTIFICATION_CHANNEL</string>
     <string name="err_user_update">Something went wrong while updating the user</string>
+    <string name="err_group_update">Something went wrong while updating the group</string>
 </resources>

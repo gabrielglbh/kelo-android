@@ -17,6 +17,10 @@ class MainViewModel : ViewModel() {
     val groupCurrency: LiveData<CurrencyModel>
         get() = _groupCurrency
 
+    private val _groupName: MutableLiveData<String> = MutableLiveData()
+    val groupName: LiveData<String>
+        get() = _groupName
+
     /**
      * Sets the loading mode in the desired view model [MutableLiveData] variable
      *
@@ -30,4 +34,11 @@ class MainViewModel : ViewModel() {
      * @param currency: value to be set
      */
     fun setCurrency(currency: CurrencyModel) { _groupCurrency.postValue(currency) }
+
+    /**
+     * Sets the group name in the desired view model [MutableLiveData] variable
+     *
+     * @param title: value to be set
+     */
+    fun setTitle(title: String) { _groupName.postValue(title) }
 }

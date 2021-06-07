@@ -7,7 +7,7 @@ import com.google.firebase.firestore.PropertyName
 /** Class that holds the Group for managing communications with Firebase */
 data class Group(
     @DocumentId var id: String = "",
-    @PropertyName(GroupFields.name) val name: String = "",
+    @PropertyName(GroupFields.name) var name: String = "",
     @PropertyName(GroupFields.currency) var currency: String = ""
 ) {
     /**

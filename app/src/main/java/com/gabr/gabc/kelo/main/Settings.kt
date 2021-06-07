@@ -19,7 +19,6 @@ import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.dataModels.Group
-import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.*
 import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
@@ -34,10 +33,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** Fragment that manages all settings of Kelo */
-class Settings : Fragment(), UsersAdapter.UserClickListener {
+class Settings : Fragment() {
     private lateinit var points: TextView
     private lateinit var deleteGroupButton: MaterialButton
     private lateinit var leaveGroupButton: MaterialButton
+    private lateinit var updateGroupButton: MaterialButton
+    private lateinit var updateUserButton: MaterialButton
     private lateinit var currencyGroupButton: MaterialButton
     private lateinit var userList: RecyclerView
     private lateinit var loading: ProgressBar
@@ -48,25 +49,53 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var userViewModel: UserListViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run { ViewModelProvider(this).get(MainViewModel::class.java) }!!
+        userViewModel = activity?.run { ViewModelProvider(this).get(UserListViewModel::class.java) }!!
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.settings, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        getUsers()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = run { ViewModelProvider(this).get(MainViewModel::class.java) }
-        userViewModel = run { ViewModelProvider(this).get(UserListViewModel::class.java) }
 
         bottomNavigationView = requireActivity().findViewById(R.id.mainBottomNavigationView)
-
         loading = view.findViewById(R.id.loadingWidget)
-
         points = view.findViewById(R.id.userPoints)
+
+        updateGroupButton = view.findViewById(R.id.settingsUpdateGroupButton)
+        updateGroupButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (user?.isAdmin == true) {
+                    DialogSingleton.createDialogWithEditTextField(
+                        requireActivity(),
+                        requireContext(),
+                        group = group
+                    ) { newTitle -> viewModel.setTitle(newTitle) }
+                } else {
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_update_group),
+                        anchorView = bottomNavigationView)
+                }
+            }
+        }
+
+        updateUserButton = view.findViewById(R.id.settingsUpdateUserButton)
+        updateUserButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (user != null) {
+                    DialogSingleton.createDialogWithEditTextField(
+                        requireActivity(),
+                        requireContext(),
+                        user = user
+                    )
+                }
+            }
+        }
 
         deleteGroupButton = view.findViewById(R.id.settingsRemoveGroupButton)
         deleteGroupButton.setOnClickListener {
@@ -125,7 +154,7 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
         userList = view.findViewById(R.id.settingsUserList)
         userList.layoutManager = LinearLayoutManager(requireContext())
         val adapter = UsersAdapter(this, userViewModel, requireContext(), requireView(),
-            clickListener = this, anchor = bottomNavigationView)
+            anchor = bottomNavigationView)
         val swipeHelper = ItemTouchHelper(UserListSwipeController(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, adapter, requireContext())
         )
@@ -234,20 +263,6 @@ class Settings : Fragment(), UsersAdapter.UserClickListener {
                     }
                 }
                 viewModel.setLoading(false)
-            }
-        }
-    }
-
-    override fun onUserClicked(user: User?) {
-        user?.let { u ->
-            CoroutineScope(Dispatchers.Main).launch {
-                val admin = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
-                admin?.let {
-                    if (SharedPreferences.isUserBeingDisplayedCurrentUser(u.id) ||
-                        PermissionsSingleton.isUserAdmin(admin)) {
-                        UserNameBottomSheet(u).show(childFragmentManager, UserNameBottomSheet.TAG)
-                    }
-                }
             }
         }
     }
