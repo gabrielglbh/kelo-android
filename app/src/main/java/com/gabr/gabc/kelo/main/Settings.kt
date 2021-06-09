@@ -39,6 +39,7 @@ class Settings : Fragment() {
     private lateinit var leaveGroupButton: MaterialButton
     private lateinit var updateGroupButton: MaterialButton
     private lateinit var updateUserButton: MaterialButton
+    private lateinit var rewardsButton: MaterialButton
     private lateinit var currencyGroupButton: MaterialButton
     private lateinit var userList: RecyclerView
     private lateinit var loading: ProgressBar
@@ -124,6 +125,11 @@ class Settings : Fragment() {
                 getString(R.string.settings_dialog_msg_leave_group),
                 getString(R.string.settings_dialog_btn_leave_positive),
             ) { leaveGroup() }
+        }
+
+        rewardsButton = view.findViewById(R.id.settingsRewardsButton)
+        rewardsButton.setOnClickListener {
+
         }
 
         viewModel.groupCurrency.observe(viewLifecycleOwner, { currency -> setCurrency(currency) })

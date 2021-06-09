@@ -103,4 +103,5 @@
     <string name="err_currency_update">Algo ha ocurrido mientras se actualizaba la moneda del grupo</string>
     <string name="err_user_update">Algo ha ocurrido mientras se actualizaba el usuario</string>
     <string name="err_group_update">Algo ha ocurrido mientras se actualizaba el grupo</string>
+    <string name="settings_reward_label">Recompensas</string>
 </resources>

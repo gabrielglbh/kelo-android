@@ -79,17 +79,39 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:id="@+id/settingsRewardsLabel"
+                style="@style/HeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings_reward_label"
+                app:layout_constraintStart_toStartOf="@+id/settingsUserListContainer"
+                app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsRewardsButton"
+                style="@style/SettingsButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
+                app:layout_constraintStart_toStartOf="@+id/settingsRewardsLabel"
+                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsLabel"
+                tools:text="Ver Recompensas" />
+
+            <TextView
                 android:id="@+id/currencyLabel"
                 style="@style/HeaderStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/settings_group_currency"
-                app:layout_constraintStart_toStartOf="@+id/settingsUserListContainer"
-                app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
+                app:layout_constraintStart_toStartOf="@+id/settingsRewardsButton"
+                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsButton" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsCurrencyButton"
+                style="@style/SettingsButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/material_button_height"
                 android:layout_marginTop="8dp"
@@ -111,25 +133,25 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsUpdateGroupButton"
+                style="@style/SettingsButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/material_button_height"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/settings_update_group_button"
-                app:backgroundTint="@color/primaryColor"
                 app:layout_constraintEnd_toStartOf="@+id/guideline13"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/updatesLabel" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsUpdateUserButton"
+                style="@style/SettingsButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/material_button_height"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/settings_update_user_button"
-                app:backgroundTint="@color/primaryColor"
                 app:layout_constraintEnd_toEndOf="@+id/settingsCurrencyButton"
                 app:layout_constraintStart_toStartOf="@+id/guideline13"
                 app:layout_constraintTop_toBottomOf="@+id/updatesLabel" />

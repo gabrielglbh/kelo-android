@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
             val currentItem = bottomNavigation.menu.findItem(bottomNavigation.selectedItemId)
             when (it.itemId) {
                 R.id.chores_menu -> {
-                    supportActionBar?.title = getString(R.string.chores)
+                    supportActionBar?.title = choreListViewModel.actionBarTitle.value
                     toolbar.menu.findItem(R.id.toolbar_completed_chores).isVisible = true
                     if (currentItem != it) navController.navigate(R.id.action_settings_to_choreList)
                     true
