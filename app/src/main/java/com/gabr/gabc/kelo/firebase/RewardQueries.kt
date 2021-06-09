@@ -1,10 +1,10 @@
 package com.gabr.gabc.kelo.firebase
 
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.dataModels.Group
 import com.gabr.gabc.kelo.dataModels.Reward
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
@@ -20,18 +20,22 @@ class RewardQueries {
      * Function that creates a [Reward] in an existing Group
      *
      * @param reward: reward to be created
-     * @param group: group to make the reward in
+     * @param groupId: group ID to make the reward in
      * @return Boolean of success
      * */
-    suspend fun createReward(reward: Reward, group: Group): Boolean {
+    suspend fun createReward(reward: Reward, groupId: String): Reward? {
         return try {
-            instance.collection(fbGroupsCollection).document(group.id)
-                .collection(fbRewardsSubCollection)
-                .document().set((reward.toMap()))
-                .await()
-            true
+            val ref = if (reward.id != "") {
+                instance.collection(fbGroupsCollection).document(groupId)
+                    .collection(fbRewardsSubCollection).document(reward.id)
+            } else {
+                instance.collection(fbGroupsCollection).document(groupId)
+                    .collection(fbRewardsSubCollection).document()
+            }
+            ref.set((reward.toMap())).await()
+            reward
         } catch (e: Exception) {
-            false
+            null
         }
     }
 
@@ -44,6 +48,28 @@ class RewardQueries {
      * */
     suspend fun getReward(rewardId: String, groupId: String): Reward? {
         return null
+    }
+
+    /**
+     * Function that retrieves all rewards in a group
+     *
+     * @param groupId: group id in which the users are
+     * @return ArrayList<Reward>? containing the rewards of the group
+     * */
+    suspend fun getAllRewards(groupId: String): ArrayList<Reward>? {
+        return try {
+            val ref = instance.collection(fbGroupsCollection).document(groupId)
+                .collection(fbRewardsSubCollection)
+                .get().await()
+            val rewards = arrayListOf<Reward>()
+            val data = ref.documents
+            for (user in data) {
+                user.toObject<Reward>()?.let { rewards.add(it) }
+            }
+            rewards
+        } catch (e: Exception) {
+            null
+        }
     }
 
     /**

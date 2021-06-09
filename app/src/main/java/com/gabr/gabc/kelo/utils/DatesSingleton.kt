@@ -1,37 +1,12 @@
 package com.gabr.gabc.kelo.utils
 
+import android.content.Context
+import com.gabr.gabc.kelo.R
+import com.gabr.gabc.kelo.constants.Constants
 import java.util.*
 
 /** Singleton instance with helper functions to parse dates across all code */
 object DatesSingleton {
-    private val months : Map<String, Map<Int, String>> = hashMapOf(
-        "en" to hashMapOf(
-            0 to "January", 1 to "February", 2 to "March",
-            3 to "April", 4 to "May", 5 to "June",
-            6 to "July", 7 to "August", 8 to "September",
-            9 to "October", 10 to "November", 11 to "December"
-        ),
-        "es" to hashMapOf(
-            0 to "Enero", 1 to "Febrero", 2 to "Marzo",
-            3 to "Abril", 4 to "Mayo", 5 to "Junio",
-            6 to "Julio", 7 to "Agosto", 8 to "Septiembre",
-            9 to "Octubre", 10 to "Noviembre", 11 to "Diciembre"
-        )
-    )
-
-    private val dayOfWeek : Map<String, Map<Int, String>> = hashMapOf(
-        "en" to hashMapOf(
-            1 to "Sunday", 2 to "Monday",
-            3 to "Tuesday", 4 to "Wednesday", 5 to "Thursday",
-            6 to "Friday", 7 to "Saturday"
-        ),
-        "es" to hashMapOf(
-            1 to "Domingo", 2 to "Lunes",
-            3 to "Martes", 4 to "Miércoles", 5 to "Jueves",
-            6 to "Viernes", 7 to "Sábado"
-        )
-    )
-
     /**
      * Parses a [Calendar] object to a recognizable [String]
      *
@@ -42,8 +17,8 @@ object DatesSingleton {
         var ln = Locale.getDefault().language
         if (ln != "es" && ln != "en") ln = "en"
 
-        val month = months[ln]?.get(calendar.get(Calendar.MONTH))
-        val dayOfWeek = dayOfWeek[ln]?.get(calendar.get(Calendar.DAY_OF_WEEK))
+        val month = Constants.MONTHS[ln]?.get(calendar.get(Calendar.MONTH))
+        val dayOfWeek = Constants.DAY_OF_WEEK[ln]?.get(calendar.get(Calendar.DAY_OF_WEEK))
 
         return "$dayOfWeek, ${calendar.get(Calendar.DAY_OF_MONTH)} $month ${calendar.get(Calendar.YEAR)}"
     }
@@ -57,5 +32,45 @@ object DatesSingleton {
     fun parseCalendarToStringOnList(calendar: Calendar): String {
         val year = calendar.get(Calendar.YEAR).toString().substring(2, 4)
         return "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)+1}/$year"
+    }
+
+    /**
+     * Function that depending on the selected periodicity of the reward, returns a [Date] representing
+     * said periodicity starting 'today'
+     *
+     * @param mode: selected periodicity
+     * @return [Date] object representing the periodicity
+     * */
+    fun getDateFromMode(mode: Int): Date {
+        val date = Calendar.getInstance()
+        when (mode) {
+            Constants.WEEKLY -> date.add(Calendar.WEEK_OF_YEAR, 1)
+            Constants.EVERY_TWO_WEEKS -> date.add(Calendar.WEEK_OF_YEAR, 2)
+            Constants.EVERY_THREE_WEEKS -> date.add(Calendar.WEEK_OF_YEAR, 3)
+            Constants.MONTHLY -> date.add(Calendar.MONTH, 1)
+            Constants.EVERY_TWO_MONTHS -> date.add(Calendar.MONTH, 2)
+            Constants.ANNUALLY -> date.add(Calendar.YEAR, 1)
+        }
+        return date.time
+    }
+
+    /**
+     * Depending of the mode of the selected periodicity, returns an specific string for updating
+     * the UI accordingly
+     *
+     * @param context: current context
+     * @param mode: selected periodicity
+     * @return string defined for each available periodicity
+     * */
+    fun getStringFromMode(context: Context, mode: Int): String {
+        return when (mode) {
+            Constants.WEEKLY -> context.getString(R.string.rewards_weekly)
+            Constants.EVERY_TWO_WEEKS -> context.getString(R.string.rewards_two_weeks)
+            Constants.EVERY_THREE_WEEKS -> context.getString(R.string.rewards_three_weeks)
+            Constants.MONTHLY -> context.getString(R.string.rewards_monthly)
+            Constants.EVERY_TWO_MONTHS -> context.getString(R.string.rewards_two_months)
+            Constants.ANNUALLY -> context.getString(R.string.rewards_annually)
+            else -> context.getString(R.string.chore_expire_date_placeholder)
+        }
     }
 }

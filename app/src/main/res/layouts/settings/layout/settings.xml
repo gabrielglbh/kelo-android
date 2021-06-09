@@ -92,12 +92,12 @@
                 android:id="@+id/settingsRewardsButton"
                 style="@style/SettingsButton"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/material_button_height"
+                android:layout_height="@dimen/list_item_height"
                 android:layout_marginTop="8dp"
+                android:text="@string/settings_reward_button_placeholder"
                 app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
                 app:layout_constraintStart_toStartOf="@+id/settingsRewardsLabel"
-                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsLabel"
-                tools:text="Ver Recompensas" />
+                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsLabel" />
 
             <TextView
                 android:id="@+id/currencyLabel"

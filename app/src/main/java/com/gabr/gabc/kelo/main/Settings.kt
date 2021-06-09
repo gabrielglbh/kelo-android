@@ -1,5 +1,6 @@
 package com.gabr.gabc.kelo.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,8 @@ import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.firebase.RewardQueries
+import com.gabr.gabc.kelo.rewards.RewardsActivity
 import com.gabr.gabc.kelo.utils.*
 import com.gabr.gabc.kelo.utils.common.CurrencyBottomSheet
 import com.gabr.gabc.kelo.utils.common.CurrencyModel
@@ -127,9 +130,11 @@ class Settings : Fragment() {
             ) { leaveGroup() }
         }
 
+        // TODO: Modify Reward
         rewardsButton = view.findViewById(R.id.settingsRewardsButton)
         rewardsButton.setOnClickListener {
-
+            val intent = Intent(context, RewardsActivity::class.java)
+            ContextCompat.startActivity(requireContext(), intent, null)
         }
 
         viewModel.groupCurrency.observe(viewLifecycleOwner, { currency -> setCurrency(currency) })
@@ -148,15 +153,11 @@ class Settings : Fragment() {
 
         refresh = view.findViewById(R.id.settingsRefresh)
         refresh.setOnRefreshListener {
-            getUserPoints()
-            getGroup()
-            getUsers()
+            getData()
             refresh.isRefreshing = false
         }
 
-        getUserPoints()
-        getGroup()
-        getUsers()
+        getData()
 
         userList = view.findViewById(R.id.settingsUserList)
         userList.layoutManager = LinearLayoutManager(requireContext())
@@ -169,29 +170,21 @@ class Settings : Fragment() {
         swipeHelper.attachToRecyclerView(userList)
     }
 
-    private fun getUserPoints() {
+    private fun getData() {
+        LoadingSingleton.manageLoadingView(loading, null, true)
         CoroutineScope(Dispatchers.Main).launch {
             if (SharedPreferences.checkGroupIdAndUserIdAreSet()) {
                 val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
                 if (user != null) points.text = user.points.toString()
                 else points.text = "0"
             }
-        }
-    }
 
-    private fun getGroup() {
-        CoroutineScope(Dispatchers.Main).launch {
             group = GroupQueries().getGroup(SharedPreferences.groupId)
             group?.let { g ->
                 val currentCurrency = Constants.CURRENCIES.filter { it.code == g.currency }[0]
                 setCurrency(currentCurrency)
             }
-        }
-    }
 
-    private fun getUsers() {
-        LoadingSingleton.manageLoadingView(loading, null, true)
-        CoroutineScope(Dispatchers.Main).launch {
             val users = UserQueries().getAllUsers(SharedPreferences.groupId)
             if (users != null) userViewModel.addAllUsers(users)
             else {
@@ -199,6 +192,14 @@ class Settings : Fragment() {
                     anchorView = bottomNavigationView)
             }
             LoadingSingleton.manageLoadingView(loading, null, false)
+
+            // TODO: Make a Recyclere View for Rewards?
+            val rewards = RewardQueries().getAllRewards(SharedPreferences.groupId)
+            rewards?.forEach { reward ->
+                val freq = DatesSingleton.getStringFromMode(requireContext(), reward.frequency)
+                val text = "${reward.name}\n•\n$freq"
+                rewardsButton.text = text
+            }
         }
     }
 

@@ -72,6 +72,20 @@
     <string name="settings_dialog_btn_change">Guardar</string>
     <string name="settings_successful_group_update">¡El grupo ha sido actualizado!</string>
     <string name="settings_successful_user_update">¡Tu usuario ha sido actualizado!</string>
+    <string name="settings_reward_label">Recompensas</string>
+    <string name="settings_reward_button_placeholder">No hay Recompensa</string>
+
+    <!-- Rewards -->
+    <string name="rewards_title">Recompensa</string>
+    <string name="rewards_name_label">Describe la Recompensa</string>
+    <string name="rewards_name_placeholder">Todos compramos al ganador una cerveza</string>
+    <string name="rewards_periodicity_label">Periodicidad</string>
+    <string name="rewards_weekly">Semanalmente</string>
+    <string name="rewards_two_weeks">Cada Dos Semanas</string>
+    <string name="rewards_three_weeks">Cada Tres Semanas</string>
+    <string name="rewards_monthly">Mensualmente</string>
+    <string name="rewards_two_months">Cada Dos Meses</string>
+    <string name="rewards_annually">Anualmente</string>
 
     <!-- Permissions -->
     <string name="permission_modify_chore">No tienes los permisos suficientes para modificar esta tarea. Contacta con el creador de la tarea.</string>
@@ -91,7 +105,7 @@
     <string name="err_group_full">El grupo ya está lleno</string>
     <string name="err_group_does_not_exist">El grupo no existe</string>
     <string name="err_chore_not_completed">Rellena la tarea</string>
-    <string name="err_chore_creation">Algo ha ocurrido mientras se creada la tarea</string>
+    <string name="err_chore_creation">Algo ha ocurrido mientras se creaba la tarea</string>
     <string name="err_chore_update">Algo ha ocurrido mientras se actualizaba la tarea</string>
     <string name="err_loading_chores">Algo ha ocurrido mientras se cargaban las tareas</string>
     <string name="err_loading_users">Algo ha ocurrido mientras se cargaban los usuarios</string>
@@ -103,5 +117,6 @@
     <string name="err_currency_update">Algo ha ocurrido mientras se actualizaba la moneda del grupo</string>
     <string name="err_user_update">Algo ha ocurrido mientras se actualizaba el usuario</string>
     <string name="err_group_update">Algo ha ocurrido mientras se actualizaba el grupo</string>
-    <string name="settings_reward_label">Recompensas</string>
+    <string name="err_reward_not_completed">Rellena la Recompensa</string>
+    <string name="err_reward_creation">Algo ha ocurrido mientras se creaba la recompensa</string>
 </resources>

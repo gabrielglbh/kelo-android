@@ -74,6 +74,20 @@
     <string name="settings_dialog_btn_change">Save</string>
     <string name="settings_successful_group_update">The group has been updated!</string>
     <string name="settings_successful_user_update">Your user has been updated!</string>
+    <string name="settings_reward_label">Rewards</string>
+    <string name="settings_reward_button_placeholder">There is no Reward</string>
+
+    <!-- Rewards -->
+    <string name="rewards_title">Reward</string>
+    <string name="rewards_name_label">Describe the Reward</string>
+    <string name="rewards_name_placeholder">All of us buy the winner a beer</string>
+    <string name="rewards_periodicity_label">Periodicity</string>
+    <string name="rewards_weekly">Weekly</string>
+    <string name="rewards_two_weeks">Every Two Weeks</string>
+    <string name="rewards_three_weeks">Every Three Weeks</string>
+    <string name="rewards_monthly">Monthly</string>
+    <string name="rewards_two_months">Every Two Months</string>
+    <string name="rewards_annually">Annually</string>
 
     <!-- Permissions -->
     <string name="admin" translatable="false">Admin</string>
@@ -107,5 +121,6 @@
     <string name="default_notification_channel_id" translatable="false">MAIN_NOTIFICATION_CHANNEL</string>
     <string name="err_user_update">Something went wrong while updating the user</string>
     <string name="err_group_update">Something went wrong while updating the group</string>
-    <string name="settings_reward_label">Rewards</string>
+    <string name="err_reward_not_completed">Make sure to complete the reward</string>
+    <string name="err_reward_creation">Something went wrong while creating the reward</string>
 </resources>

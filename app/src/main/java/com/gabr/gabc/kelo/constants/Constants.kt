@@ -15,14 +15,50 @@ object Constants {
         const val CREATE_GROUP = "CREATE_GROUP"
         const val JOIN_GROUP = "JOIN_GROUP"
 
+        const val WEEKLY = 0
+        const val EVERY_TWO_WEEKS = 1
+        const val EVERY_THREE_WEEKS = 2
+        const val MONTHLY = 3
+        const val EVERY_TWO_MONTHS = 4
+        const val ANNUALLY = 5
+
         const val NAME_VALIDATOR = "^[A-Za-zñÁÉÍÓÚÜáéíóúüç ]{3,32}\$"
         const val GROUP_NAME_VALIDATOR = "^[A-Za-z0-9ñÁÉÍÓÚÜáéíóúüç ]{5,32}\$"
         const val CHORE_NAME_VALIDATOR = "^[A-Za-z0-9ñÁÉÍÓÚÜáéíóúüç ]{5,32}\$"
+        const val REWARD_NAME_VALIDATOR = "^[A-Za-z0-9ñÁÉÍÓÚÜáéíóúüç ]{5,48}\$"
 
         const val fbUsersCollection = "users"
         const val fbGroupsCollection = "groups"
         const val fbRewardsSubCollection = "rewards"
         const val fbChoresSubCollection = "chores"
+
+        val MONTHS : Map<String, Map<Int, String>> = hashMapOf(
+                "en" to hashMapOf(
+                        0 to "January", 1 to "February", 2 to "March",
+                        3 to "April", 4 to "May", 5 to "June",
+                        6 to "July", 7 to "August", 8 to "September",
+                        9 to "October", 10 to "November", 11 to "December"
+                ),
+                "es" to hashMapOf(
+                        0 to "Enero", 1 to "Febrero", 2 to "Marzo",
+                        3 to "Abril", 4 to "Mayo", 5 to "Junio",
+                        6 to "Julio", 7 to "Agosto", 8 to "Septiembre",
+                        9 to "Octubre", 10 to "Noviembre", 11 to "Diciembre"
+                )
+        )
+
+        val DAY_OF_WEEK : Map<String, Map<Int, String>> = hashMapOf(
+                "en" to hashMapOf(
+                        1 to "Sunday", 2 to "Monday",
+                        3 to "Tuesday", 4 to "Wednesday", 5 to "Thursday",
+                        6 to "Friday", 7 to "Saturday"
+                ),
+                "es" to hashMapOf(
+                        1 to "Domingo", 2 to "Lunes",
+                        3 to "Martes", 4 to "Miércoles", 5 to "Jueves",
+                        6 to "Viernes", 7 to "Sábado"
+                )
+        )
 
         val CURRENCIES: Array<CurrencyModel> = arrayOf(
                 CurrencyModel("EUR", "Euro", "€", R.drawable.flag_eur),

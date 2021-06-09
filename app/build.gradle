@@ -103,7 +103,8 @@ android {
                         'src/main/res/layouts/main',
                         'src/main/res/layouts/widgets',
                         'src/main/res/layouts/settings',
-                        'src/main/res/layouts/choreDetails'
+                        'src/main/res/layouts/choreDetails',
+                        'src/main/res/layouts/rewards'
             }
         }
     }

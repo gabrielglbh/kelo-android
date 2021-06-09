@@ -10,16 +10,18 @@ import java.util.*
  * */
 data class Reward(
     @DocumentId var id: String = "",
-    @PropertyName(RewardFields.name) val name: String = "",
-    @PropertyName(RewardFields.frequency) val frequency: Date = Calendar.getInstance().time,
-    @PropertyName(RewardFields.icon) val icon: String = ""
+    @PropertyName(RewardFields.name) var name: String = "",
+    @PropertyName(RewardFields.expiration) var expiration: Date? = null,
+    @PropertyName(RewardFields.frequency) var frequency: Int = -1,
+    @PropertyName(RewardFields.icon) var icon: String = ""
 ) {
     /**
      * Transforms the current [Reward] into a [Map] to be uploaded to Firebase
      * */
-    fun toMap(): Map<String, Any> {
+    fun toMap(): Map<String, Any?> {
         return hashMapOf(
             RewardFields.name to name,
+            RewardFields.expiration to expiration,
             RewardFields.frequency to frequency,
             RewardFields.icon to icon
         )

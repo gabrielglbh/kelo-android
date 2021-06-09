@@ -67,6 +67,9 @@
         <activity
             android:name=".choreDetail.ChoreDetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".rewards.RewardsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
