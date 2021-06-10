@@ -148,7 +148,7 @@ class UserQueries {
     suspend fun getAllUsers(groupId: String): ArrayList<User>? {
         return try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
-                .collection(fbUsersCollection)
+                .collection(fbUsersCollection).orderBy(UserFields.name, Query.Direction.ASCENDING)
                 .get().await()
             val users = arrayListOf<User>()
             val data = ref.documents

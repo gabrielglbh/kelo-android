@@ -24,8 +24,8 @@
     <!-- Main Activity -->
     <string name="chores">Tareas</string>
     <string name="settings">Ajustes</string>
-    <string name="add_chore">Añadir Tarea</string>
-    <string name="chore_detail">Detalles</string>
+    <string name="add_chore">Nueva Tarea</string>
+    <string name="chore_detail">Editar Tarea</string>
     <string name="completed_chores">Tareas Completadas</string>
     <string name="history">Completadas</string>
 
@@ -36,8 +36,8 @@
     <string name="placeholder_user_name">Juan Pérez</string>
     <string name="chore_importance_label">Importancia</string>
     <string name="chore_name_placeholder">Hacer la Colada</string>
-    <string name="chore_expire_date_placeholder">Seleccionar una Fecha</string>
-    <string name="chore_assignee_placeholder">Seleccionar un Amigo</string>
+    <string name="chore_expire_date_placeholder">Selecciona una Fecha</string>
+    <string name="chore_assignee_placeholder">Selecciona un Usuario</string>
     <string name="chore_importance_low">Baja</string>
     <string name="chore_importance_medium">Media</string>
     <string name="chore_importance_high">Alta</string>
@@ -49,7 +49,7 @@
     <!-- Share Code Bottom Sheet -->
     <string name="group_code_label">Código del Grupo:</string>
     <string name="share_group_code">Comparte el Código del Grupo</string>
-    <string name="message_on_code_sharing">¡Únete a mi grupo en Kelo copiando este código!</string>
+    <string name="message_on_code_sharing">¡Únete a mi grupo en Kelo siguiendo este link!</string>
 
     <!-- Settings -->
     <string name="settings_points_label">Tus Puntos</string>
@@ -57,15 +57,18 @@
     <string name="settings_delete_group_button">Eliminar Grupo</string>
     <string name="settings_leave_group_button">Salir del Grupo</string>
     <string name="settings_delete_user_button">Eliminar Usuario</string>
+    <string name="settings_are_you_sure_label">¿Estás seguro?</string>
     <string name="settings_users_label">Usuarios</string>
-    <string name="settings_dialog_msg_delete_group">¿Estás seguro de que quieres eliminar este grupo? Esta acción no se puede deshacer</string>
-    <string name="settings_dialog_msg_leave_group">¿Estás seguro de que quieres irte de este grupo? Esta acción no se puede deshacer</string>
+    <string name="settings_dialog_msg_delete_group">Esto borrará todos los datos del grupo. Esta acción no se puede deshacer</string>
+    <string name="settings_dialog_msg_leave_group">Perderás todo el acceso a este grupo. Esta acción no se puede deshacer</string>
     <string name="settings_dialog_btn_delete_positive">Eliminar</string>
     <string name="settings_dialog_btn_leave_positive">Salir</string>
     <string name="settings_dialog_btn_negative">Cancelar</string>
     <string name="settings_group_currency">Moneda</string>
-    <string name="settings_change_user_name_label">Cambia tu nombre</string>
-    <string name="settings_change_group_name_label">Cambia el nombre del grupo</string>
+    <string name="settings_change_user_name_label">Edita tu nombre</string>
+    <string name="settings_change_user_name_message">Cambia tu nombre en el grupo</string>
+    <string name="settings_change_group_name_label">Edita el nombre del grupo</string>
+    <string name="settings_change_group_name_message">Cambia el nombre del grupo</string>
     <string name="settings_edit_label">Varios</string>
     <string name="settings_update_group_button">Editar Grupo</string>
     <string name="settings_update_user_button">Editar Usuario</string>
@@ -73,19 +76,21 @@
     <string name="settings_successful_group_update">¡El grupo ha sido actualizado!</string>
     <string name="settings_successful_user_update">¡Tu usuario ha sido actualizado!</string>
     <string name="settings_reward_label">Recompensa</string>
-    <string name="settings_reward_button_placeholder">No hay Recompensa</string>
+    <string name="settings_reward_button_placeholder">Toca aquí para configurar la recompensa</string>
 
     <!-- Rewards -->
-    <string name="rewards_title">Recompensa</string>
-    <string name="rewards_name_label">Describe la Recompensa</string>
+    <string name="rewards_title_new">Recompensa</string>
+    <string name="rewards_title_edit">Recompensa</string>
+    <string name="rewards_name_label">Descripción de la Recompensa</string>
     <string name="rewards_name_placeholder">Todos compramos al ganador una cerveza</string>
-    <string name="rewards_periodicity_label">Periodicidad</string>
+    <string name="rewards_periodicity_label">Frecuencia</string>
+    <string name="rewards_periodicity_button">Selecciona un periodo</string>
     <string name="rewards_no_frequency">Sin Frecuencia</string>
-    <string name="rewards_weekly">Semanalmente</string>
-    <string name="rewards_two_weeks">Cada Dos Semanas</string>
-    <string name="rewards_monthly">Mensualmente</string>
-    <string name="rewards_two_months">Cada Dos Meses</string>
-    <string name="rewards_annually">Anualmente</string>
+    <string name="rewards_weekly">Cada Semana</string>
+    <string name="rewards_two_weeks">Cada 2 Semanas</string>
+    <string name="rewards_monthly">Cada Mes</string>
+    <string name="rewards_two_months">Cada 2 Meses</string>
+    <string name="rewards_annually">Cada Año</string>
 
     <!-- Permissions -->
     <string name="permission_modify_chore">No tienes los permisos suficientes para modificar esta tarea. Contacta con el creador de la tarea.</string>

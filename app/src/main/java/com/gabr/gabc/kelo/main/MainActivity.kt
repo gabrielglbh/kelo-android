@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 showCompletedChores = !showCompletedChores
                 choreListViewModel.setShowCompleted(showCompletedChores)
 
-                if (showCompletedChores) item.icon = ContextCompat.getDrawable(this, R.drawable.ic_todo)
+                if (!showCompletedChores) item.icon = ContextCompat.getDrawable(this, R.drawable.ic_todo)
                 else item.icon = ContextCompat.getDrawable(this, R.drawable.ic_completed)
                 true
             }

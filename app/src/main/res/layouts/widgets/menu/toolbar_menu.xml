@@ -18,5 +18,5 @@
         android:id="@+id/toolbar_completed_chores"
         app:showAsAction="ifRoom"
         android:orderInCategory="1"
-        android:icon="@drawable/ic_completed"/>
+        android:icon="@drawable/ic_todo"/>
 </menu>

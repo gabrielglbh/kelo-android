@@ -64,6 +64,7 @@ object DialogSingleton {
         dialog.show()
 
         val label: TextView = dialogView.findViewById(R.id.settingsChangeContentLabel)
+        val message: TextView = dialogView.findViewById(R.id.settingsChangeContentMessage)
         val layout: TextInputLayout = dialogView.findViewById(R.id.settingsChangeContentLayout)
         val edit: TextInputEditText = dialogView.findViewById(R.id.settingsChangeContentEditText)
         val change: Button = dialogView.findViewById(R.id.dialogChange)
@@ -74,11 +75,12 @@ object DialogSingleton {
 
         if (user == null && group != null) {
             label.text = context.getString(R.string.settings_change_group_name_label)
+            message.text = context.getString(R.string.settings_change_group_name_message)
             change.setOnClickListener {
                 val name = edit.text.toString()
                 updateGroup(name, group, context, layout, dialog) { onSuccess(name) }
             }
-            edit.setText(group.name)
+            edit.hint = group.name
             edit.setOnEditorActionListener { v, _, _ ->
                 val name = edit.text.toString()
                 updateGroup(name, group, context, layout, dialog) { onSuccess(name) }
@@ -87,11 +89,12 @@ object DialogSingleton {
             }
         } else if (user != null && group == null) {
             label.text = context.getString(R.string.settings_change_user_name_label)
+            message.text = context.getString(R.string.settings_change_user_name_message)
             change.setOnClickListener {
                 val name = edit.text.toString()
                 updateUser(name, user, context, layout, dialog) { onSuccess(name) }
             }
-            edit.setText(user.name)
+            edit.hint = user.name
             edit.setOnEditorActionListener { v, _, _ ->
                 val name = edit.text.toString()
                 updateUser(name, user, context, layout, dialog) { onSuccess(name) }

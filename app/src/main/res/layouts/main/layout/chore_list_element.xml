@@ -107,7 +107,6 @@
         android:layout_marginStart="4dp"
         android:textAlignment="center"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/choreListName"
         app:layout_constraintEnd_toStartOf="@+id/choreListImportance"
         app:layout_constraintStart_toStartOf="@+id/guideline8"

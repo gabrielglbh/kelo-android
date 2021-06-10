@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/choreDetailIcon"
-            android:layout_width="82dp"
-            android:layout_height="82dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/chore_icon_placeholder"
             app:layout_constraintEnd_toEndOf="parent"

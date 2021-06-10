@@ -59,7 +59,8 @@ class RewardsActivity : AppCompatActivity() {
 
         UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
         toolbar = findViewById(R.id.toolbar_widget)
-        toolbar.title = getString(R.string.rewards_title)
+        if (viewDetails) toolbar.title = getString(R.string.rewards_title_edit)
+        else toolbar.title = getString(R.string.rewards_title_new)
         toolbar.setNavigationIcon(R.drawable.arrow_back)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

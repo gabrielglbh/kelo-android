@@ -150,27 +150,26 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsUpdateGroupButton"
-                style="@style/SettingsButton"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/material_button_height"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/settings_update_group_button"
-                app:layout_constraintEnd_toStartOf="@+id/guideline13"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/updatesLabel" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settingsUpdateUserButton"
-                style="@style/SettingsButton"
+                style="@style/CustomButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/material_button_height"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/settings_update_user_button"
+                android:text="@string/settings_update_group_button"
                 app:layout_constraintEnd_toEndOf="@+id/settingsCurrencyButton"
                 app:layout_constraintStart_toStartOf="@+id/guideline13"
+                app:layout_constraintTop_toBottomOf="@+id/updatesLabel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsUpdateUserButton"
+                style="@style/CustomButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/settings_update_user_button"
+                app:layout_constraintEnd_toStartOf="@+id/guideline13"
+                app:layout_constraintStart_toStartOf="@+id/updatesLabel"
                 app:layout_constraintTop_toBottomOf="@+id/updatesLabel" />
 
             <TextView

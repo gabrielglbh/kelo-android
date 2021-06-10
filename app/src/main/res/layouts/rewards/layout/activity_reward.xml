@@ -15,8 +15,8 @@
 
     <ImageView
         android:id="@+id/rewardDetailIcon"
-        android:layout_width="82dp"
-        android:layout_height="82dp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/chore_icon_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
             android:layout_height="match_parent"
             android:inputType="textCapSentences"
             android:hint="@string/rewards_name_placeholder"
-            android:maxLength="32"
+            android:maxLength="48"
             android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/rewards_name_label"
+        android:text="@string/rewards_periodicity_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rewardDetailNameLayout" />
 
@@ -72,7 +72,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/material_button_height"
         android:layout_marginTop="8dp"
-        android:text="@string/chore_expire_date_placeholder"
+        android:text="@string/rewards_periodicity_button"
         app:layout_constraintEnd_toEndOf="@+id/rewardDetailNameLayout"
         app:layout_constraintStart_toStartOf="@+id/rewardDetailNameLayout"
         app:layout_constraintTop_toBottomOf="@+id/rewardDetailPeriodicityLabel" />

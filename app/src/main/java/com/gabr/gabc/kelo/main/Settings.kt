@@ -124,7 +124,7 @@ class Settings : Fragment() {
                 if (PermissionsSingleton.isUserAdmin(user)) {
                     DialogSingleton.createCustomDialog(
                         requireActivity(),
-                        getString(R.string.settings_delete_group_button),
+                        getString(R.string.settings_are_you_sure_label),
                         getString(R.string.settings_dialog_msg_delete_group),
                         getString(R.string.settings_dialog_btn_delete_positive),
                     ) { deleteGroup() }
@@ -139,7 +139,7 @@ class Settings : Fragment() {
         leaveGroupButton.setOnClickListener {
             DialogSingleton.createCustomDialog(
                 requireActivity(),
-                getString(R.string.settings_leave_group_button),
+                getString(R.string.settings_are_you_sure_label),
                 getString(R.string.settings_dialog_msg_leave_group),
                 getString(R.string.settings_dialog_btn_leave_positive),
             ) { leaveGroup() }
