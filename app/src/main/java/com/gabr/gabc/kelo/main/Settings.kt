@@ -245,10 +245,13 @@ class Settings : Fragment() {
             rewards?.forEach { r ->
                 reward = r
                 val freq = DatesSingleton.getStringFromMode(requireContext(), r.frequency)
-                val c = Calendar.getInstance()
-                r.expiration?.let { c.time = it }
-                val date = DatesSingleton.parseCalendarToStringOnList(c)
-                val details = "$freq ($date)"
+                var details = freq
+                if (r.frequency != 0) {
+                    val c = Calendar.getInstance()
+                    r.expiration?.let { c.time = it }
+                    val date = DatesSingleton.parseCalendarToStringOnList(c)
+                    details = "$details ($date)"
+                }
                 setReward(r.name, details)
             }
         }

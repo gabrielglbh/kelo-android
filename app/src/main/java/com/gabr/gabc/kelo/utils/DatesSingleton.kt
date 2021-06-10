@@ -41,12 +41,12 @@ object DatesSingleton {
      * @param mode: selected periodicity
      * @return [Date] object representing the periodicity
      * */
-    fun getDateFromMode(mode: Int): Date {
+    fun getDateFromMode(mode: Int): Date? {
         val date = Calendar.getInstance()
         when (mode) {
+            Constants.NO_FREQUENCY -> return null
             Constants.WEEKLY -> date.add(Calendar.WEEK_OF_YEAR, 1)
             Constants.EVERY_TWO_WEEKS -> date.add(Calendar.WEEK_OF_YEAR, 2)
-            Constants.EVERY_THREE_WEEKS -> date.add(Calendar.WEEK_OF_YEAR, 3)
             Constants.MONTHLY -> date.add(Calendar.MONTH, 1)
             Constants.EVERY_TWO_MONTHS -> date.add(Calendar.MONTH, 2)
             Constants.ANNUALLY -> date.add(Calendar.YEAR, 1)
@@ -64,9 +64,9 @@ object DatesSingleton {
      * */
     fun getStringFromMode(context: Context, mode: Int): String {
         return when (mode) {
+            Constants.NO_FREQUENCY -> context.getString(R.string.rewards_no_frequency)
             Constants.WEEKLY -> context.getString(R.string.rewards_weekly)
             Constants.EVERY_TWO_WEEKS -> context.getString(R.string.rewards_two_weeks)
-            Constants.EVERY_THREE_WEEKS -> context.getString(R.string.rewards_three_weeks)
             Constants.MONTHLY -> context.getString(R.string.rewards_monthly)
             Constants.EVERY_TWO_MONTHS -> context.getString(R.string.rewards_two_months)
             Constants.ANNUALLY -> context.getString(R.string.rewards_annually)

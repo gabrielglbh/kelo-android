@@ -80,9 +80,9 @@
     <string name="rewards_name_label">Describe la Recompensa</string>
     <string name="rewards_name_placeholder">Todos compramos al ganador una cerveza</string>
     <string name="rewards_periodicity_label">Periodicidad</string>
+    <string name="rewards_no_frequency">Sin Frecuencia</string>
     <string name="rewards_weekly">Semanalmente</string>
     <string name="rewards_two_weeks">Cada Dos Semanas</string>
-    <string name="rewards_three_weeks">Cada Tres Semanas</string>
     <string name="rewards_monthly">Mensualmente</string>
     <string name="rewards_two_months">Cada Dos Meses</string>
     <string name="rewards_annually">Anualmente</string>

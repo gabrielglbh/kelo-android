@@ -82,9 +82,9 @@
     <string name="rewards_name_label">Describe the Reward</string>
     <string name="rewards_name_placeholder">All of us buy the winner a beer</string>
     <string name="rewards_periodicity_label">Periodicity</string>
+    <string name="rewards_no_frequency">No Frequency</string>
     <string name="rewards_weekly">Weekly</string>
     <string name="rewards_two_weeks">Every Two Weeks</string>
-    <string name="rewards_three_weeks">Every Three Weeks</string>
     <string name="rewards_monthly">Monthly</string>
     <string name="rewards_two_months">Every Two Months</string>
     <string name="rewards_annually">Annually</string>

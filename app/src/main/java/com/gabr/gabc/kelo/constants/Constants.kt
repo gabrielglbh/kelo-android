@@ -15,9 +15,9 @@ object Constants {
         const val CREATE_GROUP = "CREATE_GROUP"
         const val JOIN_GROUP = "JOIN_GROUP"
 
-        const val WEEKLY = 0
-        const val EVERY_TWO_WEEKS = 1
-        const val EVERY_THREE_WEEKS = 2
+        const val NO_FREQUENCY = 0
+        const val WEEKLY = 1
+        const val EVERY_TWO_WEEKS = 2
         const val MONTHLY = 3
         const val EVERY_TWO_MONTHS = 4
         const val ANNUALLY = 5

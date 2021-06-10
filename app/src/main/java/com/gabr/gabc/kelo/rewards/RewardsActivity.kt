@@ -102,7 +102,7 @@ class RewardsActivity : AppCompatActivity() {
         reward.name = rewardEdit.text.toString()
         if (!RewardFunctions.isRewardNameValid(rewardEdit.text.toString())) rewardLayout.error = getString(R.string.err_invalid_name)
         else {
-            if (reward.expiration == null) {
+            if (reward.expiration == null && reward.frequency != 0) {
                 UtilsSingleton.showSnackBar(parent, getString(R.string.err_reward_not_completed))
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
