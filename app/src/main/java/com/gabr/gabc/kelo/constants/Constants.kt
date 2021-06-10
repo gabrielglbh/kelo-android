@@ -15,13 +15,6 @@ object Constants {
         const val CREATE_GROUP = "CREATE_GROUP"
         const val JOIN_GROUP = "JOIN_GROUP"
 
-        const val NO_FREQUENCY = 0
-        const val WEEKLY = 1
-        const val EVERY_TWO_WEEKS = 2
-        const val MONTHLY = 3
-        const val EVERY_TWO_MONTHS = 4
-        const val ANNUALLY = 5
-
         const val NAME_VALIDATOR = "^[A-Za-zñÁÉÍÓÚÜáéíóúüç ]{3,32}\$"
         const val GROUP_NAME_VALIDATOR = "^[A-Za-z0-9ñÁÉÍÓÚÜáéíóúüç ]{5,32}\$"
         const val CHORE_NAME_VALIDATOR = "^[A-Za-z0-9ñÁÉÍÓÚÜáéíóúüç ]{5,32}\$"

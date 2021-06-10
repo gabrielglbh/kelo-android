@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.utils.DatesSingleton
+import com.gabr.gabc.kelo.dataModels.Reward
 
 /** Class that defines the adapter for the recycler view of the periodicity or a reward */
 class PeriodicityAdapter(private val context: Context, private val listener: RewardPeriodicityListener)
@@ -40,7 +40,7 @@ class PeriodicityAdapter(private val context: Context, private val listener: Rew
          * */
         fun initializeView(position: Int) {
             parent.setOnClickListener(this)
-            periodicity.text = DatesSingleton.getStringFromMode(context, position)
+            periodicity.text = Reward.Frequencies.getStringFromMode(context, position)
         }
 
         override fun onClick(v: View?) { listener.onPeriodicityClick(layoutPosition) }
@@ -52,6 +52,6 @@ class PeriodicityAdapter(private val context: Context, private val listener: Rew
 
     override fun onBindViewHolder(holder: PeriodicityHolder, position: Int) { holder.initializeView(position) }
 
-    override fun getItemCount() = 6
+    override fun getItemCount() = Reward.Frequencies.values().size
 
 }

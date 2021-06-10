@@ -244,7 +244,7 @@ class Settings : Fragment() {
             val rewards = RewardQueries().getAllRewards(SharedPreferences.groupId)
             rewards?.forEach { r ->
                 reward = r
-                val freq = DatesSingleton.getStringFromMode(requireContext(), r.frequency)
+                val freq = Reward.Frequencies.getStringFromMode(requireContext(), r.frequency)
                 var details = freq
                 if (r.frequency != 0) {
                     val c = Calendar.getInstance()

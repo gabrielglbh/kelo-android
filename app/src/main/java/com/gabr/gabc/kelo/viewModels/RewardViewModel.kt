@@ -3,15 +3,15 @@ package com.gabr.gabc.kelo.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.util.*
+import com.gabr.gabc.kelo.dataModels.Reward
 
 /**
  * ViewModel class that serves to control the variable periodicity between PeriodicityBottomSheet
  * and RewardActivity
  * */
 class RewardViewModel : ViewModel() {
-    private val _periodicity: MutableLiveData<Int> = MutableLiveData()
-    val periodicity: LiveData<Int>
+    private val _periodicity: MutableLiveData<Reward.Frequencies> = MutableLiveData()
+    val periodicity: LiveData<Reward.Frequencies>
         get() = _periodicity
 
     /**
@@ -19,5 +19,5 @@ class RewardViewModel : ViewModel() {
      *
      * @param periodicity: value to be set
      */
-    fun setPeriodicity(periodicity: Int) { _periodicity.postValue(periodicity) }
+    fun setPeriodicity(periodicity: Reward.Frequencies) { _periodicity.postValue(periodicity) }
 }

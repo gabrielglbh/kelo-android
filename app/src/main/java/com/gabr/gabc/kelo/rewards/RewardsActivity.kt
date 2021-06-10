@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.dataModels.Reward
 import com.gabr.gabc.kelo.firebase.RewardQueries
-import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.viewModels.RewardViewModel
@@ -71,9 +70,9 @@ class RewardsActivity : AppCompatActivity() {
         setUpPeriodicityOfReward()
 
         viewModel.periodicity.observe(this) { mode ->
-            reward.frequency = mode
-            reward.expiration = DatesSingleton.getDateFromMode(mode)
-            rewardPeriodicity.text = DatesSingleton.getStringFromMode(this, mode)
+            reward.frequency = mode.ordinal
+            reward.expiration = Reward.Frequencies.getDateFromMode(mode)
+            rewardPeriodicity.text = Reward.Frequencies.getStringFromMode(this, mode.ordinal)
         }
     }
 
@@ -140,7 +139,7 @@ class RewardsActivity : AppCompatActivity() {
     private fun setUpPeriodicityOfReward() {
         rewardPeriodicity = findViewById(R.id.rewardDetailPeriodicityButton)
 
-        if (viewDetails) rewardPeriodicity.text = DatesSingleton.getStringFromMode(this, reward.frequency)
+        if (viewDetails) rewardPeriodicity.text = Reward.Frequencies.getStringFromMode(this, reward.frequency)
 
         rewardPeriodicity.setOnClickListener {
             clearFocusOfEditTextAndSetDrawable()

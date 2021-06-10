@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
+import com.gabr.gabc.kelo.dataModels.Reward
 import com.gabr.gabc.kelo.viewModels.RewardViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -37,7 +38,7 @@ class PeriodicityBottomSheet : BottomSheetDialogFragment(), PeriodicityAdapter.R
     }
 
     override fun onPeriodicityClick(mode: Int) {
-        viewModel.setPeriodicity(mode)
+        viewModel.setPeriodicity(Reward.Frequencies.values()[mode])
         dismiss()
     }
 }
