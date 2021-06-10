@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import com.gabr.gabc.kelo.R
-import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.constants.RewardFields
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
@@ -17,12 +16,14 @@ data class Reward(
     @DocumentId var id: String? = "",
     @PropertyName(RewardFields.name) var name: String? = "",
     @PropertyName(RewardFields.expiration) var expiration: Date? = null,
+    @PropertyName(RewardFields.expiration) var creation: Date? = Calendar.getInstance().time,
     @PropertyName(RewardFields.frequency) var frequency: Int = -1,
     @PropertyName(RewardFields.icon) var icon: String? = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
+        parcel.readDate(),
         parcel.readDate(),
         parcel.readInt(),
         parcel.readString()
@@ -35,6 +36,7 @@ data class Reward(
         return hashMapOf(
             RewardFields.name to name,
             RewardFields.expiration to expiration,
+            RewardFields.creation to creation,
             RewardFields.frequency to frequency,
             RewardFields.icon to icon
         )
@@ -50,19 +52,19 @@ data class Reward(
              * said periodicity starting 'today'
              *
              * @param mode: selected periodicity
+             * @param initDate: initial date to count from to set the frequency. By default 'today'
              * @return [Date] object representing the periodicity
              * */
-            fun getDateFromMode(mode: Frequencies): Date? {
-                val date = Calendar.getInstance()
+            fun getDateFromMode(mode: Frequencies, initDate: Calendar? = Calendar.getInstance()): Date? {
                 when (mode) {
                     NO_FREQUENCY -> return null
-                    WEEKLY -> date.add(Calendar.WEEK_OF_YEAR, 1)
-                    EVERY_TWO_WEEKS -> date.add(Calendar.WEEK_OF_YEAR, 2)
-                    MONTHLY -> date.add(Calendar.MONTH, 1)
-                    EVERY_TWO_MONTHS -> date.add(Calendar.MONTH, 2)
-                    ANNUALLY -> date.add(Calendar.YEAR, 1)
+                    WEEKLY -> initDate?.add(Calendar.WEEK_OF_YEAR, 1)
+                    EVERY_TWO_WEEKS -> initDate?.add(Calendar.WEEK_OF_YEAR, 2)
+                    MONTHLY -> initDate?.add(Calendar.MONTH, 1)
+                    EVERY_TWO_MONTHS -> initDate?.add(Calendar.MONTH, 2)
+                    ANNUALLY -> initDate?.add(Calendar.YEAR, 1)
                 }
-                return date.time
+                return initDate?.time
             }
 
             /**
@@ -91,6 +93,7 @@ data class Reward(
         parcel.writeString(id)
         parcel.writeString(name)
         parcel.writeDate(expiration)
+        parcel.writeDate(creation)
         parcel.writeInt(frequency)
         parcel.writeString(icon)
     }

@@ -42,6 +42,11 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
         viewModel = activity?.run { ViewModelProvider(this).get(ChoreListViewModel::class.java) }!!
     }
 
+    override fun onResume() {
+        super.onResume()
+        getChores()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chore_list, container, false)
     }

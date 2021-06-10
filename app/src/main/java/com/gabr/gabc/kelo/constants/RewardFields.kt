@@ -4,6 +4,7 @@ package com.gabr.gabc.kelo.constants
 object RewardFields {
     const val name = "name"
     const val expiration = "expiration"
+    const val creation = "creation"
     const val frequency = "frequency"
     const val icon = "icon"
 }

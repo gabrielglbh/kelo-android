@@ -69,6 +69,11 @@ class Settings : Fragment() {
         userViewModel = activity?.run { ViewModelProvider(this).get(UserListViewModel::class.java) }!!
     }
 
+    override fun onResume() {
+        super.onResume()
+        getData()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.settings, container, false)
     }

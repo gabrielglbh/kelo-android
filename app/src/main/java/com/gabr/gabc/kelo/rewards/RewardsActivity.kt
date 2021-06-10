@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 /** Activity that holds all the logic for the Rewards Management */
 class RewardsActivity : AppCompatActivity() {
@@ -37,6 +38,7 @@ class RewardsActivity : AppCompatActivity() {
 
     private lateinit var viewModel: RewardViewModel
     private var reward = Reward()
+    private var oldFreq = -1
 
     companion object {
         const val VIEW_DETAILS = "VIEW_DETAILS"
@@ -50,7 +52,10 @@ class RewardsActivity : AppCompatActivity() {
         viewModel = run { ViewModelProvider(this).get(RewardViewModel::class.java) }
 
         viewDetails = intent.getBooleanExtra(VIEW_DETAILS, false)
-        if (viewDetails) reward = intent.getParcelableExtra(REWARD)!!
+        if (viewDetails) {
+            reward = intent.getParcelableExtra(REWARD)!!
+            oldFreq = reward.frequency
+        }
 
         UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
         toolbar = findViewById(R.id.toolbar_widget)
@@ -106,10 +111,19 @@ class RewardsActivity : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
                     if (viewDetails) {
+                        if (oldFreq != reward.frequency) {
+                            val mode = Reward.Frequencies.values()[reward.frequency]
+                            reward.creation?.let {
+                                val creation = Calendar.getInstance()
+                                creation.time = it
+                                reward.expiration = Reward.Frequencies.getDateFromMode(mode, creation)
+                            }
+                        }
                         val success = RewardQueries().updateReward(reward, SharedPreferences.groupId)
                         if (success) finish()
                         else UtilsSingleton.showSnackBar(parent, getString(R.string.err_reward_update))
                     } else {
+                        reward.creation = Calendar.getInstance().time
                         val reward = RewardQueries().createReward(reward, SharedPreferences.groupId)
                         if (reward != null) finish()
                         else UtilsSingleton.showSnackBar(parent, getString(R.string.err_reward_creation))
@@ -143,7 +157,6 @@ class RewardsActivity : AppCompatActivity() {
 
         rewardPeriodicity.setOnClickListener {
             clearFocusOfEditTextAndSetDrawable()
-            // TODO: When updating the expiration date, we add based on today's date or the original date of creation?
             PeriodicityBottomSheet().show(supportFragmentManager, PeriodicityBottomSheet.TAG)
         }
     }
