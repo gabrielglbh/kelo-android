@@ -59,6 +59,13 @@
                 app:layout_constraintStart_toStartOf="@+id/settingsUserLabel"
                 app:layout_constraintTop_toBottomOf="@+id/settingsUserLabel">
 
+                <include
+                    layout="@layout/loading_widget"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/settingsUserList"
                     android:layout_width="match_parent"
@@ -68,13 +75,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/users_list_item" />
-
-                <include
-                    layout="@layout/loading_widget"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -88,16 +88,33 @@
                 app:layout_constraintStart_toStartOf="@+id/settingsUserListContainer"
                 app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settingsRewardsButton"
-                style="@style/SettingsButton"
+            <ImageView
+                android:id="@+id/removeReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clear"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/errorColor"
+                app:layout_constraintBottom_toBottomOf="@+id/settingsRewardsLabel"
+                app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
+                app:layout_constraintTop_toTopOf="@+id/settingsRewardsLabel" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rewardParent"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/list_item_height"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/settings_reward_button_placeholder"
                 app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
                 app:layout_constraintStart_toStartOf="@+id/settingsRewardsLabel"
-                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsLabel">
+
+                <include
+                    layout="@layout/reusable_list_widget"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/currencyLabel"
@@ -106,8 +123,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/settings_group_currency"
-                app:layout_constraintStart_toStartOf="@+id/settingsRewardsButton"
-                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsButton" />
+                app:layout_constraintStart_toStartOf="@+id/rewardParent"
+                app:layout_constraintTop_toBottomOf="@+id/rewardParent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsCurrencyButton"

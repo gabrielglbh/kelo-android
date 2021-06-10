@@ -34,14 +34,24 @@ class RewardsActivity : AppCompatActivity() {
     private lateinit var rewardEdit: TextInputEditText
     private lateinit var rewardPeriodicity: MaterialButton
 
+    private var viewDetails = false
+
     private lateinit var viewModel: RewardViewModel
     private var reward = Reward()
+
+    companion object {
+        const val VIEW_DETAILS = "VIEW_DETAILS"
+        const val REWARD = "REWARD"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reward)
 
         viewModel = run { ViewModelProvider(this).get(RewardViewModel::class.java) }
+
+        viewDetails = intent.getBooleanExtra(VIEW_DETAILS, false)
+        if (viewDetails) reward = intent.getParcelableExtra(REWARD)!!
 
         UtilsSingleton.changeStatusBarColor(this, this, R.color.toolbarBackground)
         toolbar = findViewById(R.id.toolbar_widget)
@@ -53,7 +63,9 @@ class RewardsActivity : AppCompatActivity() {
 
         parent = findViewById(R.id.rewardDetailConstraintLayout)
         parent.setOnClickListener { UtilsSingleton.hideKeyboard(this, parent) }
+
         icon = findViewById(R.id.rewardDetailIcon)
+        if (viewDetails) icon.setImageDrawable(UtilsSingleton.createAvatar(reward.name))
 
         setUpRewardDescription()
         setUpPeriodicityOfReward()
@@ -88,15 +100,21 @@ class RewardsActivity : AppCompatActivity() {
 
     private fun validateReward() {
         reward.name = rewardEdit.text.toString()
-        if (!RewardFunctions.isRewardNameValid(reward.name)) rewardLayout.error = getString(R.string.err_invalid_name)
+        if (!RewardFunctions.isRewardNameValid(rewardEdit.text.toString())) rewardLayout.error = getString(R.string.err_invalid_name)
         else {
             if (reward.expiration == null) {
                 UtilsSingleton.showSnackBar(parent, getString(R.string.err_reward_not_completed))
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
-                    val reward = RewardQueries().createReward(reward, SharedPreferences.groupId)
-                    if (reward != null) finish()
-                    else UtilsSingleton.showSnackBar(parent, getString(R.string.err_reward_creation))
+                    if (viewDetails) {
+                        val success = RewardQueries().updateReward(reward, SharedPreferences.groupId)
+                        if (success) finish()
+                        else UtilsSingleton.showSnackBar(parent, getString(R.string.err_reward_update))
+                    } else {
+                        val reward = RewardQueries().createReward(reward, SharedPreferences.groupId)
+                        if (reward != null) finish()
+                        else UtilsSingleton.showSnackBar(parent, getString(R.string.err_reward_creation))
+                    }
                 }
             }
         }
@@ -105,6 +123,8 @@ class RewardsActivity : AppCompatActivity() {
     private fun setUpRewardDescription() {
         rewardLayout = findViewById(R.id.rewardDetailNameLayout)
         rewardEdit = findViewById(R.id.rewardDetailNameEditText)
+
+        if (viewDetails) rewardEdit.setText(reward.name)
 
         rewardEdit.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) UtilsSingleton.hideKeyboard(this, v)
@@ -119,8 +139,12 @@ class RewardsActivity : AppCompatActivity() {
 
     private fun setUpPeriodicityOfReward() {
         rewardPeriodicity = findViewById(R.id.rewardDetailPeriodicityButton)
+
+        if (viewDetails) rewardPeriodicity.text = DatesSingleton.getStringFromMode(this, reward.frequency)
+
         rewardPeriodicity.setOnClickListener {
             clearFocusOfEditTextAndSetDrawable()
+            // TODO: When updating the expiration date, we add based on today's date or the original date of creation?
             PeriodicityBottomSheet().show(supportFragmentManager, PeriodicityBottomSheet.TAG)
         }
     }

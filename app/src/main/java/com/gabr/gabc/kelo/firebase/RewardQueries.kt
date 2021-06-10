@@ -25,29 +25,20 @@ class RewardQueries {
      * */
     suspend fun createReward(reward: Reward, groupId: String): Reward? {
         return try {
-            val ref = if (reward.id != "") {
+            reward.id?.let {
+                val ref = if (it != "") {
                 instance.collection(fbGroupsCollection).document(groupId)
-                    .collection(fbRewardsSubCollection).document(reward.id)
+                    .collection(fbRewardsSubCollection).document(it)
             } else {
                 instance.collection(fbGroupsCollection).document(groupId)
                     .collection(fbRewardsSubCollection).document()
             }
-            ref.set((reward.toMap())).await()
-            reward
+                ref.set((reward.toMap())).await()
+                reward
+            }
         } catch (e: Exception) {
             null
         }
-    }
-
-    /**
-     * Function that retrieves a desired [Reward] with a given group id
-     *
-     * @param rewardId: id to get the reward
-     * @param groupId: group id in which the chore is
-     * @return [Reward] containing the information
-     * */
-    suspend fun getReward(rewardId: String, groupId: String): Reward? {
-        return null
     }
 
     /**
@@ -80,7 +71,17 @@ class RewardQueries {
      * @return Boolean that returns true if query was successful
      * */
     suspend fun updateReward(reward: Reward, groupId: String): Boolean {
-        return true
+        return try {
+            reward.id?.let {
+                instance.collection(fbGroupsCollection).document(groupId)
+                    .collection(fbRewardsSubCollection).document(it)
+                    .update(reward.toMap())
+                    .await()
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     /**
@@ -91,6 +92,14 @@ class RewardQueries {
      * @return Boolean that returns true if query was successful
      * */
     suspend fun deleteReward(rewardId: String, groupId: String): Boolean {
-        return true
+        return try {
+            instance.collection(fbGroupsCollection).document(groupId)
+                .collection(fbRewardsSubCollection).document(rewardId)
+                .delete()
+                .await()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }

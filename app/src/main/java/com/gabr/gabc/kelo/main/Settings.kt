@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +22,7 @@ import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.Reward
 import com.gabr.gabc.kelo.firebase.RewardQueries
 import com.gabr.gabc.kelo.rewards.RewardsActivity
 import com.gabr.gabc.kelo.utils.*
@@ -34,6 +37,7 @@ import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 /** Fragment that manages all settings of Kelo */
 class Settings : Fragment() {
@@ -42,14 +46,20 @@ class Settings : Fragment() {
     private lateinit var leaveGroupButton: MaterialButton
     private lateinit var updateGroupButton: MaterialButton
     private lateinit var updateUserButton: MaterialButton
-    private lateinit var rewardsButton: MaterialButton
     private lateinit var currencyGroupButton: MaterialButton
     private lateinit var userList: RecyclerView
     private lateinit var loading: ProgressBar
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var refresh: SwipeRefreshLayout
 
+    private lateinit var rewardsButton: ConstraintLayout
+    private lateinit var rewardTitle: TextView
+    private lateinit var rewardDetails: TextView
+    private lateinit var rewardIcon: ImageView
+    private lateinit var removeReward: ImageView
+
     private var group: Group? = null
+    private var reward: Reward? = null
     private lateinit var viewModel: MainViewModel
     private lateinit var userViewModel: UserListViewModel
 
@@ -106,7 +116,7 @@ class Settings : Fragment() {
         deleteGroupButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
-                if (user?.isAdmin == true) {
+                if (PermissionsSingleton.isUserAdmin(user)) {
                     DialogSingleton.createCustomDialog(
                         requireActivity(),
                         getString(R.string.settings_delete_group_button),
@@ -130,11 +140,49 @@ class Settings : Fragment() {
             ) { leaveGroup() }
         }
 
-        // TODO: Modify Reward
-        rewardsButton = view.findViewById(R.id.settingsRewardsButton)
+        rewardTitle = view.findViewById(R.id.listItemTitle)
+        rewardTitle.text = getString(R.string.settings_reward_button_placeholder)
+        rewardTitle.isSelected = true
+        rewardDetails = view.findViewById(R.id.listItemSubtitle)
+        rewardDetails.text = "-"
+        rewardDetails.isSelected = true
+        rewardIcon = view.findViewById(R.id.listItemIcon)
+        rewardsButton = view.findViewById(R.id.listItemParent)
         rewardsButton.setOnClickListener {
-            val intent = Intent(context, RewardsActivity::class.java)
-            ContextCompat.startActivity(requireContext(), intent, null)
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (PermissionsSingleton.isUserAdmin(user)) {
+                    val intent = Intent(context, RewardsActivity::class.java)
+                    intent.putExtra(RewardsActivity.VIEW_DETAILS, reward != null)
+                    intent.putExtra(RewardsActivity.REWARD, reward)
+                    ContextCompat.startActivity(requireContext(), intent, null)
+                } else {
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_manage_reward),
+                        anchorView = bottomNavigationView)
+                }
+            }
+        }
+
+        removeReward = view.findViewById(R.id.removeReward)
+        removeReward.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (PermissionsSingleton.isUserAdmin(user)) {
+                    reward?.id?.let {
+                        val success = RewardQueries().deleteReward(it, SharedPreferences.groupId)
+                        if (success) {
+                            setReward(getString(R.string.settings_reward_button_placeholder), "-")
+                            reward = null
+                        } else {
+                            UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_remove_reward),
+                                anchorView = bottomNavigationView)
+                        }
+                    }
+                } else {
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_remove_group),
+                        anchorView = bottomNavigationView)
+                }
+            }
         }
 
         viewModel.groupCurrency.observe(viewLifecycleOwner, { currency -> setCurrency(currency) })
@@ -193,12 +241,15 @@ class Settings : Fragment() {
             }
             LoadingSingleton.manageLoadingView(loading, null, false)
 
-            // TODO: Make a Recyclere View for Rewards?
             val rewards = RewardQueries().getAllRewards(SharedPreferences.groupId)
-            rewards?.forEach { reward ->
-                val freq = DatesSingleton.getStringFromMode(requireContext(), reward.frequency)
-                val text = "${reward.name}\n•\n$freq"
-                rewardsButton.text = text
+            rewards?.forEach { r ->
+                reward = r
+                val freq = DatesSingleton.getStringFromMode(requireContext(), r.frequency)
+                val c = Calendar.getInstance()
+                r.expiration?.let { c.time = it }
+                val date = DatesSingleton.parseCalendarToStringOnList(c)
+                val details = "$freq ($date)"
+                setReward(r.name, details)
             }
         }
     }
@@ -222,6 +273,13 @@ class Settings : Fragment() {
                 Log.e("CONTEXT ERROR", e.message.toString())
             }
         }
+    }
+
+    private fun setReward(title: String?, subtitle: String) {
+        rewardTitle.text = title
+        rewardDetails.text = subtitle
+        if (subtitle == "-") rewardIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.chore_icon_placeholder))
+        else rewardIcon.setImageDrawable(UtilsSingleton.createAvatar(title))
     }
 
     private fun deleteGroup() {

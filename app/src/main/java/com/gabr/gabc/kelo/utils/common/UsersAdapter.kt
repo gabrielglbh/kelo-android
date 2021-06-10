@@ -105,10 +105,10 @@ class UsersAdapter(lifecycleOwner: LifecycleOwner,
     inner class UserItem(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(
         inflater.inflate(R.layout.users_list_item, parent, false)), View.OnClickListener {
         private val parent: ConstraintLayout = itemView.findViewById(R.id.usersTab)
-        private val name: TextView = itemView.findViewById(R.id.userName)
-        private val isAdmin: TextView = itemView.findViewById(R.id.admin)
-        private val points: TextView = itemView.findViewById(R.id.userPoints)
-        private val avatar: ImageView = itemView.findViewById(R.id.userAvatar)
+        private val name: TextView = itemView.findViewById(R.id.listItemTitle)
+        private val isAdmin: TextView = itemView.findViewById(R.id.listItemAuxiliarText)
+        private val points: TextView = itemView.findViewById(R.id.listItemSubtitle)
+        private val avatar: ImageView = itemView.findViewById(R.id.listItemIcon)
 
         override fun onClick(v: View?) { clickListener?.onUserClicked(users[layoutPosition]) }
 

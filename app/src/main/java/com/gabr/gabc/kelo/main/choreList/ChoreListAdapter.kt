@@ -148,6 +148,8 @@ class ChoreListAdapter(lifecycleOwner: LifecycleOwner,
         init {
             parent.setOnClickListener(this)
             choreTitle.isSelected = true
+            choreAssignee.isSelected = true
+            choreCreator.isSelected = true
         }
 
         override fun onClick(v: View?) { listener.onChoreClick(chores[layoutPosition]) }

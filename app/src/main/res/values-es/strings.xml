@@ -72,7 +72,7 @@
     <string name="settings_dialog_btn_change">Guardar</string>
     <string name="settings_successful_group_update">¡El grupo ha sido actualizado!</string>
     <string name="settings_successful_user_update">¡Tu usuario ha sido actualizado!</string>
-    <string name="settings_reward_label">Recompensas</string>
+    <string name="settings_reward_label">Recompensa</string>
     <string name="settings_reward_button_placeholder">No hay Recompensa</string>
 
     <!-- Rewards -->
@@ -95,6 +95,8 @@
     <string name="permission_remove_user">No tienes los permisos suficientes para eliminar a usuarios del grupo</string>
     <string name="permission_remove_group">No tienes los permisos suficientes para eliminar el grupo</string>
     <string name="permission_update_group">No tienes los permisos suficientes para modificar el nombre del grupo</string>
+    <string name="permission_manage_reward">No tienes los permisos suficientes para administrar la recompensa</string>
+    <string name="permission_remove_reward">No tienes los permisos suficientes para eliminar la recompensa</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Nombre inválido</string>
@@ -119,4 +121,5 @@
     <string name="err_group_update">Algo ha ocurrido mientras se actualizaba el grupo</string>
     <string name="err_reward_not_completed">Rellena la Recompensa</string>
     <string name="err_reward_creation">Algo ha ocurrido mientras se creaba la recompensa</string>
+    <string name="err_reward_update">Algo ha ocurrido mientras se actualizaba la recompensa</string>
 </resources>
