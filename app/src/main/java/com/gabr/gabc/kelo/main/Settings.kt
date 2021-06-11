@@ -247,17 +247,21 @@ class Settings : Fragment() {
             LoadingSingleton.manageLoadingView(loading, null, false)
 
             val rewards = RewardQueries().getAllRewards(SharedPreferences.groupId)
-            rewards?.forEach { r ->
-                reward = r
-                val freq = Reward.Frequencies.getStringFromMode(requireContext(), r.frequency)
-                var details = freq
-                if (r.frequency != 0) {
-                    val c = Calendar.getInstance()
-                    r.expiration?.let { c.time = it }
-                    val date = DatesSingleton.parseCalendarToStringOnList(c)
-                    details = "$details ($date)"
+            try {
+                rewards?.forEach { r ->
+                    reward = r
+                    val freq = Reward.Frequencies.getStringFromMode(requireContext(), r.frequency)
+                    var details = freq
+                    if (r.frequency != 0) {
+                        val c = Calendar.getInstance()
+                        r.expiration?.let { c.time = it }
+                        val date = DatesSingleton.parseCalendarToStringOnList(c)
+                        details = "$details ($date)"
+                    }
+                    setReward(r.name, details)
                 }
-                setReward(r.name, details)
+            } catch (e: IllegalStateException) {
+                Log.e("CONTEXT ERROR", e.message.toString())
             }
         }
     }

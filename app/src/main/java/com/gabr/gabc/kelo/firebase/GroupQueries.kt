@@ -87,7 +87,8 @@ class GroupQueries {
                 .await()
             val users = UserQueries().deleteAllUsers(groupId)
             val chores = ChoreQueries().deleteAllChores(groupId)
-            users && chores
+            val rewards = RewardQueries().deleteAllRewards(groupId)
+            users && chores && rewards
         } catch (e: Exception) {
             false
         }

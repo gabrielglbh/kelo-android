@@ -131,4 +131,5 @@
     <string name="err_reward_not_completed">Make sure to complete the reward</string>
     <string name="err_reward_creation">Something went wrong while creating the reward</string>
     <string name="err_reward_update">Something went wrong while updating the reward</string>
+    <string name="toolbar_info" translatable="false">Info</string>
 </resources>

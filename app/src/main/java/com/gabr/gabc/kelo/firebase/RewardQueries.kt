@@ -102,4 +102,24 @@ class RewardQueries {
             false
         }
     }
+
+    /**
+     * Helper function that deletes all rewards in a group
+     *
+     * @param groupId: group id in which the rewards are
+     * @return Boolean that returns true if query was successful
+     * */
+    suspend fun deleteAllRewards(groupId: String): Boolean {
+        return try {
+            val ref = instance.collection(fbGroupsCollection).document(groupId)
+                .collection(fbRewardsSubCollection).get().await()
+            ref.documents.forEach {
+                val reward = it.toObject<Reward>()
+                reward?.let { r -> r.id?.let { it1 -> deleteReward(it1, groupId) } }
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
 }
