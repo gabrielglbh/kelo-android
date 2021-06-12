@@ -1,5 +1,6 @@
 package instrumentedTests.integration
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.GroupQueries
@@ -7,7 +8,9 @@ import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.dataModels.Chore
 import com.gabr.gabc.kelo.dataModels.Group
 import com.gabr.gabc.kelo.dataModels.User
+import com.gabr.gabc.kelo.viewModels.ChoreListViewModel
 import com.google.firebase.FirebaseApp
+import instrumentedTests.integration.utils.getOrAwaitValue
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -19,6 +22,12 @@ import java.util.*
 /** Defines the Chore Instrumentation Tests */
 @RunWith(BlockJUnit4ClassRunner::class)
 class ChoreTest {
+    @Rule
+    @JvmField
+    val liveDataRule = InstantTaskExecutorRule()
+
+    private val choreListViewModel = ChoreListViewModel()
+
     private val q = ChoreQueries()
     private val group = Group("GROUP", "generic group", "EUR")
     private val user = User("USER", "generic user", 20)
@@ -154,5 +163,21 @@ class ChoreTest {
         val c = q.createChore(Chore("NEW_CHORE", "Tidy Up", "", ""), group.id)
         val success = c?.let { q.completeChore(it, group.id) }
         assertTrue(success != null && !success)
+    }
+
+    /** Tests that the view model of chore list is functioning well for controlling the completed-non-completed chores */
+    @Test
+    fun choreListViewModelControlOverCompletedChores() {
+        choreListViewModel.setShowCompleted(false)
+        assertTrue(!choreListViewModel.showCompleted.getOrAwaitValue())
+    }
+
+    /** Tests that the view model of chore list is functioning well for the initialization of the list */
+    @Test
+    fun choreListViewModelControlOverListOfChores() {
+        val chores = arrayListOf(chore, chore, chore)
+        choreListViewModel.addAllChores(chores)
+        assertTrue(choreListViewModel.choreList.getOrAwaitValue().size == 3 &&
+                choreListViewModel.choreList.getOrAwaitValue() == chores)
     }
 }

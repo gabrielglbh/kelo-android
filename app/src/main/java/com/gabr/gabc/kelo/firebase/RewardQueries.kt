@@ -27,12 +27,12 @@ class RewardQueries {
         return try {
             reward.id?.let {
                 val ref = if (it != "") {
-                instance.collection(fbGroupsCollection).document(groupId)
-                    .collection(fbRewardsSubCollection).document(it)
-            } else {
-                instance.collection(fbGroupsCollection).document(groupId)
-                    .collection(fbRewardsSubCollection).document()
-            }
+                    instance.collection(fbGroupsCollection).document(groupId)
+                        .collection(fbRewardsSubCollection).document(it)
+                    } else {
+                        instance.collection(fbGroupsCollection).document(groupId)
+                            .collection(fbRewardsSubCollection).document()
+                    }
                 ref.set((reward.toMap())).await()
                 reward
             }

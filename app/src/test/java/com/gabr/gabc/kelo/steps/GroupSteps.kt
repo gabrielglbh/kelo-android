@@ -10,9 +10,6 @@ import junit.framework.TestCase.assertTrue
 @Suppress("unused")
 class GroupSteps : En {
     private lateinit var groupName: String
-    private lateinit var userName: String
-    private var selectedCurrency: CurrencyModel? = null
-
     private var validGroupName = true
 
     init {

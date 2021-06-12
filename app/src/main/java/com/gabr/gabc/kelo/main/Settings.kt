@@ -152,7 +152,7 @@ class Settings : Fragment() {
         rewardDetails.text = "-"
         rewardDetails.isSelected = true
         rewardIcon = view.findViewById(R.id.listItemIcon)
-        rewardsButton = view.findViewById(R.id.listItemParent)
+        rewardsButton = view.findViewById(R.id.rewardParent)
         rewardsButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
