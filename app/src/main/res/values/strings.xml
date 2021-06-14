@@ -132,4 +132,25 @@
     <string name="err_reward_creation">Something went wrong while creating the reward</string>
     <string name="err_reward_update">Something went wrong while updating the reward</string>
     <string name="toolbar_info" translatable="false">Info</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_1_title">MANAGING GROUPS</string>
+    <string name="tutorial_1_msg_1">Share the group link to your friends using the button   .\n\nYour friends will be automatically added to the group by joining from the link.</string>
+    <string name="tutorial_1_msg_2">The group administrator can remove users from the group by swiping left or right in the user list in Settings on the user you want to remove.</string>
+
+    <string name="tutorial_2_title">MANAGING CHORES</string>
+    <string name="tutorial_2_msg_1">Add tasks to be done: laundry, food, shopping, washing up… from the floating button.</string>
+    <string name="tutorial_2_msg_2">You can assign any of your friends to the task and you can also specify a deadline. In addition, you can designate the importance of the task so that the assignee earns more or less points depending on the difficulty or urgency of the task.</string>
+    <string name="tutorial_2_msg_3">The TODO tasks will be displayed on the main page with all the information: \n\n• Due Date\n• Name\n• Assignee (Left)\n• Creator (Right)\n• Importance (Color Bar)</string>
+
+    <string name="tutorial_3_title">CHORE ACTIONS</string>
+    <string name="tutorial_3_msg_1">Depending on the permissions held within the group and the role in a certain chore, users can complete, delete or edit a chore.</string>
+    <string name="tutorial_3_msg_2">To complete a chore, swipe to the right of the chore to be completed. The chore will be added to the list of completed chores designated by   .</string>
+    <string name="tutorial_3_msg_3">To delete a chore, swipe to the left of the chore to be deleted.</string>
+    <string name="tutorial_3_msg_4">To edit it, simply click on the chore and edit what you want.</string>
+
+    <string name="tutorial_4_title">REWARDS</string>
+    <string name="tutorial_4_msg_1">The reward can only be managed by the administrator. This reward serves to boost the motivation of the group users to perform the given tasks - it can be anything!</string>
+    <string name="tutorial_4_msg_2">The reward will be distributed with a certain frequency and to the user with the most points in the group.</string>
+    <string name="tutorial_4_msg_3">All reward parameters are defined by the administrator: name and frequency. There is a possibility that there is no frequency for the reward, it can be given whenever you want.</string>
 </resources>

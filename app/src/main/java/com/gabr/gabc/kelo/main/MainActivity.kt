@@ -16,6 +16,7 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
+import com.gabr.gabc.kelo.tutorial.TutorialActivity
 import com.gabr.gabc.kelo.utils.LoadingSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
@@ -78,7 +79,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         menu?.findItem(R.id.toolbar_done)?.isVisible = false
-        menu?.findItem(R.id.toolbar_information)?.isVisible = false
         return true
     }
 
@@ -86,6 +86,11 @@ class MainActivity : AppCompatActivity() {
         return when(item.itemId) {
             R.id.toolbar_share -> {
                 ShareCodeBottomSheet().show(supportFragmentManager, ShareCodeBottomSheet.TAG)
+                true
+            }
+            R.id.toolbar_information -> {
+                val intent = Intent(this, TutorialActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.toolbar_completed_chores -> {
@@ -142,14 +147,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.chores_menu -> {
                     supportActionBar?.title = choreListViewModel.actionBarTitle.value
                     toolbar.menu.findItem(R.id.toolbar_completed_chores).isVisible = true
-                    toolbar.menu.findItem(R.id.toolbar_information).isVisible = false
                     if (currentItem != it) navController.navigate(R.id.action_settings_to_choreList)
                     true
                 }
                 R.id.settings_menu -> {
                     supportActionBar?.title = getString(R.string.settings)
                     toolbar.menu.findItem(R.id.toolbar_completed_chores).isVisible = false
-                    toolbar.menu.findItem(R.id.toolbar_information).isVisible = true
                     if (currentItem != it) navController.navigate(R.id.action_choreList_to_settings)
                     true
                 }

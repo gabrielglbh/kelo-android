@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tutorialTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/tutorial_2_title"
+        style="@style/HeaderStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tutorialTitle2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tutorial2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/labelText"
+                android:textSize="18sp"
+                android:text="@string/tutorial_2_msg_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/fab"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tutorial2" />
+
+            <TextView
+                android:id="@+id/tutorial3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/tutorial_2_msg_2"
+                android:textColor="@color/labelText"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tutorial3">
+
+                <ImageView
+                    android:id="@+id/imageView21"
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/assignee" />
+
+                <ImageView
+                    android:id="@+id/imageView22"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/expiration" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tutorial4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/labelText"
+                android:textSize="18sp"
+                android:text="@string/tutorial_2_msg_3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/chore_in_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tutorial4" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder"
+            android:backgroundTint="@color/primaryColor" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder"
+            android:backgroundTint="@color/secondaryColor" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder"
+            android:backgroundTint="@color/primaryColor" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder"
+            android:backgroundTint="@color/primaryColor" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
