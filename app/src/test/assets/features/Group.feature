@@ -64,3 +64,15 @@ Feature: Create Group
     Examples:
       | name                     |
       | *o$* Casita Rural *$o*   |
+
+  @Group
+  Scenario: (Admin) User Has Permissions For Updating the Group Name
+    Given a user that wants to update the group name
+    When the user is the unique administrator of the group
+    Then the user is permitted to modify the group name
+
+  @Group
+  Scenario: User Has Not Permissions For Updating the Group Name
+    Given a user that wants to update the group name
+    When the user is not the unique administrator of the group
+    Then the user is not permitted to modify the group name

@@ -87,16 +87,24 @@ class Settings : Fragment() {
 
         updateGroupButton = view.findViewById(R.id.settingsUpdateGroupButton)
         updateGroupButton.setOnClickListener {
-            DialogSingleton.createDialogWithEditTextField(
-                requireActivity(),
-                requireContext(),
-                group = group,
-                onSuccess = { newTitle ->
-                    viewModel.setTitle(newTitle)
-                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.settings_successful_group_update),
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+                if (PermissionsSingleton.isUserAdmin(user)) {
+                    DialogSingleton.createDialogWithEditTextField(
+                        requireActivity(),
+                        requireContext(),
+                        group = group,
+                        onSuccess = { newTitle ->
+                            viewModel.setTitle(newTitle)
+                            UtilsSingleton.showSnackBar(requireView(), getString(R.string.settings_successful_group_update),
+                                anchorView = bottomNavigationView)
+                        }
+                    )
+                } else {
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_update_group),
                         anchorView = bottomNavigationView)
                 }
-            )
+            }
         }
 
         updateUserButton = view.findViewById(R.id.settingsUpdateUserButton)

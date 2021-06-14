@@ -116,6 +116,20 @@ class SettingsTest {
         clickOnDialogAndCheckReturnToWelcomeActivity()
     }
 
+    /** Test that verifies that a dialog appears upon clicking edit user setting */
+    @Test
+    fun dialogOnEditUserAppears() {
+        onView(withId(R.id.settingsUpdateUserButton)).perform(scrollTo()).perform(click())
+        onView(withText(R.string.settings_change_user_name_message)).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    /** Test that verifies that a dialog appears upon clicking edit group setting */
+    @Test
+    fun dialogOnEditGroupNameAppears() {
+        onView(withId(R.id.settingsUpdateGroupButton)).perform(scrollTo()).perform(click())
+        onView(withText(R.string.settings_change_group_name_message)).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
     private fun clickOnDialogAndCheckReturnToWelcomeActivity() {
         onView(withId(android.R.id.button1)).perform(click())
         Thread.sleep(1000)
