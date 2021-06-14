@@ -184,7 +184,7 @@ class Settings : Fragment() {
                         }
                     }
                 } else {
-                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_remove_group),
+                    UtilsSingleton.showSnackBar(requireView(), getString(R.string.permission_remove_reward),
                         anchorView = bottomNavigationView)
                 }
             }

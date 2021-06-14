@@ -1,6 +1,18 @@
 Feature: Create Reward
 
   @Reward
+  Scenario: Validate Invalid Reward
+    Given the user that fills up a invalid reward
+    When the user tries to create the reward
+    Then the user will not be able to create the reward
+
+  @Reward
+  Scenario: Validate Valid Reward
+    Given the user that fills up a valid reward
+    When the user tries to create the reward
+    Then the user will be able to create the reward
+
+  @Reward
   Scenario Outline: Valid Length 1
     Given the user that enters the reward description "<description>"
     When the user validates its reward

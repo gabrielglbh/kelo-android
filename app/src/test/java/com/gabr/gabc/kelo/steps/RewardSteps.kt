@@ -1,24 +1,47 @@
 package com.gabr.gabc.kelo.steps
 
+import com.gabr.gabc.kelo.dataModels.Reward
 import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.rewards.RewardFunctions
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
+import java.util.*
 
 /** Defines the Reward Unit Tests */
 @Suppress("unused")
 class RewardSteps : En {
     private lateinit var description: String
     private var validRewardName = true
+    private var validReward = false
 
+    private var reward = Reward()
     private var user = User()
 
     init {
-        /**
-         * Reward Description Validation
-         * */
+        /**********************************
+         *        Validate Reward         *
+         **********************************/
+        Given("the user that fills up a invalid reward") {
+            reward = Reward("", "reward name")
+        }
+        Given("the user that fills up a valid reward") {
+            reward = Reward("", "reward name", Calendar.getInstance().time, frequency = 2)
+        }
+        When("the user tries to create the reward") {
+            validReward = RewardFunctions.validateReward(reward)
+        }
+        Then("the user will not be able to create the reward") {
+            assertTrue(validReward)
+        }
+        Then("the user will be able to create the reward") {
+            assertFalse(validReward)
+        }
+
+        /***********************************
+         * Reward Description Validation   *
+         ***********************************/
         Given("the user that enters the reward description {string}") { description: String ->
             this.description = description
         }

@@ -26,14 +26,20 @@ class ChoreSteps : En {
         /**************************
          *     Validate Chore     *
          **************************/
-        Given("the user that fills up a chore without an assignee") {
+        Given("the user that fills up a invalid chore") {
             chore = Chore("", "Do the laundry")
+        }
+        Given("the user that fills up a valid chore") {
+            chore = Chore("", "Olmedo", assignee = "olmedo")
         }
         When("the user tries to create the chore") {
             validChore = ChoreDetailFunctions.validateChore(chore)
         }
-        Then("the user will not be able to create it") {
+        Then("the user will not be able to create the chore") {
             assertFalse(validChore)
+        }
+        Then("the user will be able to create the chore") {
+            assertTrue(validChore)
         }
 
         /*******************************
