@@ -1,6 +1,6 @@
 package instrumentedTests.ui
 
-/*import android.content.Context
+import android.content.Context
 import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
@@ -28,8 +28,9 @@ import org.junit.*
 import java.util.*
 
 /** Defines the Add Reward UI Test */
+//@RunWith(AndroidJUnit4::class)
 class AddRewardTest {
-    private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+    /*private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
     @Rule(order = 0)
     @JvmField
@@ -110,5 +111,5 @@ class AddRewardTest {
         // Verify reward description and frequency
         onView(withId(R.id.rewardParent)).perform(scrollTo()).check(matches(hasDescendant(withText(expectedDescription))))
         onView(withId(R.id.rewardParent)).perform(scrollTo()).check(matches(hasDescendant(withText(parsedNextWeek))))
-    }
-}*/
+    }*/
+}

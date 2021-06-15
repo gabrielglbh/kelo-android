@@ -29,9 +29,9 @@ import org.junit.runner.RunWith
 import java.util.*
 
 /** Defines the Edit Reward UI Test */
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
 class EditRewardTest {
-    private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+    /*private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
     @Rule(order = 0)
     @JvmField
@@ -101,5 +101,5 @@ class EditRewardTest {
         onView(withId(R.id.rewardDetailNameLayout)).check(matches(hasDescendant(withText(reward.name))))
         onView(withId(R.id.rewardDetailPeriodicityButton)).check(matches(
             withText(Reward.Frequencies.getStringFromMode(context, 1))))
-    }
+    }*/
 }

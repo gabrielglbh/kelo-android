@@ -1,6 +1,6 @@
 package instrumentedTests.ui
 
-/*import android.content.Context
+import android.content.Context
 import android.content.Intent
 import android.widget.DatePicker
 import androidx.recyclerview.widget.RecyclerView
@@ -35,9 +35,9 @@ import org.junit.runner.RunWith
 import java.util.*
 
 /** Defines the Add Chore UI Test */
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
 class AddChoreTest {
-    private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+    /*private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
     @Rule(order = 0)
     @JvmField
@@ -130,5 +130,5 @@ class AddChoreTest {
         onView(withId(R.id.choreListRecyclerView)).check(matches(atPosition(0, hasDescendant(withText(expectedDate)))))
         // Verify user name
         onView(withId(R.id.choreListRecyclerView)).check(matches(atPosition(0, hasDescendant(withText(expectedUserName)))))
-    }
-}*/
+    }*/
+}

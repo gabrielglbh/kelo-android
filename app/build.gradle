@@ -63,12 +63,16 @@ android {
                 //      - SwipeControllers as they execute functions from Firebase (already tested)
                 //      - FirebaseMessagingService as it is an external service
                 //      - ViewModels are omitted as they are tested along with Firebase
+                //      - Excluded all activities, fragments and some UI singletons because of issue #1286
                 dir: "$buildDir/tmp/kotlin-classes/debug",
                 excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*',
                            '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*',
                            '**/textDrawable', '**/dataModels', '**/viewPager',
                            '**/*Adapter*.*', '**/*BottomSheet*.*', '**/*Swipe*.*',
-                           '**/*MessagingService*.*', '**/viewModels']
+                           '**/*MessagingService*.*', '**/viewModels',
+
+                           '**/*Activity*.*', '**/choreList','**/main', '**/common',
+                           '**/*DialogSingleton*.*', '**/*LoadingSingleton*.*', '**/*UtilsSingleton*.*']
         ))
         sourceDirectories.setFrom(files("src/main/kotlin"))
         executionData.setFrom(fileTree(dir: "$buildDir", includes: [
