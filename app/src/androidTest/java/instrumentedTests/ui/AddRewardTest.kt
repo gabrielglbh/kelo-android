@@ -4,15 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
@@ -26,15 +21,13 @@ import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
 import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.google.firebase.FirebaseApp
-import instrumentedTests.ui.utils.ColorViewMatcher
 import instrumentedTests.ui.utils.DisableAnimationsRule
-import instrumentedTests.ui.utils.RecyclerViewMatcher
-import instrumentedTests.ui.utils.RecyclerViewMatcher.Companion.atPosition
 import instrumentedTests.ui.utils.keepScreenActive
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import java.util.*
 
+/** Defines the Add Reward UI Test */
 class AddRewardTest {
     private val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
 
@@ -47,7 +40,7 @@ class AddRewardTest {
     val activityScenario = ActivityScenarioRule<MainActivity>(intent)
 
     companion object {
-        private val expectedDescription = "Gabo invita a cervezas"
+        private const val expectedDescription = "Gabo invita a cervezas"
         private val group = Group("UI_GROUP", "generic group", "EUR")
         private val user = User("UI_USER", "Gabriel", 0, isAdmin = true)
 

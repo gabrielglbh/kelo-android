@@ -102,6 +102,7 @@ data class Reward(
         return 0
     }
 
+    /** Parcelable companion object for defining helper functions */
     companion object CREATOR : Parcelable.Creator<Reward> {
         private fun Parcel.writeDate(date: Date?) { writeLong(date?.time ?: -1) }
         private fun Parcel.readDate(): Date? {
