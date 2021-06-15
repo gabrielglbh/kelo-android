@@ -66,7 +66,7 @@ jobs:
     steps:
       - checkout
       - *create_keystore_properties
-      - *restore_android_cache
+      #- *restore_android_cache
 
       - run:
           name: List of System Images
@@ -83,7 +83,7 @@ jobs:
       - android/start-emulator:
           avd-name: testDevice
           additional-args: '-skin 1440x3040'
-          restore-gradle-cache-prefix: v1a
+      #    restore-gradle-cache-prefix: v1a
 
       # Custom gradle command to execute all tests: unit test and instrumented ones
       # that also create a code coverage report
@@ -101,10 +101,10 @@ jobs:
 
       - android/kill-emulators
 
-      - *save_android_cache
+      #- *save_android_cache
 
-      - android/save-gradle-cache:
-          cache-prefix: v1a
+      #- android/save-gradle-cache:
+      #    cache-prefix: v1a
 
   alpha_deploy:
     <<: *android_config
@@ -115,13 +115,13 @@ jobs:
       - *create_keystore_properties
       - *create_google_play_key
       - *android_dependencies
-      - *restore_android_cache
+      #- *restore_android_cache
 
       - run:
           name: Upload to Google Play Alpha Channel
           command: bundle exec fastlane alpha
 
-      - *save_android_cache
+      #- *save_android_cache
 
   production_deploy:
     <<: *android_config
@@ -132,13 +132,13 @@ jobs:
       - *create_keystore_properties
       - *create_google_play_key
       - *android_dependencies
-      - *restore_android_cache
+      #- *restore_android_cache
 
       - run:
           name: Deploy to Play Store with Production track
           command: bundle exec fastlane production
 
-      - *save_android_cache
+      #- *save_android_cache
 
 workflows:
   version: 2.1
