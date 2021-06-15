@@ -1,6 +1,6 @@
 package instrumentedTests.ui
 
-import android.content.Context
+/*import android.content.Context
 import android.content.Intent
 import android.widget.DatePicker
 import androidx.recyclerview.widget.RecyclerView
@@ -131,4 +131,4 @@ class AddChoreTest {
         // Verify user name
         onView(withId(R.id.choreListRecyclerView)).check(matches(atPosition(0, hasDescendant(withText(expectedUserName)))))
     }
-}
+}*/

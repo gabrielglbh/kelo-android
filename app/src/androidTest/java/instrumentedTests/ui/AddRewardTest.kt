@@ -1,6 +1,6 @@
 package instrumentedTests.ui
 
-import android.content.Context
+/*import android.content.Context
 import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
@@ -111,4 +111,4 @@ class AddRewardTest {
         onView(withId(R.id.rewardParent)).perform(scrollTo()).check(matches(hasDescendant(withText(expectedDescription))))
         onView(withId(R.id.rewardParent)).perform(scrollTo()).check(matches(hasDescendant(withText(parsedNextWeek))))
     }
-}
+}*/

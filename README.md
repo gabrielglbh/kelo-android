@@ -2,7 +2,11 @@
 
 [![master](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/main)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android?branch=main) [![master](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f65a342064ea42bd99d4661b7b94aa17)](https://www.codacy.com/gh/gabrielglbh/tfm-android/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gabrielglbh/tfm-android&amp;utm_campaign=Badge_Grade)
 
-## Developers ONLY
+## Disclaimer
+
+There's currently an issue with Firebase Messaging with some emulators and devices (see [#1286](https://github.com/firebase/firebase-android-sdk/issues/1286)). As for this, various UI tests that actually summon notifications have been commented out in order to get a proper coverage number (AddChoreTest and AddRewardTest).
+
+## For Developers
 
 Remember to change the `versionCode` and `versionName` on the `gradle:app` file when releasing a new version through tags
 
@@ -22,7 +26,3 @@ This project is a Master Thesis for the Mobile App Development Master @ UPM. It 
 <img src="https://www.upm.es/sfs/Rectorado/Gabinete%20del%20Rector/Logos/UPM/CEI/LOGOTIPO%20leyenda%20color%20JPG%20p.png" alt="UPM Logo" width="827" height="384">
 
 It makes use of [Circle CI](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android) and [Fastlane](https://fastlane.tools/) for automatic deployments to the Google Play Store and automatic tests using [Cucumber](https://cucumber.io/docs/installation/), [JUnit](https://junit.org/junit4/) and [Espresso](https://developer.android.com/training/testing/espresso). For code coverage (what portion of code we covered with testing) we used [Codecov](https://app.codecov.io/gh/gabrielglbh/tfm-android).
-
-<img src="https://user-images.githubusercontent.com/194400/41597205-a57442ea-73c4-11e8-9591-61f5c83c7e66.png" width="436" height="121">
-
-<img src="https://miro.medium.com/max/871/1*UchIRfbd6orknkV4FZAwTw.png" alt="Fastlane" width="436" height="152">

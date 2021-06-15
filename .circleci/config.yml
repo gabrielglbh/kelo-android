@@ -26,15 +26,15 @@ references:
       name: Download Ruby Dependencies
       command: bundle install
 
-  #restore_android_cache: &restore_android_cache
-  #  restore_cache:
-  #    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+  restore_android_cache: &restore_android_cache
+    restore_cache:
+      key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
-  #save_android_cache: &save_android_cache
-  #  save_cache:
-  #    paths:
-  #      - ~/.gradle
-  #    key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+  save_android_cache: &save_android_cache
+    save_cache:
+      paths:
+        - ~/.gradle
+      key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
   android_dependencies: &android_dependencies
     run:
@@ -66,7 +66,7 @@ jobs:
     steps:
       - checkout
       - *create_keystore_properties
-      #- *restore_android_cache
+      - *restore_android_cache
 
       - run:
           name: List of System Images
@@ -101,7 +101,7 @@ jobs:
 
       - android/kill-emulators
 
-      #- *save_android_cache
+      - *save_android_cache
 
       - android/save-gradle-cache:
           cache-prefix: v1a
@@ -115,13 +115,13 @@ jobs:
       - *create_keystore_properties
       - *create_google_play_key
       - *android_dependencies
-      #- *restore_android_cache
+      - *restore_android_cache
 
       - run:
           name: Upload to Google Play Alpha Channel
           command: bundle exec fastlane alpha
 
-      #- *save_android_cache
+      - *save_android_cache
 
   production_deploy:
     <<: *android_config
@@ -132,13 +132,13 @@ jobs:
       - *create_keystore_properties
       - *create_google_play_key
       - *android_dependencies
-      #- *restore_android_cache
+      - *restore_android_cache
 
       - run:
           name: Deploy to Play Store with Production track
           command: bundle exec fastlane production
 
-      #- *save_android_cache
+      - *save_android_cache
 
 workflows:
   version: 2.1
