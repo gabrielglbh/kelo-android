@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/usersTab"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="?attr/selectableItemBackground">
+    android:layout_height="@dimen/material_button_height">
 
     <include
-        layout="@layout/user_widget"
+        layout="@layout/reusable_list_widget"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,6 +20,6 @@
         android:background="@color/dividerColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userAvatar" />
+        app:layout_constraintStart_toEndOf="@+id/listItemIcon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

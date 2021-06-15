@@ -1,8 +1,8 @@
 package com.gabr.gabc.kelo.steps
 
 import com.gabr.gabc.kelo.choreDetail.ChoreDetailFunctions
-import com.gabr.gabc.kelo.models.Chore
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Chore
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import io.cucumber.java8.En
@@ -26,14 +26,20 @@ class ChoreSteps : En {
         /**************************
          *     Validate Chore     *
          **************************/
-        Given("the user that fills up a chore without an assignee") {
+        Given("the user that fills up a invalid chore") {
             chore = Chore("", "Do the laundry")
+        }
+        Given("the user that fills up a valid chore") {
+            chore = Chore("", "Olmedo", assignee = "olmedo")
         }
         When("the user tries to create the chore") {
             validChore = ChoreDetailFunctions.validateChore(chore)
         }
-        Then("the user will not be able to create it") {
+        Then("the user will not be able to create the chore") {
             assertFalse(validChore)
+        }
+        Then("the user will be able to create the chore") {
+            assertTrue(validChore)
         }
 
         /*******************************
@@ -101,10 +107,16 @@ class ChoreSteps : En {
             chore.creator = creatorId
         }
         Then("the user is permitted to update it") {
-            assertTrue(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+            assertTrue(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id)
+                    || PermissionsSingleton.isUserAdmin(user))
         }
         Then("the user is not permitted to update it") {
-            assertFalse(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id))
+            assertFalse(PermissionsSingleton.isUserChoreCreator(chore.creator!!, user.id)
+                    || PermissionsSingleton.isUserAdmin(user))
+        }
+
+        When("the user is the admin of the group") {
+            user.isAdmin = true
         }
 
         /************************************
@@ -112,9 +124,6 @@ class ChoreSteps : En {
          ************************************/
         Given("a user with id {string} that wants to remove a chore") { uid: String ->
             user.id = uid
-        }
-        When("the user is the admin of the group") {
-            user.isAdmin = true
         }
         When("the chore is not the creator {string} of the chore nor the admin") { creator: String ->
             chore.creator = creator

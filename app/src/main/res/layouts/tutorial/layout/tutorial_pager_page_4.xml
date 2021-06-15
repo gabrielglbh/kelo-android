@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tutorialTitle4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/tutorial_4_title"
+        style="@style/HeaderStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tutorialTitle4">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_margin="8dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/reward_done"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/rewardTutorial"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_admin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                app:tint="@color/primaryColor" />
+
+            <TextView
+                android:id="@+id/rewardTextTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/tutorial_4_msg_1"
+                style="@style/HeaderStyle"
+                app:layout_constraintStart_toEndOf="@+id/rewardTutorial"
+                app:layout_constraintTop_toTopOf="@+id/rewardTutorial" />
+
+            <TextView
+                android:id="@+id/rewardTextSubTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/tutorial_4_msg_11"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toStartOf="@+id/rewardTextTutorial"
+                app:layout_constraintTop_toBottomOf="@+id/rewardTextTutorial" />
+
+            <ImageView
+                android:id="@+id/rewardFreqTutorial"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_calendar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rewardTextSubTutorial"
+                app:tint="@color/primaryColor" />
+
+            <TextView
+                android:id="@+id/rewardFreqTextTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/tutorial_4_msg_2"
+                style="@style/HeaderStyle"
+                app:layout_constraintStart_toEndOf="@+id/rewardFreqTutorial"
+                app:layout_constraintTop_toTopOf="@+id/rewardFreqTutorial" />
+
+            <TextView
+                android:id="@+id/rewardFreqTextSubTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/tutorial_4_msg_22"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toStartOf="@+id/rewardFreqTextTutorial"
+                app:layout_constraintTop_toBottomOf="@+id/rewardFreqTextTutorial" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/chore_icon_placeholder"
+            android:backgroundTint="@color/secondaryColor" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

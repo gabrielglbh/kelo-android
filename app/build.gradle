@@ -19,8 +19,8 @@ android {
         applicationId "com.gabr.gabc.kelo"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 6
-        versionName "0.2.0"
+        versionCode 7
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,11 +61,14 @@ android {
                 //      - RecyclerView Adapters as they paint in UI the elements gathered from Firebase (already tested)
                 //      - BottomSheets as they paint in UI elements gathered from Firebase (already tested)
                 //      - SwipeControllers as they execute functions from Firebase (already tested)
+                //      - FirebaseMessagingService as it is an external service
+                //      - ViewModels are omitted as they are tested along with Firebase
                 dir: "$buildDir/tmp/kotlin-classes/debug",
                 excludes: ['**/R.class', '**/R$*.class', '**/BuildConfig.*',
                            '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*',
-                           '**/textDrawable', '**/models', '**/viewPager',
-                           '**/*Adapter*.*', '**/*BottomSheet*.*', '**/*Swipe*.*']
+                           '**/textDrawable', '**/dataModels', '**/viewPager',
+                           '**/*Adapter*.*', '**/*BottomSheet*.*', '**/*Swipe*.*',
+                           '**/*MessagingService*.*', '**/viewModels']
         ))
         sourceDirectories.setFrom(files("src/main/kotlin"))
         executionData.setFrom(fileTree(dir: "$buildDir", includes: [
@@ -100,7 +103,9 @@ android {
                         'src/main/res/layouts/main',
                         'src/main/res/layouts/widgets',
                         'src/main/res/layouts/settings',
-                        'src/main/res/layouts/choreDetails'
+                        'src/main/res/layouts/choreDetails',
+                        'src/main/res/layouts/rewards',
+                        'src/main/res/layouts/tutorial'
             }
         }
     }
@@ -136,7 +141,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     // LiveData and ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
@@ -145,16 +150,19 @@ dependencies {
     // Navigation Controller - In Plugins: id 'androidx.navigation.safeargs.kotlin'
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
-    implementation "androidx.navigation:navigation-compose:2.4.0-alpha01"
+    implementation "androidx.navigation:navigation-compose:2.4.0-alpha02"
 
     // Co-Routines for making await calls
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
 
-    // Firebase FireStore
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:26.7.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-messaging-directboot:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // For getting the UI Device for Disabling Animations
     implementation "androidx.test.uiautomator:uiautomator:2.2.0"

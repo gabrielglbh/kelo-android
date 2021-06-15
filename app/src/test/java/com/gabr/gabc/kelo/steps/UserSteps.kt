@@ -1,6 +1,6 @@
 package com.gabr.gabc.kelo.steps
 
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.welcome.WelcomePageFunctions

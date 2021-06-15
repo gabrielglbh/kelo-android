@@ -119,10 +119,10 @@ object UtilsSingleton {
 
         if (dualIcon) {
             background = ColorDrawable(context.getColor(if (dX > 0) R.color.primaryColor else R.color.errorColor))
-            ContextCompat.getDrawable(context, if (dX > 0) R.drawable.done else R.drawable.clear)?.let { icon = it }
+            ContextCompat.getDrawable(context, if (dX > 0) R.drawable.ic_completed else R.drawable.ic_delete)?.let { icon = it }
         } else {
             background = ColorDrawable(context.getColor(R.color.errorColor))
-            ContextCompat.getDrawable(context, R.drawable.clear)?.let { icon = it }
+            ContextCompat.getDrawable(context, R.drawable.ic_delete)?.let { icon = it }
         }
 
         val iconHeight = icon.intrinsicHeight

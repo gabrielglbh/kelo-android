@@ -1,7 +1,7 @@
 package com.gabr.gabc.kelo.choreDetail
 
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.dataModels.Chore
 import com.gabr.gabc.kelo.utils.common.CustomDatePicker
 import java.util.*
 

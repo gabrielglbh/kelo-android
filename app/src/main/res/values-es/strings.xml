@@ -24,8 +24,10 @@
     <!-- Main Activity -->
     <string name="chores">Tareas</string>
     <string name="settings">Ajustes</string>
-    <string name="add_chore">Añadir Tarea</string>
-    <string name="chore_detail">Detalles</string>
+    <string name="add_chore">Nueva Tarea</string>
+    <string name="chore_detail">Editar Tarea</string>
+    <string name="completed_chores">Tareas Completadas</string>
+    <string name="history">Completadas</string>
 
     <!-- Chore Detail Activity -->
     <string name="chore_name_label">Nombre de la Tarea</string>
@@ -34,8 +36,8 @@
     <string name="placeholder_user_name">Juan Pérez</string>
     <string name="chore_importance_label">Importancia</string>
     <string name="chore_name_placeholder">Hacer la Colada</string>
-    <string name="chore_expire_date_placeholder">Seleccionar una Fecha</string>
-    <string name="chore_assignee_placeholder">Seleccionar un Amigo</string>
+    <string name="chore_expire_date_placeholder">Selecciona una Fecha</string>
+    <string name="chore_assignee_placeholder">Selecciona un Usuario</string>
     <string name="chore_importance_low">Baja</string>
     <string name="chore_importance_medium">Media</string>
     <string name="chore_importance_high">Alta</string>
@@ -47,7 +49,7 @@
     <!-- Share Code Bottom Sheet -->
     <string name="group_code_label">Código del Grupo:</string>
     <string name="share_group_code">Comparte el Código del Grupo</string>
-    <string name="message_on_code_sharing">¡Únete a mi grupo en Kelo copiando este código!</string>
+    <string name="message_on_code_sharing">¡Únete a mi grupo en Kelo siguiendo este link!</string>
 
     <!-- Settings -->
     <string name="settings_points_label">Tus Puntos</string>
@@ -55,13 +57,40 @@
     <string name="settings_delete_group_button">Eliminar Grupo</string>
     <string name="settings_leave_group_button">Salir del Grupo</string>
     <string name="settings_delete_user_button">Eliminar Usuario</string>
+    <string name="settings_are_you_sure_label">¿Estás seguro?</string>
     <string name="settings_users_label">Usuarios</string>
-    <string name="settings_dialog_msg_delete_group">¿Estás seguro de que quieres eliminar este grupo? Esta acción no se puede deshacer</string>
-    <string name="settings_dialog_msg_leave_group">¿Estás seguro de que quieres irte de este grupo? Esta acción no se puede deshacer</string>
+    <string name="settings_dialog_msg_delete_group">Esto borrará todos los datos del grupo. Esta acción no se puede deshacer</string>
+    <string name="settings_dialog_msg_leave_group">Perderás todo el acceso a este grupo. Esta acción no se puede deshacer</string>
     <string name="settings_dialog_btn_delete_positive">Eliminar</string>
     <string name="settings_dialog_btn_leave_positive">Salir</string>
     <string name="settings_dialog_btn_negative">Cancelar</string>
     <string name="settings_group_currency">Moneda</string>
+    <string name="settings_change_user_name_label">Edita tu nombre</string>
+    <string name="settings_change_user_name_message">Cambia tu nombre en el grupo</string>
+    <string name="settings_change_group_name_label">Edita el nombre del grupo</string>
+    <string name="settings_change_group_name_message">Cambia el nombre del grupo</string>
+    <string name="settings_edit_label">Varios</string>
+    <string name="settings_update_group_button">Editar Grupo</string>
+    <string name="settings_update_user_button">Editar Usuario</string>
+    <string name="settings_dialog_btn_change">Guardar</string>
+    <string name="settings_successful_group_update">¡El grupo ha sido actualizado!</string>
+    <string name="settings_successful_user_update">¡Tu usuario ha sido actualizado!</string>
+    <string name="settings_reward_label">Recompensa</string>
+    <string name="settings_reward_button_placeholder">Toca aquí para configurar la recompensa</string>
+
+    <!-- Rewards -->
+    <string name="rewards_title_new">Recompensa</string>
+    <string name="rewards_title_edit">Recompensa</string>
+    <string name="rewards_name_label">Descripción de la Recompensa</string>
+    <string name="rewards_name_placeholder">Todos compramos al ganador una cerveza</string>
+    <string name="rewards_periodicity_label">Frecuencia</string>
+    <string name="rewards_periodicity_button">Selecciona un periodo</string>
+    <string name="rewards_no_frequency">Sin Frecuencia</string>
+    <string name="rewards_weekly">Cada Semana</string>
+    <string name="rewards_two_weeks">Cada 2 Semanas</string>
+    <string name="rewards_monthly">Cada Mes</string>
+    <string name="rewards_two_months">Cada 2 Meses</string>
+    <string name="rewards_annually">Cada Año</string>
 
     <!-- Permissions -->
     <string name="permission_modify_chore">No tienes los permisos suficientes para modificar esta tarea. Contacta con el creador de la tarea.</string>
@@ -70,6 +99,9 @@
     <string name="permission_update_currency">No tienes los permisos suficientes para cambiar la moneda del grupo</string>
     <string name="permission_remove_user">No tienes los permisos suficientes para eliminar a usuarios del grupo</string>
     <string name="permission_remove_group">No tienes los permisos suficientes para eliminar el grupo</string>
+    <string name="permission_update_group">No tienes los permisos suficientes para modificar el nombre del grupo</string>
+    <string name="permission_manage_reward">No tienes los permisos suficientes para administrar la recompensa</string>
+    <string name="permission_remove_reward">No tienes los permisos suficientes para eliminar la recompensa</string>
 
     <!-- Errors -->
     <string name="err_invalid_name">Nombre inválido</string>
@@ -80,7 +112,7 @@
     <string name="err_group_full">El grupo ya está lleno</string>
     <string name="err_group_does_not_exist">El grupo no existe</string>
     <string name="err_chore_not_completed">Rellena la tarea</string>
-    <string name="err_chore_creation">Algo ha ocurrido mientras se creada la tarea</string>
+    <string name="err_chore_creation">Algo ha ocurrido mientras se creaba la tarea</string>
     <string name="err_chore_update">Algo ha ocurrido mientras se actualizaba la tarea</string>
     <string name="err_loading_chores">Algo ha ocurrido mientras se cargaban las tareas</string>
     <string name="err_loading_users">Algo ha ocurrido mientras se cargaban los usuarios</string>
@@ -90,4 +122,35 @@
     <string name="err_group_leave">Algo ha ocurrido mientras se estaba dejando el grupo</string>
     <string name="err_user_delete">Algo ha ocurrido mientras se eliminaba al usuario del grupo</string>
     <string name="err_currency_update">Algo ha ocurrido mientras se actualizaba la moneda del grupo</string>
+    <string name="err_user_update">Algo ha ocurrido mientras se actualizaba el usuario</string>
+    <string name="err_group_update">Algo ha ocurrido mientras se actualizaba el grupo</string>
+    <string name="err_reward_not_completed">Rellena la Recompensa</string>
+    <string name="err_reward_creation">Algo ha ocurrido mientras se creaba la recompensa</string>
+    <string name="err_reward_update">Algo ha ocurrido mientras se actualizaba la recompensa</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_1_title">TAREAS</string>
+    <string name="tutorial_1_msg_1">Asignado</string>
+    <string name="tutorial_1_msg_11">Usuario asignado a la tarea, capaz de completarla pero nada más.</string>
+    <string name="tutorial_1_msg_2">Creador</string>
+    <string name="tutorial_1_msg_22">Usuario que ha creado la tarea, capaz de completarla, borrarla y editarla.</string>
+    <string name="tutorial_1_msg_3">Importancia</string>
+    <string name="tutorial_1_msg_33">Puntos que recibe el asignado una vez completada la tarea.</string>
+
+    <string name="tutorial_2_msg_1">Completar una Tarea</string>
+    <string name="tutorial_2_msg_11">El administrador del grupo, el asignado y el creador pueden completar la tarea. Los puntos los recibirá siempre el asignado.</string>
+    <string name="tutorial_2_msg_2">Eliminar una Tarea</string>
+    <string name="tutorial_2_msg_22">Solo el administrador y el creador pueden eliminar una tarea de la lista.</string>
+
+    <string name="tutorial_3_title">USUARIOS</string>
+    <string name="tutorial_3_msg_1">Eliminar un Usuario</string>
+    <string name="tutorial_3_msg_11">Solo el administrador del grupo puede eliminar un usuario del grupo. Todos los datos del usuario se perderán.</string>
+    <string name="tutorial_3_msg_2">Añadir un Usuario</string>
+    <string name="tutorial_3_msg_22">Cualquier usuario puede compartir el enlace y/o el código para que nuevas personas entren en el grupo.</string>
+
+    <string name="tutorial_4_title">RECOMPENSAS</string>
+    <string name="tutorial_4_msg_1">Administrar Recompensa</string>
+    <string name="tutorial_4_msg_11">El administrador puede crear, editar o eliminar la recompensa del grupo. ¡Puede ser cualquier cosa!</string>
+    <string name="tutorial_4_msg_2">Frecuencia de la Recompensa</string>
+    <string name="tutorial_4_msg_22">La recompensa elegida se entregará al usuario con más puntos al final del periodo seleccionado. También se puede desactivar seleccionando "Sin frecuencia".</string>
 </resources>

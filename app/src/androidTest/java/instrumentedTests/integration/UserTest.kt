@@ -1,12 +1,15 @@
 package instrumentedTests.integration
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.Group
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
+import com.gabr.gabc.kelo.viewModels.UserListViewModel
 import com.google.firebase.FirebaseApp
+import instrumentedTests.integration.utils.getOrAwaitValue
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -17,9 +20,15 @@ import org.junit.runners.BlockJUnit4ClassRunner
 /** Defines the User Instrumentation Tests */
 @RunWith(BlockJUnit4ClassRunner::class)
 class UserTest {
+    @Rule
+    @JvmField
+    val liveDataRule = InstantTaskExecutorRule()
+
     private val q = UserQueries()
     private val group = Group("GROUP", "generic group", "EUR")
     private val user = User("USER_A", "createUser", 0)
+
+    private val userViewModel = UserListViewModel()
 
     /** Initializes and creates Firebase needed data for the tests */
     @Before
@@ -252,5 +261,14 @@ class UserTest {
     fun verifyIsUserInGroupWhenUserDoesNotExistSuccessfully() = runBlocking {
         val isValid = q.verifyIsUserInGroupOnStartUp(group.id, "USER_DOES_NOT_EXIST")
         assertFalse(isValid)
+    }
+
+    /** Tests that the view model of users is functioning well for the initialization of the user list */
+    @Test
+    fun userListViewModelControlOverListOfUsers() {
+        val users = arrayListOf(user, user, user)
+        userViewModel.addAllUsers(users)
+        assertTrue(userViewModel.userList.getOrAwaitValue().size == 3 &&
+                userViewModel.userList.getOrAwaitValue() == users)
     }
 }

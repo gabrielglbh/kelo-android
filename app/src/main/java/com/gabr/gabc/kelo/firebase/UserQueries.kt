@@ -2,8 +2,9 @@ package com.gabr.gabc.kelo.firebase
 
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.constants.UserFields
-import com.gabr.gabc.kelo.models.Group
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.User
+import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -11,6 +12,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import kotlin.random.Random
@@ -21,6 +23,20 @@ class UserQueries {
     private var instance: FirebaseFirestore = Firebase.firestore
     private val fbGroupsCollection = Constants.fbGroupsCollection
     private val fbUsersCollection = Constants.fbUsersCollection
+
+    /**
+     * Function that retrieves and updates the current user if the FCM token is empty on launch
+     * */
+    suspend fun getFCMToken() {
+        val user = UserQueries().getUser(SharedPreferences.userId, SharedPreferences.groupId)
+        user?.let { u ->
+            if (u.messagingToken == "") {
+                val token = FirebaseMessaging.getInstance().token.await()
+                u.messagingToken = token
+                UserQueries().updateUser(u, SharedPreferences.groupId)
+            }
+        }
+    }
 
     /**
      * Function that makes a [User] join an existing [Group], validating if the name that the user
@@ -132,7 +148,7 @@ class UserQueries {
     suspend fun getAllUsers(groupId: String): ArrayList<User>? {
         return try {
             val ref = instance.collection(fbGroupsCollection).document(groupId)
-                .collection(fbUsersCollection)
+                .collection(fbUsersCollection).orderBy(UserFields.name, Query.Direction.ASCENDING)
                 .get().await()
             val users = arrayListOf<User>()
             val data = ref.documents

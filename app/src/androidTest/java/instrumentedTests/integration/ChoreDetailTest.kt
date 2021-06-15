@@ -3,9 +3,9 @@ package instrumentedTests.integration
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.platform.app.InstrumentationRegistry
-import com.gabr.gabc.kelo.choreDetail.AssigneeViewModel
+import com.gabr.gabc.kelo.viewModels.AssigneeViewModel
 import com.gabr.gabc.kelo.constants.Constants
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import instrumentedTests.integration.utils.getOrAwaitValue
 import junit.framework.TestCase.assertFalse

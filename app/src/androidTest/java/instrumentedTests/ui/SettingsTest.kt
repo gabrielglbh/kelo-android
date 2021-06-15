@@ -18,8 +18,8 @@ import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.GroupQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
-import com.gabr.gabc.kelo.models.Group
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.Group
+import com.gabr.gabc.kelo.dataModels.User
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.DisableAnimationsRule
 import instrumentedTests.ui.utils.keepScreenActive
@@ -114,6 +114,20 @@ class SettingsTest {
         onView(withId(R.id.settingsRemoveGroupButton)).perform(scrollTo()).perform(click())
         onView(withText(R.string.settings_dialog_msg_delete_group)).inRoot(isDialog()).check(matches(isDisplayed()))
         clickOnDialogAndCheckReturnToWelcomeActivity()
+    }
+
+    /** Test that verifies that a dialog appears upon clicking edit user setting */
+    @Test
+    fun dialogOnEditUserAppears() {
+        onView(withId(R.id.settingsUpdateUserButton)).perform(scrollTo()).perform(click())
+        onView(withText(R.string.settings_change_user_name_message)).inRoot(isDialog()).check(matches(isDisplayed()))
+    }
+
+    /** Test that verifies that a dialog appears upon clicking edit group setting */
+    @Test
+    fun dialogOnEditGroupNameAppears() {
+        onView(withId(R.id.settingsUpdateGroupButton)).perform(scrollTo()).perform(click())
+        onView(withText(R.string.settings_change_group_name_message)).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 
     private fun clickOnDialogAndCheckReturnToWelcomeActivity() {

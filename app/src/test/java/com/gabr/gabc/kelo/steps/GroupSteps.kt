@@ -1,7 +1,8 @@
 package com.gabr.gabc.kelo.steps
 
+import com.gabr.gabc.kelo.dataModels.User
+import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
-import com.gabr.gabc.kelo.utils.common.CurrencyModel
 import io.cucumber.java8.En
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -10,15 +11,14 @@ import junit.framework.TestCase.assertTrue
 @Suppress("unused")
 class GroupSteps : En {
     private lateinit var groupName: String
-    private lateinit var userName: String
-    private var selectedCurrency: CurrencyModel? = null
-
     private var validGroupName = true
 
+    private var user = User()
+
     init {
-        /**
-         * Group Name Validation
-         * */
+        /*************************
+         * Group Name Validation *
+         *************************/
         Given("the user that enters its group name {string}") { groupName: String ->
             this.groupName = groupName
         }
@@ -45,6 +45,23 @@ class GroupSteps : En {
         }
         Then("the group name must not contain special characters") {
             assertFalse(validGroupName)
+        }
+
+        /**********************************
+         *    Validate Update Group Name  *
+         **********************************/
+        Given("a user that wants to update the group name") {}
+        When("the user is the unique administrator of the group") {
+            user.isAdmin = true
+        }
+        When("the user is not the unique administrator of the group") {
+            user.isAdmin = false
+        }
+        Then("the user is permitted to modify the group name") {
+            assertTrue(PermissionsSingleton.isUserAdmin(user))
+        }
+        Then("the user is not permitted to modify the group name") {
+            assertFalse(PermissionsSingleton.isUserAdmin(user))
         }
     }
 }

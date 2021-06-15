@@ -14,11 +14,11 @@ import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.PermissionsSingleton
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
-import com.gabr.gabc.kelo.welcome.WelcomeViewModel
+import com.gabr.gabc.kelo.viewModels.WelcomeViewModel
 import com.gabr.gabc.kelo.welcome.WelcomePageFunctions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -98,7 +98,7 @@ class ViewPagerPage3: Fragment() {
                 "-3" -> UtilsSingleton.showSnackBar(parent, getString(R.string.err_group_does_not_exist))
                 else -> {
                     val intent = Intent(requireActivity(), MainActivity::class.java)
-                    SharedPreferences.putIsFirstLaunched(requireActivity(), true)
+                    SharedPreferences.putBooleanCode(requireActivity(), Constants.FIRST_LAUNCHED, true)
                     SharedPreferences.putStringCode(requireActivity(), Constants.GROUP_ID, groupId)
                     SharedPreferences.putStringCode(requireActivity(), Constants.USER_ID, userId)
                     SharedPreferences.getStringCode(requireActivity(), Constants.GROUP_ID)

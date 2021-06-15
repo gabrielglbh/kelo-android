@@ -12,9 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.ChoreQueries
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.Chore
+import com.gabr.gabc.kelo.dataModels.Chore
 import com.gabr.gabc.kelo.utils.*
 import com.gabr.gabc.kelo.utils.common.CustomDatePicker
+import com.gabr.gabc.kelo.viewModels.AssigneeViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -79,6 +80,8 @@ class ChoreDetailActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         menu?.findItem(R.id.toolbar_share)?.isVisible = false
+        menu?.findItem(R.id.toolbar_completed_chores)?.isVisible = false
+        menu?.findItem(R.id.toolbar_information)?.isVisible = false
         return true
     }
 
@@ -148,12 +151,8 @@ class ChoreDetailActivity : AppCompatActivity() {
     private fun setUpDatePicker() {
         date = findViewById(R.id.choreDetailExpireDateButton)
 
-        if (viewDetails) {
-            val c = Calendar.getInstance()
-            chore.expiration?.let { c.time = it }
-            date.text = DatesSingleton.parseCalendarToString(c)
-        }
-        else date.text = DatesSingleton.parseCalendarToString(Calendar.getInstance())
+        if (viewDetails) chore.expiration?.let { selectedCalendar.time = it }
+        date.text = DatesSingleton.parseCalendarToString(selectedCalendar)
 
         date.setOnClickListener {
             clearFocusOfEditTextAndSetDrawable()

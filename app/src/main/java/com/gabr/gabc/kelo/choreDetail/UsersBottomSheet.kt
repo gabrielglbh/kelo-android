@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.firebase.UserQueries
-import com.gabr.gabc.kelo.models.User
+import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.SharedPreferences
 import com.gabr.gabc.kelo.utils.UtilsSingleton
 import com.gabr.gabc.kelo.utils.common.UsersAdapter
+import com.gabr.gabc.kelo.viewModels.AssigneeViewModel
+import com.gabr.gabc.kelo.viewModels.UserListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +29,8 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
     }
 
     private lateinit var viewModel: AssigneeViewModel
+    private lateinit var userViewModel: UserListViewModel
+
     private lateinit var userLists: RecyclerView
     private lateinit var loading: ProgressBar
     private lateinit var selectRandomUser: MaterialButton
@@ -39,6 +43,7 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run { ViewModelProvider(this).get(AssigneeViewModel::class.java) }!!
+        userViewModel = activity?.run { ViewModelProvider(this).get(UserListViewModel::class.java) }!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,27 +61,30 @@ class UsersBottomSheet : BottomSheetDialogFragment(), UsersAdapter.UserClickList
             }
         }
 
-        userLists = view.findViewById(R.id.usersList)
-        userLists.layoutManager = LinearLayoutManager(context)
-
+        setUserList(view)
         getAllUsers()
     }
 
+    private fun setUserList(view: View) {
+        userLists = view.findViewById(R.id.usersList)
+        userLists.layoutManager = LinearLayoutManager(context)
+        userLists.adapter = UsersAdapter(this, userViewModel, requireContext(),
+            requireView(), clickListener = this)
+        selectRandomUser.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                UserQueries().getRandomUser(SharedPreferences.groupId)?.let { rndUser ->
+                    viewModel.setAssignee(rndUser)
+                    dismiss()
+                }
+            }
+        }
+    }
+
     private fun getAllUsers() {
-        val listener = this
         CoroutineScope(Dispatchers.Main).launch {
             val users = UserQueries().getAllUsers(SharedPreferences.groupId)
-            if (users != null) {
-                userLists.adapter = UsersAdapter(users, requireContext(), requireView(), clickListener = listener)
-                selectRandomUser.setOnClickListener {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        UserQueries().getRandomUser(SharedPreferences.groupId)?.let { rndUser ->
-                            viewModel.setAssignee(rndUser)
-                            dismiss()
-                        }
-                    }
-                }
-            } else {
+            if (users != null) userViewModel.addAllUsers(users)
+            else {
                 UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_users))
             }
         }

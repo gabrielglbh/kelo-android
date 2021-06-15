@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.gabr.gabc.kelo.R
 import com.gabr.gabc.kelo.constants.Constants
 import com.gabr.gabc.kelo.utils.UtilsSingleton
-import com.gabr.gabc.kelo.welcome.WelcomeViewModel
+import com.gabr.gabc.kelo.viewModels.WelcomeViewModel
 
 /** Fragment included in the WelcomeActivity that holds the selection of the groupSelectedMode (create or join group) */
 class ViewPagerPage1 : Fragment() {

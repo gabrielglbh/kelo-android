@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
  *      - @User
  *      - @Group
  *      - @Chore
+ *      - @Reward
  * */
 @RunWith(Cucumber::class)
 @CucumberOptions(

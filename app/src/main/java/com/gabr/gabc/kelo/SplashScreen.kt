@@ -17,7 +17,8 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_screen)
-        SharedPreferences.getIfFirstLaunched(this)
+        SharedPreferences.getBooleanCode(this, Constants.FIRST_LAUNCHED)
+        SharedPreferences.getBooleanCode(this, Constants.SHOW_COMPLETED_CHORES)
         SharedPreferences.getStringCode(this, Constants.GROUP_ID)
         SharedPreferences.getStringCode(this, Constants.USER_ID)
 

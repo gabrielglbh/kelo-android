@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/settings_users_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userPoints" />
@@ -59,6 +59,13 @@
                 app:layout_constraintStart_toStartOf="@+id/settingsUserLabel"
                 app:layout_constraintTop_toBottomOf="@+id/settingsUserLabel">
 
+                <include
+                    layout="@layout/loading_widget"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/settingsUserList"
                     android:layout_width="match_parent"
@@ -69,13 +76,44 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/users_list_item" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/settingsRewardsLabel"
+                style="@style/HeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings_reward_label"
+                app:layout_constraintStart_toStartOf="@+id/settingsUserListContainer"
+                app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
+
+            <ImageView
+                android:id="@+id/removeReward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clear"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/errorColor"
+                app:layout_constraintBottom_toBottomOf="@+id/settingsRewardsLabel"
+                app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
+                app:layout_constraintTop_toTopOf="@+id/settingsRewardsLabel" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rewardParent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/settingsUserListContainer"
+                app:layout_constraintStart_toStartOf="@+id/settingsRewardsLabel"
+                app:layout_constraintTop_toBottomOf="@+id/settingsRewardsLabel">
+
                 <include
-                    layout="@layout/loading_widget"
+                    layout="@layout/reusable_list_widget"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -83,13 +121,14 @@
                 style="@style/HeaderStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/settings_group_currency"
-                app:layout_constraintStart_toStartOf="@+id/settingsUserListContainer"
-                app:layout_constraintTop_toBottomOf="@+id/settingsUserListContainer" />
+                app:layout_constraintStart_toStartOf="@+id/rewardParent"
+                app:layout_constraintTop_toBottomOf="@+id/rewardParent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsCurrencyButton"
+                style="@style/SettingsButton"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/material_button_height"
                 android:layout_marginTop="8dp"
@@ -99,15 +138,50 @@
                 tools:text="EUR" />
 
             <TextView
+                android:id="@+id/updatesLabel"
+                style="@style/HeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings_edit_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsCurrencyButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsUpdateGroupButton"
+                style="@style/CustomButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings_update_group_button"
+                app:layout_constraintEnd_toEndOf="@+id/settingsCurrencyButton"
+                app:layout_constraintStart_toStartOf="@+id/guideline13"
+                app:layout_constraintTop_toBottomOf="@+id/updatesLabel" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsUpdateUserButton"
+                style="@style/CustomButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/settings_update_user_button"
+                app:layout_constraintEnd_toStartOf="@+id/guideline13"
+                app:layout_constraintStart_toStartOf="@+id/updatesLabel"
+                app:layout_constraintTop_toBottomOf="@+id/updatesLabel" />
+
+            <TextView
                 android:id="@+id/dangerZoneLabel"
                 style="@style/HeaderStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/settings_danger_zone_label"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/settingsCurrencyButton" />
+                app:layout_constraintTop_toBottomOf="@+id/settingsUpdateGroupButton" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsRemoveGroupButton"

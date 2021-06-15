@@ -4,13 +4,25 @@
     <item
         android:title="@string/share_group_code"
         android:id="@+id/toolbar_share"
-        android:orderInCategory="1"
+        android:orderInCategory="4"
         app:showAsAction="ifRoom"
         android:icon="@drawable/share"/>
     <item
         android:title="@string/add_chore"
         android:id="@+id/toolbar_done"
         app:showAsAction="ifRoom"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:icon="@drawable/done"/>
+    <item
+        android:title="@string/completed_chores"
+        android:id="@+id/toolbar_completed_chores"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_todo"/>
+    <item
+        android:title="@string/toolbar_info"
+        android:id="@+id/toolbar_information"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_info"/>
 </menu>

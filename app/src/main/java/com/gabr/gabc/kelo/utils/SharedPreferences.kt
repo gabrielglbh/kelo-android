@@ -35,20 +35,22 @@ object SharedPreferences {
     fun isUserBeingDisplayedCurrentUser(userId: String, savedUid: String? = this.userId): Boolean = userId == savedUid
 
     /**
-     * Function that sets the pair of value-key by an specified key to the desired single instance
-     * variable, in this case isFirstLaunched
+     * Function that retrieves the Boolean pair of value-key by an specified key to the desired single instance
+     * variable
      *
-     * Called in SplashScreen ONLY, and then to retrieve call: [isFirstLaunched]
+     * Called in SplashScreen ONLY, and then to retrieve call on respective variable
      *
      * @param activity: current activity
+     * @param key: key to be retrieved
      * */
-    fun getIfFirstLaunched(activity: Activity) {
+    fun getBooleanCode(activity: Activity, key: String) {
         val sharedPref = activity.getSharedPreferences(Constants.FIRST_LAUNCHED, Context.MODE_PRIVATE)
-        isFirstLaunched = sharedPref.getBoolean(Constants.FIRST_LAUNCHED, false)
+        val value = sharedPref.getBoolean(key, false)
+        if (key == Constants.FIRST_LAUNCHED) isFirstLaunched = value
     }
 
     /**
-     * Function that retrieves the pair of value-key by an specified key to the desired single instance
+     * Function that retrieves the String pair of value-key by an specified key to the desired single instance
      * variable
      *
      * Called in MainActivity ONLY, and then to retrieve call on respective variable
@@ -62,21 +64,22 @@ object SharedPreferences {
     }
 
     /**
-     * Function that writes a pair of value-key for the first launched activities of WelcomeFragment
+     * Function that writes a Boolean pair of value-key for the first launched activities of WelcomeFragment
      *
      * @param activity: current activity
-     * @param isFirstLaunched: boolean to see if the user has created or joined a group
+     * @param key: key to be saved
+     * @param code: code to be saved
      * */
-    fun putIsFirstLaunched(activity: Activity, isFirstLaunched: Boolean) {
-        val sharedPref = activity.getSharedPreferences(Constants.FIRST_LAUNCHED, Context.MODE_PRIVATE) ?: return
+    fun putBooleanCode(activity: Activity, key: String, code: Boolean) {
+        val sharedPref = activity.getSharedPreferences(key, Context.MODE_PRIVATE) ?: return
         with (sharedPref.edit()) {
-            putBoolean(Constants.FIRST_LAUNCHED, isFirstLaunched)
+            putBoolean(key, code)
             commit()
         }
     }
 
     /**
-     * Function that writes a pair of value-key for the first launched activities of WelcomeFragment
+     * Function that writes a String pair of value-key for the first launched activities of WelcomeFragment
      *
      * @param activity: current activity
      * @param key: key to be saved
