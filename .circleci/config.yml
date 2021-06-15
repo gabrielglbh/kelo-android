@@ -75,7 +75,7 @@ jobs:
       - android/create-avd:
           avd-name: testDevice
           install: true
-          system-image: system-images;android-29;googleapis;x86
+          system-image: system-images;android-29;google_apis;x86
 
       # Skin is needed as the device by default has a very small screen
       # Note that running UI Tests is unstable and some may fail. That is why,
