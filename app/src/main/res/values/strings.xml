@@ -134,23 +134,28 @@
     <string name="toolbar_info" translatable="false">Info</string>
 
     <!-- Tutorial -->
-    <string name="tutorial_1_title">MANAGING GROUPS</string>
-    <string name="tutorial_1_msg_1">Share the group link to your friends using the button   .\n\nYour friends will be automatically added to the group by joining from the link.</string>
-    <string name="tutorial_1_msg_2">The group administrator can remove users from the group by swiping left or right in the user list in Settings on the user you want to remove.</string>
+    <string name="tutorial_1_title">CHORES</string>
+    <string name="tutorial_1_msg_1">Assignee</string>
+    <string name="tutorial_1_msg_11">User assigned to the chore, capable of completing it but nothing else.</string>
+    <string name="tutorial_1_msg_2">Creator</string>
+    <string name="tutorial_1_msg_22">User that created the chore, capable of completing, deleting and editing it.</string>
+    <string name="tutorial_1_msg_3">Importance</string>
+    <string name="tutorial_1_msg_33">Points received by the assignee once the chore is completed.</string>
 
-    <string name="tutorial_2_title">MANAGING CHORES</string>
-    <string name="tutorial_2_msg_1">Add tasks to be done: laundry, food, shopping, washing up… from the floating button.</string>
-    <string name="tutorial_2_msg_2">You can assign any of your friends to the task and you can also specify a deadline. In addition, you can designate the importance of the task so that the assignee earns more or less points depending on the difficulty or urgency of the task.</string>
-    <string name="tutorial_2_msg_3">The TODO tasks will be displayed on the main page with all the information: \n\n• Due Date\n• Name\n• Assignee (Left)\n• Creator (Right)\n• Importance (Color Bar)</string>
+    <string name="tutorial_2_msg_1">Completing a Chore</string>
+    <string name="tutorial_2_msg_11">The group admin, the assignee and the creator can complete the chore. The points will always be received by the assignee.</string>
+    <string name="tutorial_2_msg_2">Removing a Chore</string>
+    <string name="tutorial_2_msg_22">Only the admin and the creator can remove a chore from the list.</string>
 
-    <string name="tutorial_3_title">CHORE ACTIONS</string>
-    <string name="tutorial_3_msg_1">Depending on the permissions held within the group and the role in a certain chore, users can complete, delete or edit a chore.</string>
-    <string name="tutorial_3_msg_2">To complete a chore, swipe to the right of the chore to be completed. The chore will be added to the list of completed chores designated by   .</string>
-    <string name="tutorial_3_msg_3">To delete a chore, swipe to the left of the chore to be deleted.</string>
-    <string name="tutorial_3_msg_4">To edit it, simply click on the chore and edit what you want.</string>
+    <string name="tutorial_3_title">USERS</string>
+    <string name="tutorial_3_msg_1">Deleting a User</string>
+    <string name="tutorial_3_msg_11">Only the group admin can delete a user from the group. All user data will be lost.</string>
+    <string name="tutorial_3_msg_2">Adding a User</string>
+    <string name="tutorial_3_msg_22">Any user can share the link and/or the code to let new people get into the group.</string>
 
     <string name="tutorial_4_title">REWARDS</string>
-    <string name="tutorial_4_msg_1">The reward can only be managed by the administrator. This reward serves to boost the motivation of the group users to perform the given tasks - it can be anything!</string>
-    <string name="tutorial_4_msg_2">The reward will be distributed with a certain frequency and to the user with the most points in the group.</string>
-    <string name="tutorial_4_msg_3">All reward parameters are defined by the administrator: name and frequency. There is a possibility that there is no frequency for the reward, it can be given whenever you want.</string>
+    <string name="tutorial_4_msg_1">Manage Rewards</string>
+    <string name="tutorial_4_msg_11">The admin can create, edit or remove the reward of the group. It can be anything!</string>
+    <string name="tutorial_4_msg_2">Reward Frequency</string>
+    <string name="tutorial_4_msg_22">The chosen reward will be given to the user with the most points at the end of the selected period. You can also deactivate this by selecting "No Frequency".</string>
 </resources>

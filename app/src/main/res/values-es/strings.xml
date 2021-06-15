@@ -129,23 +129,28 @@
     <string name="err_reward_update">Algo ha ocurrido mientras se actualizaba la recompensa</string>
 
     <!-- Tutorial -->
-    <string name="tutorial_1_title">ADMINISTRACIÓN DE GRUPOS</string>
-    <string name="tutorial_1_msg_1">Comparte el link del grupo a tus amigos mediante el botón   .\n\nTus amigos se añadirán automáticamente al grupo al unirse desde el link.</string>
-    <string name="tutorial_1_msg_2">El administrador del grupo puede eliminar a los usuarios del grupo haciendo swipe hacia la derecha o izquierda en la lista de usuarios de Ajustes en el usuario que quiera eliminar.</string>
+    <string name="tutorial_1_title">TAREAS</string>
+    <string name="tutorial_1_msg_1">Asignado</string>
+    <string name="tutorial_1_msg_11">Usuario asignado a la tarea, capaz de completarla pero nada más.</string>
+    <string name="tutorial_1_msg_2">Creador</string>
+    <string name="tutorial_1_msg_22">Usuario que ha creado la tarea, capaz de completarla, borrarla y editarla.</string>
+    <string name="tutorial_1_msg_3">Importancia</string>
+    <string name="tutorial_1_msg_33">Puntos que recibe el asignado una vez completada la tarea.</string>
 
-    <string name="tutorial_2_title">ADMINISTRACIÓN DE TAREAS</string>
-    <string name="tutorial_2_msg_1">Añade tareas por hacer: hacer la colada, la comida, ir a comprar, fregar… desde el botón flotante.</string>
-    <string name="tutorial_2_msg_2">Puedes asignar a cualquiera de tus amigos a la tarea y también puedes especificar una fecha límite. Además, puedes designar la importancia de la tarea para que el asignado gane más o menos puntos en función de la dificultad o urgencia de la tarea.</string>
-    <string name="tutorial_2_msg_3">Las tareas por hacer se mostrarán en la página principal con toda la información: \n\n• Fecha de Vencimiento\n• Nombre\n• Asignado (Izquierda)\n• Creador (Derecha)\n• Importancia (Barra de Color)</string>
+    <string name="tutorial_2_msg_1">Completar una Tarea</string>
+    <string name="tutorial_2_msg_11">El administrador del grupo, el asignado y el creador pueden completar la tarea. Los puntos los recibirá siempre el asignado.</string>
+    <string name="tutorial_2_msg_2">Eliminar una Tarea</string>
+    <string name="tutorial_2_msg_22">Solo el administrador y el creador pueden eliminar una tarea de la lista.</string>
 
-    <string name="tutorial_3_title">ACCIONES EN TAREA</string>
-    <string name="tutorial_3_msg_1">Dependiendo de los permisos que se tengan dentro del grupo y de la función en cierta tarea, los usuarios pueden completar, eliminar o editar una tarea.</string>
-    <string name="tutorial_3_msg_2">Para completar una tarea, haz un swipe hacia la derecha de la tarea a completar. La tarea se añadirá a la lista de completadas designada por el icono   .</string>
-    <string name="tutorial_3_msg_3">Para eliminar una tarea, haz un swipe hacia la izquierda de la tarea a eliminar.</string>
-    <string name="tutorial_3_msg_4">Para editarla, simplemente pulsa la tarea y edita lo que quieras.</string>
+    <string name="tutorial_3_title">USUARIOS</string>
+    <string name="tutorial_3_msg_1">Eliminar un Usuario</string>
+    <string name="tutorial_3_msg_11">Solo el administrador del grupo puede eliminar un usuario del grupo. Todos los datos del usuario se perderán.</string>
+    <string name="tutorial_3_msg_2">Añadir un Usuario</string>
+    <string name="tutorial_3_msg_22">Cualquier usuario puede compartir el enlace y/o el código para que nuevas personas entren en el grupo.</string>
 
     <string name="tutorial_4_title">RECOMPENSAS</string>
-    <string name="tutorial_4_msg_1">La recompensa solo puede ser gestionada por el administrador. Esta recompensa sirve para impulsar la motivación de los usuarios del grupo para realizar las tareas encomendadas. ¡Puede ser lo que sea!</string>
-    <string name="tutorial_4_msg_2">La recompensa se repartirá con cierta frecuencia y al usuario con más puntos del grupo.</string>
-    <string name="tutorial_4_msg_3">Todos los parámetros de la recompensa son definidos por el administrador: nombre y frecuencia. Existe la posibilidad de que no haya frecuencia para la recompensa, pudiendo darse cuando se quiera.</string>
+    <string name="tutorial_4_msg_1">Administrar Recompensa</string>
+    <string name="tutorial_4_msg_11">El administrador puede crear, editar o eliminar la recompensa del grupo. ¡Puede ser cualquier cosa!</string>
+    <string name="tutorial_4_msg_2">Frecuencia de la Recompensa</string>
+    <string name="tutorial_4_msg_22">La recompensa elegida se entregará al usuario con más puntos al final del periodo seleccionado. También se puede desactivar seleccionando "Sin frecuencia".</string>
 </resources>

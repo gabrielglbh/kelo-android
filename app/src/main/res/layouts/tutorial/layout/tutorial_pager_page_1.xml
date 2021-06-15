@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -31,46 +30,121 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tutorial1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/labelText"
-                android:textSize="18sp"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/basic_actions_chore_list"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageView1"
                 android:layout_width="0dp"
-                android:layout_height="190dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/share_code"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tutorial1" />
-
-            <TextView
-                android:id="@+id/tutorial2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/tutorial_1_msg_2"
-                android:textColor="@color/labelText"
-                android:textSize="18sp"
+                android:layout_height="150dp"
+                android:src="@drawable/basic_action_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <ImageView
-                android:layout_width="0dp"
-                android:layout_height="110dp"
+                android:id="@+id/assigneeTutorial"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/delete_user"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/ic_assigned"
+                app:tint="@color/primaryColor"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tutorial2" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView1"/>
+
+            <TextView
+                android:id="@+id/assigneeTextTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/tutorial_1_msg_1"
+                style="@style/HeaderStyle"
+                app:layout_constraintStart_toEndOf="@+id/assigneeTutorial"
+                app:layout_constraintTop_toTopOf="@+id/assigneeTutorial" />
+
+            <TextView
+                android:id="@+id/assigneeTextSubTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/tutorial_1_msg_11"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/assigneeTextTutorial"
+                app:layout_constraintTop_toBottomOf="@+id/assigneeTextTutorial" />
+
+            <ImageView
+                android:id="@+id/creationTutorial"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_creator"
+                app:tint="@color/primaryColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/assigneeTextSubTutorial" />
+
+            <TextView
+                android:id="@+id/creationTutorialText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                style="@style/HeaderStyle"
+                android:text="@string/tutorial_1_msg_2"
+                app:layout_constraintBottom_toBottomOf="@+id/creationTutorial"
+                app:layout_constraintEnd_toEndOf="@+id/assigneeTextTutorial"
+                app:layout_constraintStart_toEndOf="@+id/creationTutorial"
+                app:layout_constraintTop_toTopOf="@+id/creationTutorial" />
+
+            <TextView
+                android:id="@+id/creationTextSubTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/tutorial_1_msg_22"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/creationTutorialText"
+                app:layout_constraintTop_toBottomOf="@+id/creationTutorialText" />
+
+            <View
+                android:id="@+id/importanceTutorial"
+                android:layout_width="4dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/importanceMedium"
+                app:layout_constraintEnd_toEndOf="@+id/creationTutorial"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/creationTextSubTutorial" />
+
+            <TextView
+                android:id="@+id/importanceTutorialText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/tutorial_1_msg_3"
+                style="@style/HeaderStyle"
+                app:layout_constraintStart_toStartOf="@+id/creationTutorialText"
+                app:layout_constraintTop_toTopOf="@+id/importanceTutorial" />
+
+            <TextView
+                android:id="@+id/importanceTextSubTutorial"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/tutorial_1_msg_33"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/importanceTutorialText"
+                app:layout_constraintTop_toBottomOf="@+id/importanceTutorialText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -98,24 +172,21 @@
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_margin="8dp"
-            android:background="@drawable/chore_icon_placeholder"
-            android:backgroundTint="@color/primaryColor" />
+            android:background="@drawable/chore_icon_placeholder" />
 
         <View
             android:id="@+id/view2"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_margin="8dp"
-            android:background="@drawable/chore_icon_placeholder"
-            android:backgroundTint="@color/primaryColor" />
+            android:background="@drawable/chore_icon_placeholder" />
 
         <View
             android:id="@+id/view3"
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:layout_margin="8dp"
-            android:background="@drawable/chore_icon_placeholder"
-            android:backgroundTint="@color/primaryColor" />
+            android:background="@drawable/chore_icon_placeholder" />
 
     </LinearLayout>
 
