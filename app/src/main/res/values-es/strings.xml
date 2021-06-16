@@ -7,6 +7,7 @@
     <string name="create_group_button">Crear un Grupo</string>
     <string name="join_group_button">Unirse a un Grupo</string>
     <string name="welcomeChoiceLabel">¿Qué te gustaría hacer?</string>
+    <string name="definitionKelo">KELO te ayuda a ti y a tus amigos a gestionar las tareas de la casa (o lo que sea) para los viajes de verano, las estancias de larga duración o cualquier otra cosa realmente. Incluso puedes definir una recompensa por completar el mayor número de tareas para motivaros.\n\nMira el tutorial en los ajustes para obtener más información.</string>
 
     <!-- Welcome Activity - Page 2 -->
     <string name="create_new_group_label">Crear un Nuevo Grupo</string>
@@ -50,6 +51,7 @@
     <string name="group_code_label">Código del Grupo:</string>
     <string name="share_group_code">Comparte el Código del Grupo</string>
     <string name="message_on_code_sharing">¡Únete a mi grupo en Kelo siguiendo este link!</string>
+    <string name="assigned_chores">Asignadas</string>
 
     <!-- Settings -->
     <string name="settings_points_label">Tus Puntos</string>

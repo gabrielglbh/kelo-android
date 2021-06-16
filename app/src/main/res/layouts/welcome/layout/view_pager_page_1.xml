@@ -20,6 +20,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/definitionLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/definitionKelo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeChoiceLabel" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createGroupButton"
             android:layout_width="match_parent"
@@ -30,7 +42,7 @@
             android:text="@string/create_group_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcomeChoiceLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/definitionLabel" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/joinGroupButton"

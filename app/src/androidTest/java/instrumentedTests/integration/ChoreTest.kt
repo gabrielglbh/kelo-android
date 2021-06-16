@@ -111,6 +111,34 @@ class ChoreTest {
         assertTrue(chores!![0].expiration!!.time < chores[1].expiration!!.time)
     }
 
+    /** Tests the getAllChores function for unfinished chores filtered by assignee */
+    @Test
+    fun readAllChoresThatAreNotCompletedByAssigneeSuccessfully() = runBlocking {
+        val uploadChore = Chore("CHORE_U", "Lavar los platos", "", user.id)
+        q.createChore(uploadChore, group.id)
+        val chores = q.getAllChores(group.id, userId = user.id)
+        assertTrue(chores != null)
+        assertTrue(chores?.size == 2)
+        assertTrue(chores!![0].expiration!!.time < chores[1].expiration!!.time)
+    }
+
+    /** Tests the getAllChores function for unfinished chores filtered by assignee */
+    @Test
+    fun readAllChoresThatAreAlreadyCompletedByAssigneeSuccessfully() = runBlocking {
+        val calendar = Calendar.getInstance()
+        calendar.set(1997, 8, 22)
+        val uploadChore1 = Chore("CHORE_U_COMPLETED", "Completeda 1", assignee = user.id,
+            expiration = calendar.time, isCompleted = true)
+        val uploadChore2 = Chore("SECOND_CHORE_COMPLETED", "Completeda 2", assignee = user.id,
+            isCompleted = true)
+        q.createChore(uploadChore1, group.id)
+        q.createChore(uploadChore2, group.id)
+        val chores = q.getAllChores(group.id, isCompleted = true, userId = user.id)
+        assertTrue(chores != null)
+        assertTrue(chores?.size == 2)
+        assertTrue(chores!![0].expiration!!.time < chores[1].expiration!!.time)
+    }
+
     /** Tests the updateChore function */
     @Test
     fun updateChoreSuccessfully() = runBlocking {

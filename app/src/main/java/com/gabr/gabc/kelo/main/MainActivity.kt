@@ -2,11 +2,13 @@ package com.gabr.gabc.kelo.main
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var choreListViewModel: ChoreListViewModel
 
     private var showCompletedChores = false
+    private var showAssignedChores = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +82,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
         menu?.findItem(R.id.toolbar_done)?.isVisible = false
+        menu?.findItem(R.id.toolbar_share)?.isVisible = false
+        menu?.findItem(R.id.toolbar_information)?.isVisible = false
         return true
     }
 
@@ -93,12 +98,29 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.toolbar_assigned -> {
+                showAssignedChores = !showAssignedChores
+                choreListViewModel.setShowAssigned(showAssignedChores)
+
+                if (!showAssignedChores) item.icon.colorFilter = PorterDuffColorFilter(
+                    ContextCompat.getColor(this, R.color.labelText),
+                    PorterDuff.Mode.SRC_IN)
+                else item.icon.colorFilter = PorterDuffColorFilter(
+                    ContextCompat.getColor(this, R.color.primaryColor),
+                    PorterDuff.Mode.SRC_IN)
+                true
+            }
             R.id.toolbar_completed_chores -> {
                 showCompletedChores = !showCompletedChores
                 choreListViewModel.setShowCompleted(showCompletedChores)
 
                 if (!showCompletedChores) item.icon = ContextCompat.getDrawable(this, R.drawable.ic_todo)
-                else item.icon = ContextCompat.getDrawable(this, R.drawable.ic_completed)
+                else {
+                    item.icon = ContextCompat.getDrawable(this, R.drawable.ic_completed)
+                    item.icon.colorFilter = PorterDuffColorFilter(
+                        ContextCompat.getColor(this, R.color.primaryColor),
+                        PorterDuff.Mode.SRC_IN)
+                }
                 true
             }
             else -> true
@@ -147,12 +169,18 @@ class MainActivity : AppCompatActivity() {
                 R.id.chores_menu -> {
                     supportActionBar?.title = choreListViewModel.actionBarTitle.value
                     toolbar.menu.findItem(R.id.toolbar_completed_chores).isVisible = true
+                    toolbar.menu.findItem(R.id.toolbar_assigned).isVisible = true
+                    toolbar.menu.findItem(R.id.toolbar_information).isVisible = false
+                    toolbar.menu.findItem(R.id.toolbar_share).isVisible = false
                     if (currentItem != it) navController.navigate(R.id.action_settings_to_choreList)
                     true
                 }
                 R.id.settings_menu -> {
                     supportActionBar?.title = getString(R.string.settings)
                     toolbar.menu.findItem(R.id.toolbar_completed_chores).isVisible = false
+                    toolbar.menu.findItem(R.id.toolbar_assigned).isVisible = false
+                    toolbar.menu.findItem(R.id.toolbar_information).isVisible = true
+                    toolbar.menu.findItem(R.id.toolbar_share).isVisible = true
                     if (currentItem != it) navController.navigate(R.id.action_choreList_to_settings)
                     true
                 }

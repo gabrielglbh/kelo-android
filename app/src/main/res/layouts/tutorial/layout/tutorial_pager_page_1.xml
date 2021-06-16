@@ -33,7 +33,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
-                android:layout_height="180dp"
+                android:layout_height="230dp"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/basic_actions_chore_list"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +121,7 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/importanceMedium"
+                android:background="@color/importanceLow"
                 app:layout_constraintEnd_toEndOf="@+id/creationTutorial"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/creationTextSubTutorial" />

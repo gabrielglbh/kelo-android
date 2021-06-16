@@ -7,6 +7,7 @@
     <string name="create_group_button">Create Group</string>
     <string name="join_group_button">Join Group</string>
     <string name="welcomeChoiceLabel">What would you like to do?</string>
+    <string name="definitionKelo">KELO helps you and your friends to manage the house chores (or anything) for summer trips, long-stay housing or anything really. You can even define a reward for completing the most chores for motivation!\n\nSee the tutorial in the settings for more information.</string>
 
     <!-- Welcome Activity - Page 2 -->
     <string name="create_new_group_label">Create a New Group</string>
@@ -52,6 +53,7 @@
     <string name="group_code_label">Group Code:</string>
     <string name="share_group_code">Share Group Code</string>
     <string name="message_on_code_sharing">Join my Kelo group by following this link!</string>
+    <string name="assigned_chores">Assigned</string>
 
     <!-- Settings -->
     <string name="settings_points_label">Your Points</string>

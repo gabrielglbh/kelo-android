@@ -70,16 +70,22 @@ class ChoreList : Fragment(), ChoreListAdapter.ChoreListener {
             }
         })
 
+        viewModel.showAssigned.observe(viewLifecycleOwner, { getChores() })
+
         refresh = view.findViewById(R.id.choresRefresh)
         refresh.setOnRefreshListener { getChores() }
     }
 
     private fun getChores() {
         CoroutineScope(Dispatchers.Main).launch {
-            val chores = ChoreQueries().getAllChores(SharedPreferences.groupId, isCompleted =  viewModel.showCompleted.value)
-            if (chores != null) viewModel.addAllChores(chores)
-            else UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_chores), anchorView = addChore)
-            refresh.isRefreshing = false
+            viewModel.showAssigned.value?.let { showAssigned ->
+                val chores = ChoreQueries().getAllChores(SharedPreferences.groupId,
+                    isCompleted =  viewModel.showCompleted.value,
+                    userId = if (showAssigned) SharedPreferences.userId else null)
+                if (chores != null) viewModel.addAllChores(chores)
+                else UtilsSingleton.showSnackBar(requireView(), getString(R.string.err_loading_chores), anchorView = addChore)
+                refresh.isRefreshing = false
+            }
         }
     }
 

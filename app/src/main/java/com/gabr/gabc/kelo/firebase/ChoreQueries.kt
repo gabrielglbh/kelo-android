@@ -67,19 +67,31 @@ class ChoreQueries {
 
     /**
      * Function that retrieves all chores ordered by expiration date and filtered by isCompleted field
+     * and the assignee
      *
      * @param groupId: group id in which the chores are
      * @param isCompleted: filter for getting all the chores, depending if the user wants the complete
      * chores or the unfinished ones
+     * @param userId: filter for getting the queries of the assigned user
      * @return list with all the chores
      * */
-    suspend fun getAllChores(groupId: String, isCompleted: Boolean? = false) : ArrayList<Chore>? {
+    suspend fun getAllChores(groupId: String, isCompleted: Boolean? = false, userId: String? = null)
+        : ArrayList<Chore>? {
         return try {
-            val ref = instance.collection(fbGroupsCollection).document(groupId)
-                .collection(fbChoresSubCollection)
-                .whereEqualTo(ChoreFields.isCompleted, isCompleted)
-                .orderBy(ChoreFields.expiration, Query.Direction.ASCENDING)
-                .get().await()
+            val ref = if (userId == null) {
+                instance.collection(fbGroupsCollection).document(groupId)
+                    .collection(fbChoresSubCollection)
+                    .whereEqualTo(ChoreFields.isCompleted, isCompleted)
+                    .orderBy(ChoreFields.expiration, Query.Direction.ASCENDING)
+                    .get().await()
+            } else {
+                instance.collection(fbGroupsCollection).document(groupId)
+                    .collection(fbChoresSubCollection)
+                    .whereEqualTo(ChoreFields.isCompleted, isCompleted)
+                    .whereEqualTo(ChoreFields.assignee, userId)
+                    .orderBy(ChoreFields.expiration, Query.Direction.ASCENDING)
+                    .get().await()
+            }
             val chores = arrayListOf<Chore>()
             ref.documents.forEach { chore ->
                 chore.toObject<Chore>()?.let { chores.add(it) }

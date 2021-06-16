@@ -19,6 +19,7 @@ class ViewPagerPage1 : Fragment() {
     private lateinit var createGroupButton: Button
     private lateinit var joinGroupButton: Button
     private lateinit var label: TextView
+    private lateinit var definition: TextView
 
     private lateinit var viewModel: WelcomeViewModel
 
@@ -34,6 +35,7 @@ class ViewPagerPage1 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         label = view.findViewById(R.id.welcomeChoiceLabel)
+        definition = view.findViewById(R.id.definitionLabel)
 
         createGroupButton = view.findViewById(R.id.createGroupButton)
         createGroupButton.setOnClickListener {
@@ -59,6 +61,7 @@ class ViewPagerPage1 : Fragment() {
 
     private fun animateObjectsIn() {
         UtilsSingleton.createObjectAnimator(label, 500, -1000f)
+        UtilsSingleton.createObjectAnimator(definition, 500, -1000f)
         UtilsSingleton.createObjectAnimator(createGroupButton, 700, -1500f)
         UtilsSingleton.createObjectAnimator(joinGroupButton, 700, -1500f)
     }

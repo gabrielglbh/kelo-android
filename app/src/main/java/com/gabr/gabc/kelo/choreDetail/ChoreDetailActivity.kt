@@ -82,6 +82,7 @@ class ChoreDetailActivity : AppCompatActivity() {
         menu?.findItem(R.id.toolbar_share)?.isVisible = false
         menu?.findItem(R.id.toolbar_completed_chores)?.isVisible = false
         menu?.findItem(R.id.toolbar_information)?.isVisible = false
+        menu?.findItem(R.id.toolbar_assigned)?.isVisible = false
         return true
     }
 
