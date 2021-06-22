@@ -22,7 +22,6 @@ import com.gabr.gabc.kelo.dataModels.Group
 import com.gabr.gabc.kelo.dataModels.User
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.DisableAnimationsRule
-import instrumentedTests.ui.utils.keepScreenActive
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.junit.runner.RunWith
@@ -81,8 +80,6 @@ class SettingsTest {
     /** Function called before each test to go to the desired activity */
     @Before
     fun pressSettingsTab() {
-        activityScenario.scenario.onActivity { it.keepScreenActive() }
-
         runBlocking { UserQueries().createUser(user, group.id) }
 
         onView(withId(R.id.settings_menu)).perform(click())

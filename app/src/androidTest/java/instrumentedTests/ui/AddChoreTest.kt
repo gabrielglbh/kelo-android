@@ -27,7 +27,6 @@ import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.ColorViewMatcher.Companion.matchesBackgroundColor
 import instrumentedTests.ui.utils.DisableAnimationsRule
 import instrumentedTests.ui.utils.RecyclerViewMatcher.Companion.atPosition
-import instrumentedTests.ui.utils.keepScreenActive
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.equalTo
 import org.junit.*
@@ -95,7 +94,6 @@ class AddChoreTest {
     /** Function called before each test to go to the desired activity */
     @Before
     fun pressFAB() {
-        activityScenario.scenario.onActivity { it.keepScreenActive() }
         onView(withId(R.id.choreListFAB)).perform(click())
     }
 

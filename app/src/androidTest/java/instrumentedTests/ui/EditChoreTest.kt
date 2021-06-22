@@ -24,7 +24,6 @@ import com.gabr.gabc.kelo.dataModels.User
 import com.gabr.gabc.kelo.utils.DatesSingleton
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.DisableAnimationsRule
-import instrumentedTests.ui.utils.keepScreenActive
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.junit.runner.RunWith
@@ -86,10 +85,6 @@ class EditChoreTest {
             }
         }
     }
-
-    /** Function called before each test to keep the screen active */
-    @Before
-    fun setUp() { activityScenario.scenario.onActivity { it.keepScreenActive() } }
 
     /** Tests that the view details chore whole routine works perfectly */
     @Test

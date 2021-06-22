@@ -115,6 +115,11 @@ android {
     }
 }
 
+// Force jacoco to use the version you want
+jacoco {
+    toolVersion = "0.8.7"
+}
+
 // Make it so the test appear on screen
 tasks.withType(Test) {
     // Clears error running gradle tasks

@@ -30,7 +30,7 @@ class TextDrawable(private val builder: Builder) : ShapeDrawable() {
         builder.width?.let { width = it }
 
         // text and color
-        builder.toUpperCase?.let { text = if (it) builder.text.toUpperCase(Locale.ROOT) else builder.text }
+        builder.toUpperCase?.let { text = if (it) builder.text.uppercase(Locale.ROOT) else builder.text }
         builder.color?.let { color = it }
 
         // text paint settings

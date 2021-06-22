@@ -22,7 +22,6 @@ import com.gabr.gabc.kelo.firebase.UserQueries
 import com.gabr.gabc.kelo.main.MainActivity
 import com.google.firebase.FirebaseApp
 import instrumentedTests.ui.utils.DisableAnimationsRule
-import instrumentedTests.ui.utils.keepScreenActive
 import kotlinx.coroutines.runBlocking
 import org.junit.*
 import org.junit.runner.RunWith
@@ -87,7 +86,6 @@ class EditRewardTest {
     /** Function called before each test to keep the screen active */
     @Before
     fun setUp() {
-        activityScenario.scenario.onActivity { it.keepScreenActive() }
         onView(withId(R.id.settings_menu)).perform(click())
     }
 
