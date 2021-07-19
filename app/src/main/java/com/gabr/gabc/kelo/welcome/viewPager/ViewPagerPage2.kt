@@ -42,7 +42,7 @@ class ViewPagerPage2 : Fragment() {
     private lateinit var label: TextView
     private lateinit var parent: ConstraintLayout
 
-    private lateinit var currency: CurrencyModel
+    private var currency: CurrencyModel = Constants.CURRENCIES[0]
     private lateinit var viewModel: WelcomeViewModel
 
     private var mode = Constants.CREATE_GROUP
@@ -70,7 +70,6 @@ class ViewPagerPage2 : Fragment() {
             else joinGroup()
         }
 
-        currency = viewModel.groupCurrency.value!!
         groupCurrencyLabelTextView = view.findViewById(R.id.selectCurrencyLabel)
         groupCurrencyTextView = view.findViewById(R.id.selectedCurrency)
         groupCurrencyImageView = view.findViewById(R.id.selectedCurrencyFlag)
@@ -78,13 +77,13 @@ class ViewPagerPage2 : Fragment() {
         groupNameLayout = view.findViewById(R.id.groupNameInputLayout)
         groupNameEditText = view.findViewById(R.id.groupNameEditText)
 
-        setCurrency(currency)
-
         joinGroupLayout = view.findViewById(R.id.joinGroupInputLayout)
         joinGroupEditText = view.findViewById(R.id.joinGroupEditText)
 
         setUpObserverLiveData()
         if (mode == Constants.CREATE_GROUP) {
+            viewModel.groupCurrency.value?.let { c -> currency = c }
+            setCurrency(currency)
             animateObjectsInForGroupCreation()
             groupCurrencyButton.setOnClickListener {
                 CurrencyBottomSheet(welcomeViewModel = viewModel).show(childFragmentManager, CurrencyBottomSheet.TAG)
