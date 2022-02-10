@@ -2,6 +2,12 @@
 
 [![master](https://img.shields.io/circleci/build/github/gabrielglbh/tfm-android/main)](https://app.circleci.com/pipelines/github/gabrielglbh/tfm-android?branch=main) [![master](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main/graph/badge.svg?token=J29KTCIZVY)](https://codecov.io/gh/gabrielglbh/tfm-android/branch/main) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f65a342064ea42bd99d4661b7b94aa17)](https://www.codacy.com/gh/gabrielglbh/tfm-android/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gabrielglbh/tfm-android&amp;utm_campaign=Badge_Grade)
 
+<p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.gabr.gabc.kelo">
+    <img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="30%">
+  </a>  
+</p>
+
 ## Disclaimer
 
 There's currently (15 Jun 2021) an issue with Firebase Messaging with some emulators and devices (see [#1286](https://github.com/firebase/firebase-android-sdk/issues/1286)). As for this, all UI tests fails upon execution on Circle CI (locally they do not fail). Therefore, as we use CircleCI for our continuous integration tool, __all UI tests have been left out of execution__ in order to get a proper coverage number. Proper adjustments to the coverage report files have also been made.
